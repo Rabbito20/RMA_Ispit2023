@@ -1,5 +1,6 @@
 package rs.raf.projekat1.rmanutritiont.navigation
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -9,10 +10,12 @@ import androidx.navigation.navigation
 
 @Composable
 fun AuthenticatedContainer(navController: NavController) {
-    NavHost(navController = navController as NavHostController, startDestination = "home") {
+    /*NavHost(navController = navController as NavHostController, startDestination = "home") {
         navigation(startDestination = "login", route = "auth") {
 
-            composable(route = "login") {}
+            composable(route = "login") {
+                Text(text = "Login screen")
+            }
 
             composable(route = "home") {}
 
@@ -20,5 +23,5 @@ fun AuthenticatedContainer(navController: NavController) {
 
             composable(route = "statistics") {}
         }
-    }
+    }*/
 }
