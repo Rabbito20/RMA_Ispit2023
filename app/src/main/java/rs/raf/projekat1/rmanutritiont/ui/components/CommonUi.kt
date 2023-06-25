@@ -10,7 +10,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ScreenButton(
+fun RegularWidthButton(
     onClick: () -> Unit,
     buttonText: String,
     modifier: Modifier = Modifier
@@ -25,3 +25,4 @@ fun ScreenButton(
         Text(text = buttonText, textAlign = TextAlign.Center)
     }
 }
+

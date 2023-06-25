@@ -1,6 +1,5 @@
 package rs.raf.projekat1.rmanutritiont.navigation
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,9 +7,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -32,10 +35,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import rs.raf.projekat1.rmanutritiont.FiltersScreen
 import rs.raf.projekat1.rmanutritiont.R
 import rs.raf.projekat1.rmanutritiont.favorites.FavoritesScreen
 import rs.raf.projekat1.rmanutritiont.home.HomeScreen
-import rs.raf.projekat1.rmanutritiont.login.LoginScreen
 import rs.raf.projekat1.rmanutritiont.settings.SettingsScreen
 import rs.raf.projekat1.rmanutritiont.statistics.StatisticsScreen
 
@@ -66,7 +69,7 @@ fun NutritionAppSignedIn(
         BottomNavItem(
             name = stringResource(id = R.string.stats_title),
             route = NutritionScreen.FoodStatistics.name,
-            icon = Icons.Default.DateRange
+            icon = Icons.Filled.CheckCircle
         ),
         BottomNavItem(
             name = stringResource(id = R.string.settings_title),
@@ -81,7 +84,7 @@ fun NutritionAppSignedIn(
                     items = navBarList,
                     navController = navController,
                     onItemClick = {
-                        Log.e("Djura", "$it")
+                        navController.popBackStack()
                         navController.navigate(it.route)
                     })
             }
@@ -105,7 +108,10 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
     ) {
 
         composable(route = NutritionScreen.Home.name) {
-            HomeScreen()
+            HomeScreen(navController)
+        }
+        composable(route = "${NutritionScreen.Home.name}/Filter") {
+            FiltersScreen(navController)
         }
 
         composable(route = NutritionScreen.Favorites.name) {
