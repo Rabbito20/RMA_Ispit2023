@@ -1,13 +1,17 @@
 package rs.raf.projekat1.rmanutritiont.navigation
 
-enum class NutritionScreenTopLevelRoutes() {
+enum class TopLevelRoutes() {
     Home,
     Favorites,
     FoodStatistics,
     Settings
 }
 
-enum class HomeNavigationRoutes {
+enum class SecondaryRoutes {
+    //  Home
     Filter,
-    Category
+    Category,
+
+    //  Settings
+    CreatePlan,
 }

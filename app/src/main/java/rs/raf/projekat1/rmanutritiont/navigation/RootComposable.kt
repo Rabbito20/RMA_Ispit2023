@@ -6,6 +6,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import rs.raf.projekat1.rmanutritiont.splashscreen.SplashScreen
 import rs.raf.projekat1.rmanutritiont.ui.theme.RmaNutritionTTheme
 
 @Composable
@@ -19,15 +20,16 @@ fun RootComposable(/*appContainer: AppContainer*/) {
         ) {
             val navController = rememberNavController()
             val isSignedIn: Boolean = true
-//            val isSignedIn: Boolean = false
 
             when (isSignedIn) {
                 true -> NutritionAppSignedIn(navController)
                 false -> LoginAppContainer(navController)
+//                false -> null
                 else -> {
                     /* TODO: loading */
                 }
             }
+
         }
     }
 }

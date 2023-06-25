@@ -46,25 +46,25 @@ fun NutritionAppSignedIn(
 //    viewModel: ViewModel
     navController: NavHostController = rememberNavController()
 ) {
-    val navBarList = listOf<BottomNavItem>(
+    val navBarList = listOf(
         BottomNavItem(
             name = stringResource(id = R.string.home_title),
-            route = NutritionScreenTopLevelRoutes.Home.name,
+            route = TopLevelRoutes.Home.name,
             icon = Icons.Default.Home
         ),
         BottomNavItem(
             name = stringResource(id = R.string.favorites_title),
-            route = NutritionScreenTopLevelRoutes.Favorites.name,
+            route = TopLevelRoutes.Favorites.name,
             icon = Icons.Default.Favorite
         ),
         BottomNavItem(
             name = stringResource(id = R.string.stats_title),
-            route = NutritionScreenTopLevelRoutes.FoodStatistics.name,
+            route = TopLevelRoutes.FoodStatistics.name,
             icon = Icons.Filled.CheckCircle
         ),
         BottomNavItem(
             name = stringResource(id = R.string.settings_title),
-            route = NutritionScreenTopLevelRoutes.Settings.name,
+            route = TopLevelRoutes.Settings.name,
             icon = Icons.Default.Settings
         ),
     )
@@ -94,43 +94,42 @@ fun NutritionAppSignedIn(
 fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues) {
     NavHost(
         navController = navController,
-        startDestination = NutritionScreenTopLevelRoutes.Home.name,
+        startDestination = TopLevelRoutes.Home.name,
         modifier = Modifier.padding(paddingValues)
     ) {
-
         var categoryRoute: String? = ""
-        composable(route = NutritionScreenTopLevelRoutes.Home.name) {
+        composable(route = TopLevelRoutes.Home.name) {
             HomeScreen(
                 onFilterClick = {
                     navController.navigate(
                         route =
-                        "${NutritionScreenTopLevelRoutes.Home.name}/${HomeNavigationRoutes.Filter.name}"
+                        "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Filter.name}"
                     )
                 },
                 onCategoryClicked = {
                     categoryRoute = it
                     navController.navigate(
                         route =
-                        "${NutritionScreenTopLevelRoutes.Home.name}/${HomeNavigationRoutes.Category.name}"
+                        "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Category.name}"
                     )
                 })
         }
-        composable(route = "${NutritionScreenTopLevelRoutes.Home.name}/${HomeNavigationRoutes.Filter.name}") {
+        composable(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Filter.name}") {
             FiltersScreen(navController)
         }
-        composable(route = "${NutritionScreenTopLevelRoutes.Home.name}/${HomeNavigationRoutes.Category.name}") {
+        composable(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Category.name}") {
             CategoryScreen(categoryName = categoryRoute.toString())
         }
 
-        composable(route = NutritionScreenTopLevelRoutes.Favorites.name) {
+        composable(route = TopLevelRoutes.Favorites.name) {
             FavoritesScreen()
         }
 
-        composable(route = NutritionScreenTopLevelRoutes.FoodStatistics.name) {
+        composable(route = TopLevelRoutes.FoodStatistics.name) {
             StatisticsScreen()
         }
 
-        composable(route = NutritionScreenTopLevelRoutes.Settings.name) {
+        composable(route = TopLevelRoutes.Settings.name) {
             SettingsScreen()
         }
     }

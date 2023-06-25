@@ -21,7 +21,7 @@ import rs.raf.projekat1.rmanutritiont.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(onLoginClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -57,7 +57,7 @@ fun LoginScreen() {
         )
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = onLoginClick,
             modifier = Modifier
                 .width(200.dp)
                 .padding(top = 20.dp)

@@ -1,13 +1,14 @@
 package rs.raf.projekat1.rmanutritiont.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import rs.raf.projekat1.rmanutritiont.login.LoginScreen
 
 @Composable
-fun LoginAppContainer(navController: NavHostController) {
+fun LoginAppContainer(navController: NavController) {
 
-    //  TODO
-    LoginScreen()
+    //  TODO: Check login logic
+    LoginScreen(onLoginClick = { /*todo*/ })
 
 }
