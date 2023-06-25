@@ -64,6 +64,7 @@ fun RootComposable(/*appContainer: AppContainer*/) {
     }
 }
 
+//  Ovo nam vrv ne treba onda
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NutritionAppBar(
@@ -101,7 +102,7 @@ fun NutritionApp(
 
 //        val uiState by viewModel
 
-        NavHost(navController = navController, startDestination = NutritionScreen.FoodStatistics.name) {
+        NavHost(navController = navController, startDestination = NutritionScreen.Home.name) {
             composable(route = NutritionScreen.Home.name) {
                 HomeScreen()
             }

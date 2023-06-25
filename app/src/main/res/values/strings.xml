@@ -2,4 +2,12 @@
     <string name="app_name">Nutrition Tracker</string>
 
     <string name="btn_login">Login</string>
+
+    <string name="home_screen">Home screen</string>
+
+    <string name="main_screen">Main screen</string>
+
+    <string name="stats_screen">Statistics screen</string>
+
+    <string name="favorites_screen">Favorites screen</string>
 </resources>
