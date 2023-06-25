@@ -21,7 +21,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import rs.raf.projekat1.rmanutritiont.R
+import rs.raf.projekat1.rmanutritiont.favorites.FavoritesScreen
 import rs.raf.projekat1.rmanutritiont.home.HomeScreen
+import rs.raf.projekat1.rmanutritiont.login.LoginScreen
 import rs.raf.projekat1.rmanutritiont.statistics.StatisticsScreen
 import rs.raf.projekat1.rmanutritiont.ui.theme.RmaNutritionTTheme
 
@@ -35,31 +37,7 @@ fun RootComposable(/*appContainer: AppContainer*/) {
             color = MaterialTheme.colorScheme.background
         ) {
             val navController = rememberNavController()
-
-            //  Provera da li je ulogovan
-//            val isSignedIn: Boolean       //    todo
-//            AuthenticatedContainer(navController = navController)
-
-            //  #############
-            /*NavHost(navController = navController as NavHostController, startDestination = "home") {
-                navigation(startDestination = "login", route = "auth") {
-
-                    composable(route = "login") {
-                        Text(text = "Login screen")
-                    }
-
-                    composable(route = "home") {}
-
-                    composable(route = "favorites") {}
-
-                    composable(route = "statistics") {}
-                }
-            }*/
-            //  #############
-
             NutritionApp()
-
-
         }
     }
 }
@@ -97,19 +75,28 @@ fun NutritionApp(
         bottomBar = {
             //  Ovo je za topAppBar
 //            NutritionAppBar(canNavigateBack = false, navigateUp = { /*TODO: Back navigation*/ })
-            BottomAppBar {/*TODO*/}
+            BottomAppBar {/*TODO*/ }
         }) { innerPadding ->
 
 //        val uiState by viewModel
 
-        NavHost(navController = navController, startDestination = NutritionScreen.Home.name) {
+        NavHost(navController = navController, startDestination = NutritionScreen.Login.name) {
+            composable(route = NutritionScreen.Login.name) {
+                LoginScreen()
+            }
+
             composable(route = NutritionScreen.Home.name) {
                 HomeScreen()
+            }
+
+            composable(route = NutritionScreen.Favorites.name) {
+                FavoritesScreen()
             }
 
             composable(route = NutritionScreen.FoodStatistics.name) {
                 StatisticsScreen()
             }
+
         }
 
     }
@@ -118,6 +105,7 @@ fun NutritionApp(
 enum class NutritionScreen() {
     Login,
     Home,
+    Favorites,
     RecipeDetail,
     FoodStatistics
 }
