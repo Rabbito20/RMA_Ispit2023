@@ -36,19 +36,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import rs.raf.projekat1.rmanutritiont.R
 import rs.raf.projekat1.rmanutritiont.data.FoodCategory
-import rs.raf.projekat1.rmanutritiont.navigation.NutritionScreen
 import rs.raf.projekat1.rmanutritiont.ui.components.RegularWidthButton
 import rs.raf.projekat1.rmanutritiont.ui.components.SearchBar
 
 @Composable
 fun HomeScreen(
-    navController: NavController
+    onFilterClick: () -> Unit,
+    onCategoryClicked: (String) -> Unit
 ) {
-    val filterRoute = "${NutritionScreen.Home.name}/Filter"
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -59,7 +56,9 @@ fun HomeScreen(
     ) {
         var searchQueryState by remember { mutableStateOf("") }
         RegularWidthButton(
-            onClick = { navController.navigate(route = filterRoute) },
+            onClick = {
+                onFilterClick()
+            },
             buttonText = stringResource(id = R.string.filter_text),
             modifier = Modifier.padding(start = 20.dp, end = 20.dp)
         )
@@ -69,12 +68,16 @@ fun HomeScreen(
         )
 
         //  TODO: Add list of categories
-        val testList = listOf<FoodCategory>(
+        val testList = listOf(
             FoodCategory(categoryName = "Breakfast"),
             FoodCategory(categoryName = "Lunch"),
             FoodCategory(categoryName = "Dinner"),
         )
-        CategoryContainer(listOfCategories = testList)
+        CategoryContainer(
+            listOfCategories = testList,
+            onCategoryClick = {
+                onCategoryClicked(it)
+            })
 
     }
 }
@@ -82,7 +85,8 @@ fun HomeScreen(
 @Composable
 fun CategoryContainer(
     modifier: Modifier = Modifier,
-    listOfCategories: List<FoodCategory> = emptyList()
+    listOfCategories: List<FoodCategory> = emptyList(),
+    onCategoryClick: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -103,7 +107,8 @@ fun CategoryContainer(
         listOfCategories.forEach { category ->
             CategoryCard(
                 image = category.categoryImage,
-                category = category
+                category = category,
+                onButtonClick = { onCategoryClick(it) }
             )
         }
     }
@@ -111,14 +116,14 @@ fun CategoryContainer(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryCard(image: String, category: FoodCategory) {
+fun CategoryCard(image: String, category: FoodCategory, onButtonClick: (String) -> Unit) {
     var isExpendedState by remember { mutableStateOf(false) }
 
     OutlinedCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp),
-        onClick = { /*TODO*/ }
+        onClick = { onButtonClick(category.categoryName) }
     ) {
         Row(
             modifier = Modifier
@@ -178,5 +183,5 @@ fun CategoryCard(image: String, category: FoodCategory) {
 @Preview(showBackground = true)
 @Composable
 fun HomePreview() {
-    HomeScreen(navController = rememberNavController())
+    HomeScreen(onCategoryClicked = {}, onFilterClick = {})
 }
