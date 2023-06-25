@@ -18,31 +18,16 @@ fun RootComposable(/*appContainer: AppContainer*/) {
             color = MaterialTheme.colorScheme.background
         ) {
             val navController = rememberNavController()
-            NutritionApp(navController)
-        }
-    }
-}
+            val isSignedIn: Boolean = true
+//            val isSignedIn: Boolean = false
 
-//  Ovo nam vrv ne treba onda
-/*@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun NutritionAppBar(
-    canNavigateBack: Boolean,
-    navigateUp: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    TopAppBar(
-        title = { Text(text = stringResource(id = R.string.app_name)) },
-        colors = TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        ),
-        navigationIcon = {
-            if (canNavigateBack) {
-                IconButton(onClick = navigateUp) {
-                    Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back button")
+            when (isSignedIn) {
+                true -> NutritionAppSignedIn(navController)
+                false -> LoginAppContainer(navController)
+                else -> {
+                    /* TODO: loading */
                 }
             }
         }
-    )
-}*/
-
+    }
+}

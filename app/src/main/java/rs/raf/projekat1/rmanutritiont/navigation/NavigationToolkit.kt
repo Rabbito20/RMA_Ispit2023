@@ -5,12 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -35,19 +36,19 @@ import rs.raf.projekat1.rmanutritiont.R
 import rs.raf.projekat1.rmanutritiont.favorites.FavoritesScreen
 import rs.raf.projekat1.rmanutritiont.home.HomeScreen
 import rs.raf.projekat1.rmanutritiont.login.LoginScreen
+import rs.raf.projekat1.rmanutritiont.settings.SettingsScreen
 import rs.raf.projekat1.rmanutritiont.statistics.StatisticsScreen
 
 enum class NutritionScreen() {
-    Login,
     Home,
     Favorites,
-    RecipeDetail,
-    FoodStatistics
+    FoodStatistics,
+    Settings
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NutritionApp(
+fun NutritionAppSignedIn(
 //    viewModel: ViewModel
     navController: NavHostController = rememberNavController()
 ) {
@@ -66,6 +67,11 @@ fun NutritionApp(
             name = stringResource(id = R.string.stats_title),
             route = NutritionScreen.FoodStatistics.name,
             icon = Icons.Default.DateRange
+        ),
+        BottomNavItem(
+            name = stringResource(id = R.string.settings_title),
+            route = NutritionScreen.Settings.name,
+            icon = Icons.Default.Settings
         ),
     )
     Scaffold(
@@ -98,11 +104,6 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
         modifier = Modifier.padding(paddingValues)
     ) {
 
-        //  Poseban UI za ovo
-        composable(route = NutritionScreen.Login.name) {
-            LoginScreen()
-        }
-
         composable(route = NutritionScreen.Home.name) {
             HomeScreen()
         }
@@ -113,6 +114,10 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
 
         composable(route = NutritionScreen.FoodStatistics.name) {
             StatisticsScreen()
+        }
+
+        composable(route = NutritionScreen.Settings.name) {
+            SettingsScreen()
         }
 
     }
@@ -138,7 +143,7 @@ fun AppBottomNavBar(
                 onClick = { onItemClick(item) },
                 icon = {
                     Column(
-                        modifier = Modifier.fillMaxHeight(),
+                        modifier = Modifier.size(64.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
