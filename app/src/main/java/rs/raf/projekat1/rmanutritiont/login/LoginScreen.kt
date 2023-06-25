@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
@@ -41,7 +42,6 @@ fun LoginScreen() {
             modifier = Modifier.fillMaxWidth()
         )
 
-
         Text(
             text = stringResource(id = R.string.password),
             textAlign = TextAlign.Start,
@@ -56,13 +56,16 @@ fun LoginScreen() {
                 .fillMaxWidth()
         )
 
-
         Button(
-            onClick = { /*TODO*/ }, modifier = Modifier
+            onClick = { /*TODO*/ },
+            modifier = Modifier
                 .width(200.dp)
                 .padding(top = 20.dp)
         ) {
-            Text(text = stringResource(id = R.string.btn_login))
+            Text(
+                text = stringResource(id = R.string.btn_login),
+                modifier = Modifier.wrapContentSize()
+            )
         }
     }
 }

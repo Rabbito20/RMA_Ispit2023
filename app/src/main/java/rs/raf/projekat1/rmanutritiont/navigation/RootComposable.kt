@@ -1,30 +1,11 @@
 package rs.raf.projekat1.rmanutritiont.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import rs.raf.projekat1.rmanutritiont.R
-import rs.raf.projekat1.rmanutritiont.favorites.FavoritesScreen
-import rs.raf.projekat1.rmanutritiont.home.HomeScreen
-import rs.raf.projekat1.rmanutritiont.login.LoginScreen
-import rs.raf.projekat1.rmanutritiont.statistics.StatisticsScreen
 import rs.raf.projekat1.rmanutritiont.ui.theme.RmaNutritionTTheme
 
 @Composable
@@ -37,13 +18,13 @@ fun RootComposable(/*appContainer: AppContainer*/) {
             color = MaterialTheme.colorScheme.background
         ) {
             val navController = rememberNavController()
-            NutritionApp()
+            NutritionApp(navController)
         }
     }
 }
 
 //  Ovo nam vrv ne treba onda
-@OptIn(ExperimentalMaterial3Api::class)
+/*@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NutritionAppBar(
     canNavigateBack: Boolean,
@@ -63,49 +44,5 @@ fun NutritionAppBar(
             }
         }
     )
-}
+}*/
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun NutritionApp(
-//    viewModel: ViewModel
-    navController: NavHostController = rememberNavController()
-) {
-    Scaffold(
-        bottomBar = {
-            //  Ovo je za topAppBar
-//            NutritionAppBar(canNavigateBack = false, navigateUp = { /*TODO: Back navigation*/ })
-            BottomAppBar {/*TODO*/ }
-        }) { innerPadding ->
-
-//        val uiState by viewModel
-
-        NavHost(navController = navController, startDestination = NutritionScreen.Login.name) {
-            composable(route = NutritionScreen.Login.name) {
-                LoginScreen()
-            }
-
-            composable(route = NutritionScreen.Home.name) {
-                HomeScreen()
-            }
-
-            composable(route = NutritionScreen.Favorites.name) {
-                FavoritesScreen()
-            }
-
-            composable(route = NutritionScreen.FoodStatistics.name) {
-                StatisticsScreen()
-            }
-
-        }
-
-    }
-}
-
-enum class NutritionScreen() {
-    Login,
-    Home,
-    Favorites,
-    RecipeDetail,
-    FoodStatistics
-}
