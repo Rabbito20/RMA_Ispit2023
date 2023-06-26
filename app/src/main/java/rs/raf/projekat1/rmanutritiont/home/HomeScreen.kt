@@ -96,6 +96,7 @@ fun CategoryContainer(
     ) {
         Text(
             text = stringResource(id = R.string.category),
+            color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
@@ -146,6 +147,7 @@ fun CategoryCard(image: String, category: FoodCategory, onButtonClick: (String) 
             Text(
                 text = category.categoryName,
                 textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 12.sp,
                 modifier = Modifier

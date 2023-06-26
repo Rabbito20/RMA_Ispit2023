@@ -6,14 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -21,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -50,22 +47,22 @@ fun NutritionAppSignedIn(
         BottomNavItem(
             name = stringResource(id = R.string.home_title),
             route = TopLevelRoutes.Home.name,
-            icon = Icons.Default.Home
+            icon = painterResource(id = R.drawable.ic_home_24)
         ),
         BottomNavItem(
             name = stringResource(id = R.string.favorites_title),
             route = TopLevelRoutes.Favorites.name,
-            icon = Icons.Default.Favorite
+            icon = painterResource(id = R.drawable.ic_favorites_24)
         ),
         BottomNavItem(
             name = stringResource(id = R.string.stats_title),
             route = TopLevelRoutes.FoodStatistics.name,
-            icon = Icons.Filled.CheckCircle
+            icon = painterResource(id = R.drawable.ic_stat_24)
         ),
         BottomNavItem(
             name = stringResource(id = R.string.settings_title),
             route = TopLevelRoutes.Settings.name,
-            icon = Icons.Default.Settings
+            icon = painterResource(id = R.drawable.ic_settings_24)
         ),
     )
     Scaffold(
@@ -159,9 +156,18 @@ fun AppBottomNavBar(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        Icon(imageVector = item.icon, contentDescription = item.name)
+                        Icon(
+                            painter = item.icon,
+                            tint = MaterialTheme.colorScheme.onBackground,
+                            contentDescription = item.name
+                        )
                         if (selected) {
-                            Text(text = item.name, textAlign = TextAlign.Center, fontSize = 12.sp)
+                            Text(
+                                text = item.name,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                textAlign = TextAlign.Center,
+                                fontSize = 12.sp
+                            )
                         }
                     }
                 }

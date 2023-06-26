@@ -13,3 +13,6 @@ val PurpleGrey40 = Color(0xFF625b71)
 val LightYellow = Color(0xFFF5DB8F)
 val LighterRed = Color(0xFFEA827A)
 val LightRed = Color(0xFFE24D42)
+
+val WhiteOp70 = Color(0xB3FFFFFF)
+val BlackOp60 = Color(0x99000000)
