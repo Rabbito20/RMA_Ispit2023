@@ -48,7 +48,7 @@ fun HomeScreen(
     onCategoryClicked: (String) -> Unit
 ) {
     //  todo:   uiState from viewModel
-//    val uiState by viewModel.ui
+    //  val uiState by viewModel.ui
 
     Column(
         modifier = Modifier
@@ -67,7 +67,10 @@ fun HomeScreen(
             modifier = Modifier.padding(start = 20.dp, end = 20.dp)
         )
         SearchBar(
-            onNewQuery = { searchQueryState = it },
+            onNewQuery = {
+                viewModel.onSearchInputChanged(it)
+//                searchQueryState = it
+            },
             modifier = Modifier.padding(start = 16.dp, end = 16.dp)
         )
 
