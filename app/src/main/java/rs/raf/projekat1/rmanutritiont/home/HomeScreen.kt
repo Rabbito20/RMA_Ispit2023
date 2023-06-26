@@ -43,9 +43,13 @@ import rs.raf.projekat1.rmanutritiont.ui.components.SearchBar
 
 @Composable
 fun HomeScreen(
+    viewModel: HomeViewModel,
     onFilterClick: () -> Unit,
     onCategoryClicked: (String) -> Unit
 ) {
+    //  todo:   uiState from viewModel
+//    val uiState by viewModel.ui
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -185,5 +189,5 @@ fun CategoryCard(image: String, category: FoodCategory, onButtonClick: (String) 
 @Preview(showBackground = true)
 @Composable
 fun HomePreview() {
-    HomeScreen(onCategoryClicked = {}, onFilterClick = {})
+//    HomeScreen(viewModel = HomeViewModel(), onCategoryClicked = {}, onFilterClick = {})
 }

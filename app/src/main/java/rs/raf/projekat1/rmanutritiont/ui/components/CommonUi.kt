@@ -25,4 +25,3 @@ fun RegularWidthButton(
         Text(text = buttonText, textAlign = TextAlign.Center)
     }
 }
-
