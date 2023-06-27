@@ -1,4 +1,4 @@
-package rs.raf.projekat1.rmanutritiont.screens.home
+package rs.raf.projekat1.rmanutritiont.screens.home.filter
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -45,6 +45,7 @@ fun FiltersScreen(
     //  TODO:   FilterState
 ) {
     //  TODO:   ViewModel
+    var showDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -73,8 +74,8 @@ fun FiltersScreen(
                     .weight(3f)
                     .padding(end = 4.dp)
             )
-            SortButton(onClick = { /*TODO: Open dialog*/ })
 
+            SortButton(onClick = { showDialog = !showDialog })
         }
 
         //  TODO: ViewModel ovo da kontrolise
@@ -87,7 +88,7 @@ fun FiltersScreen(
 
         //  TODO: Obraditi listu (sortirati i filtrirati)
         val testMealList = listOf(
-            Meal("Burek", null, null, ),
+            Meal("Burek", null, null),
             Meal("Musaka", null, null),
             Meal("Sarma", null, null),
         )
@@ -99,6 +100,8 @@ fun FiltersScreen(
          * */
         MealContainer(testMealList, onCardClick = { onMealClicked(it) })
     }
+    if (showDialog)
+        SortDialog(closeDialog = { showDialog = false })
 }
 
 @Composable
@@ -173,7 +176,7 @@ private fun RowScope.SortButton(onClick: () -> Unit) {
                 modifier = Modifier.size(24.dp)
             )
             Text(
-                text = stringResource(id = R.string.sort_button),
+                text = stringResource(id = R.string.sort_text),
                 modifier = Modifier.padding(bottom = 0.dp),
                 fontSize = 10.sp
             )

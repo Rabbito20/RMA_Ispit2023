@@ -20,7 +20,7 @@ import rs.raf.projekat1.rmanutritiont.data.Meal
 import rs.raf.projekat1.rmanutritiont.screens.MealScreenDetails
 import rs.raf.projekat1.rmanutritiont.screens.favorites.FavoritesScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.CategoryScreen
-import rs.raf.projekat1.rmanutritiont.screens.home.FiltersScreen
+import rs.raf.projekat1.rmanutritiont.screens.home.filter.FiltersScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.HomeScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.HomeViewModel
 import rs.raf.projekat1.rmanutritiont.screens.settings.SettingsScreen
