@@ -16,3 +16,4 @@ val LightRed = Color(0xFFE24D42)
 
 val WhiteOp70 = Color(0xB3FFFFFF)
 val BlackOp60 = Color(0x99000000)
+val BlueOp85 = Color(0xD916537E)

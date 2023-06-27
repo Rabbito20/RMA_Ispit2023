@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,7 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import rs.raf.projekat1.rmanutritiont.R
+import rs.raf.projekat1.rmanutritiont.data.Meal
 import rs.raf.projekat1.rmanutritiont.ui.components.SearchBox
+import rs.raf.projekat1.rmanutritiont.ui.components.SingleMealCard
 
 @Composable
 fun FiltersScreen(
@@ -41,7 +45,7 @@ fun FiltersScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(20.dp),
+            .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
@@ -55,7 +59,7 @@ fun FiltersScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 20.dp),
+                .padding(top = 12.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -86,12 +90,44 @@ fun FiltersScreen(
 
         //  TODO: ViewModel ovo da kontrolise
         var selectedFilter by remember { mutableStateOf("") }
+
         //  Row sa 3 dugmeta kao toggle
         ToggleContainer(
-            modifier = Modifier.padding(top = 12.dp),
+            modifier = Modifier.padding(top = 8.dp),
             selectedFilter = { selectedFilter = it })
 
-        //  Container sa ostalim jelima, prima [selectedFilter] kao parametar
+        //  TODO: Obraditi listu (sortirati i filtrirati)
+        val testMealList = listOf(
+            Meal("Burek", null, null),
+            Meal("Musaka", null, null),
+            Meal("Sarma", null, null),
+        )
+
+        /**
+         * Container sa ostalim jelima
+         * Prima sortiranu listu jela
+         * [onCardClick] Otvara prozor detaljnog prikaza jela
+         * */
+        MealContainer(testMealList, onCardClick = { /*todo*/ })
+    }
+}
+
+@Composable
+private fun MealContainer(mealList: List<Meal>, onCardClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.Top,
+
+        ) {
+        mealList.forEach { meal ->
+            SingleMealCard(
+                modifier = Modifier.padding(top = 12.dp),
+                meal = meal,
+                onClick = onCardClick
+            )
+        }
     }
 }
 
@@ -103,14 +139,23 @@ private fun ToggleContainer(modifier: Modifier = Modifier, selectedFilter: (Stri
             .then(modifier),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        TabField(onClick = { selectedFilter(it) }, text = stringResource(id = R.string.area))
-        TabField(onClick = { selectedFilter(it) }, text = stringResource(id = R.string.category))
-        TabField(onClick = { selectedFilter(it) }, text = stringResource(id = R.string.ingredients))
+        ToggleFilterButton(
+            onClick = { selectedFilter(it) },
+            text = stringResource(id = R.string.area)
+        )
+        ToggleFilterButton(
+            onClick = { selectedFilter(it) },
+            text = stringResource(id = R.string.category)
+        )
+        ToggleFilterButton(
+            onClick = { selectedFilter(it) },
+            text = stringResource(id = R.string.ingredients)
+        )
     }
 }
 
 @Composable
-private fun TabField(onClick: (String) -> Unit, text: String) {
+private fun ToggleFilterButton(onClick: (String) -> Unit, text: String) {
     Button(onClick = { onClick(text) }, modifier = Modifier) {
         Text(text = text, modifier = Modifier, style = MaterialTheme.typography.bodySmall)
     }
