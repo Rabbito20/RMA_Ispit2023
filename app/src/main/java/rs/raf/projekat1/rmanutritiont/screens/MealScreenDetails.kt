@@ -1,6 +1,7 @@
 package rs.raf.projekat1.rmanutritiont.screens
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,6 +46,7 @@ import rs.raf.projekat1.rmanutritiont.ui.theme.ColorFavorite
 
 @Composable
 fun MealScreenDetails(navController: NavController, meal: Meal?) {
+    val toastContext = LocalContext.current
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -59,7 +62,11 @@ fun MealScreenDetails(navController: NavController, meal: Meal?) {
         MealHeader(meal = meal)
         MealTitle(
             name = meal?.name!!,
-            onFavoriteClick = { favoriteMeal = !favoriteMeal },
+            onFavoriteClick = {
+                favoriteMeal = !favoriteMeal
+                Toast.makeText(toastContext, "Favorite is $favoriteMeal", Toast.LENGTH_SHORT)
+                    .show()
+            },
             favoriteMeal = favoriteMeal
         )
 //        MealCategories(listOfCategories = meal.categories)

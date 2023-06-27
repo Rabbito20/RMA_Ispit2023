@@ -20,9 +20,9 @@ import rs.raf.projekat1.rmanutritiont.data.Meal
 import rs.raf.projekat1.rmanutritiont.screens.MealScreenDetails
 import rs.raf.projekat1.rmanutritiont.screens.favorites.FavoritesScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.CategoryScreen
-import rs.raf.projekat1.rmanutritiont.screens.home.filter.FiltersScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.HomeScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.HomeViewModel
+import rs.raf.projekat1.rmanutritiont.screens.home.filter.FiltersScreen
 import rs.raf.projekat1.rmanutritiont.screens.settings.SettingsScreen
 import rs.raf.projekat1.rmanutritiont.screens.statistics.StatisticsScreen
 import rs.raf.projekat1.rmanutritiont.ui.components.AppBottomNavBar
@@ -133,7 +133,11 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
 
         //  Favorites route domain
         composable(route = TopLevelRoutes.Favorites.name) {
-            FavoritesScreen()
+            FavoritesScreen(
+                onFavMealClick = {
+                    meal = it
+                    navController.navigate(route = SecondaryRoutes.MealDetails.name)
+                })
         }
 
 

@@ -10,9 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,8 +33,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import rs.raf.projekat1.rmanutritiont.R
 import rs.raf.projekat1.rmanutritiont.data.Meal
+import rs.raf.projekat1.rmanutritiont.ui.components.MealContainer
 import rs.raf.projekat1.rmanutritiont.ui.components.SearchBox
-import rs.raf.projekat1.rmanutritiont.ui.components.SingleMealCard
 
 @Composable
 fun FiltersScreen(
@@ -102,25 +100,6 @@ fun FiltersScreen(
     }
     if (showDialog)
         SortDialog(closeDialog = { showDialog = false })
-}
-
-@Composable
-private fun MealContainer(mealList: List<Meal>, onCardClick: (Meal) -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.Top,
-
-        ) {
-        mealList.forEach { meal ->
-            SingleMealCard(
-                modifier = Modifier.padding(top = 8.dp),
-                meal = meal,
-                onClick = { onCardClick(meal) }
-            )
-        }
-    }
 }
 
 @Composable
