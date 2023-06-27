@@ -16,7 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import rs.raf.projekat1.rmanutritiont.R
 import rs.raf.projekat1.rmanutritiont.data.FoodCategory
-import rs.raf.projekat1.rmanutritiont.screens.DetailedMealScreen
+import rs.raf.projekat1.rmanutritiont.screens.MealScreenDetails
 import rs.raf.projekat1.rmanutritiont.screens.favorites.FavoritesScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.CategoryScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.FiltersScreen
@@ -87,7 +87,7 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
         var categoryRoute: String? = ""
 
         composable(route = SecondaryRoutes.MealDetails.name) {
-            DetailedMealScreen(navController = navController)
+            MealScreenDetails(navController = navController)
         }
 
         //  Home route domain

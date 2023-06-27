@@ -28,6 +28,13 @@ val Typography = Typography(
         lineHeight = 20.sp,
         fontSize = 12.sp
     ),
+    headlineMedium = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Start,
+        lineHeight = 20.sp,
+        fontSize = 16.sp
+    ),
 
     /* Other default text styles to override
     titleLarge = TextStyle(

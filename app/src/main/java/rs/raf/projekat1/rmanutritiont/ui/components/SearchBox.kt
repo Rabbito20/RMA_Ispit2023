@@ -20,7 +20,9 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import rs.raf.projekat1.rmanutritiont.R
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
@@ -49,6 +51,7 @@ fun SearchBox(
             Icon(imageVector = Icons.Default.Search, contentDescription = "Search icon")
         },
         singleLine = true,
+        textStyle = TextStyle(textAlign = TextAlign.Start),
         shape = RoundedCornerShape(percent = 50),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = { keyboardController?.hide() }),

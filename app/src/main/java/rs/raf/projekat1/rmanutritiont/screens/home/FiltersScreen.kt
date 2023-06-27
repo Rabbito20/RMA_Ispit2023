@@ -4,10 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -28,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import rs.raf.projekat1.rmanutritiont.R
@@ -61,31 +64,16 @@ fun FiltersScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 12.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             SearchBox(
                 onNewQuery = {},
                 modifier = Modifier
-                    .weight(4f)
+                    .weight(3f)
                     .padding(end = 4.dp)
             )
-
-            IconButton(
-                onClick = { /*TODO: Open dialog*/ },
-                modifier = Modifier
-                    .clip(RoundedCornerShape(50))
-                    .background(MaterialTheme.colorScheme.tertiary)
-                    .size(48.dp)
-                    .weight(1f)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_sort_24),
-                    tint = MaterialTheme.colorScheme.onBackground,
-                    contentDescription = "Sort button",
-                    modifier = Modifier.size(24.dp)
-                )
-            }
+            SortButton(onClick = { /*TODO: Open dialog*/ })
 
         }
 
@@ -124,7 +112,7 @@ private fun MealContainer(mealList: List<Meal>, onCardClick: () -> Unit) {
         ) {
         mealList.forEach { meal ->
             SingleMealCard(
-                modifier = Modifier.padding(top = 12.dp),
+                modifier = Modifier.padding(top = 8.dp),
                 meal = meal,
                 onClick = onCardClick
             )
@@ -159,6 +147,37 @@ private fun ToggleContainer(modifier: Modifier = Modifier, selectedFilter: (Stri
 private fun ToggleFilterButton(onClick: (String) -> Unit, text: String) {
     Button(onClick = { onClick(text) }, modifier = Modifier) {
         Text(text = text, modifier = Modifier, style = MaterialTheme.typography.bodySmall)
+    }
+}
+
+@Composable
+private fun RowScope.SortButton(onClick: () -> Unit) {
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier
+            .clip(RoundedCornerShape(50))
+            .background(MaterialTheme.colorScheme.tertiary)
+            .size(48.dp)
+            .weight(1f)
+    ) {
+        Column(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(2.dp),
+            verticalArrangement = Arrangement.Top
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_sort_24),
+                tint = MaterialTheme.colorScheme.onBackground,
+                contentDescription = "Sort button",
+                modifier = Modifier.size(24.dp)
+            )
+            Text(
+                text = stringResource(id = R.string.sort_button),
+                modifier = Modifier.padding(bottom = 0.dp),
+                fontSize = 10.sp
+            )
+        }
     }
 }
 

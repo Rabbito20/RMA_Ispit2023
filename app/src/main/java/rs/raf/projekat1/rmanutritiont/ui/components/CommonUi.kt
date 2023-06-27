@@ -82,10 +82,11 @@ fun SingleMealCard(modifier: Modifier = Modifier, meal: Meal, onClick: () -> Uni
             }
             Text(
                 text = meal.name,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier
                     .padding(end = 20.dp)
+                    .fillMaxWidth()
             )
         }
     }

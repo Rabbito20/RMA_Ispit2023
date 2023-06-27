@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 
 @Composable
-fun DetailedMealScreen(navController: NavController) {
+fun MealScreenDetails(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
