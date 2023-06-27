@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.sp
 import rs.raf.projekat1.rmanutritiont.R
 import rs.raf.projekat1.rmanutritiont.data.FoodCategory
 import rs.raf.projekat1.rmanutritiont.ui.components.RegularWidthButton
-import rs.raf.projekat1.rmanutritiont.ui.components.SearchBar
+import rs.raf.projekat1.rmanutritiont.ui.components.SearchBox
 
 @Composable
 fun HomeScreen(
@@ -66,7 +66,7 @@ fun HomeScreen(
             buttonText = stringResource(id = R.string.filter_text),
             modifier = Modifier.padding(start = 20.dp, end = 20.dp)
         )
-        SearchBar(
+        SearchBox(
             onNewQuery = {
                 viewModel.onSearchInputChanged(it)
 //                searchQueryState = it
@@ -102,7 +102,7 @@ fun CategoryContainer(
             .then(modifier)
     ) {
         Text(
-            text = stringResource(id = R.string.category),
+            text = stringResource(id = R.string.categories),
             color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,

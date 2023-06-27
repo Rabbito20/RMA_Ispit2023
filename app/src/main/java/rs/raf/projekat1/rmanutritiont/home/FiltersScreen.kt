@@ -9,11 +9,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,17 +29,19 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import rs.raf.projekat1.rmanutritiont.R
-import rs.raf.projekat1.rmanutritiont.ui.components.SearchBar
+import rs.raf.projekat1.rmanutritiont.ui.components.SearchBox
 
 @Composable
 fun FiltersScreen(
     navController: NavController,
     //  TODO:   FilterState
 ) {
+    //  TODO:   ViewModel
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp),
+            .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
@@ -48,11 +55,11 @@ fun FiltersScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 12.dp, end = 12.dp, top = 20.dp),
+                .padding(top = 20.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            SearchBar(
+            SearchBox(
                 onNewQuery = {},
                 modifier = Modifier
                     .weight(4f)
@@ -77,16 +84,35 @@ fun FiltersScreen(
 
         }
 
+        //  TODO: ViewModel ovo da kontrolise
+        var selectedFilter by remember { mutableStateOf("") }
         //  Row sa 3 dugmeta kao toggle
+        ToggleContainer(
+            modifier = Modifier.padding(top = 12.dp),
+            selectedFilter = { selectedFilter = it })
 
-        //  Container sa ostalim jelima
+        //  Container sa ostalim jelima, prima [selectedFilter] kao parametar
     }
 }
 
 @Composable
-private fun ToggleContainer(rowModifier: Modifier = Modifier) {
-    Row(modifier = Modifier.then(rowModifier)) {
+private fun ToggleContainer(modifier: Modifier = Modifier, selectedFilter: (String) -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(modifier),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        TabField(onClick = { selectedFilter(it) }, text = stringResource(id = R.string.area))
+        TabField(onClick = { selectedFilter(it) }, text = stringResource(id = R.string.category))
+        TabField(onClick = { selectedFilter(it) }, text = stringResource(id = R.string.ingredients))
+    }
+}
 
+@Composable
+private fun TabField(onClick: (String) -> Unit, text: String) {
+    Button(onClick = { onClick(text) }, modifier = Modifier) {
+        Text(text = text, modifier = Modifier, style = MaterialTheme.typography.bodySmall)
     }
 }
 

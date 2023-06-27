@@ -25,7 +25,7 @@ import rs.raf.projekat1.rmanutritiont.R
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar(
+fun SearchBox(
     modifier: Modifier = Modifier,
     hint: String = "",
     onNewQuery: (String) -> Unit
@@ -37,7 +37,7 @@ fun SearchBar(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
-        value = searchParameter,
+        value = searchParameter.trim('\n'),
         onValueChange = { query ->
             searchParameter = query
             onNewQuery(searchParameter)
