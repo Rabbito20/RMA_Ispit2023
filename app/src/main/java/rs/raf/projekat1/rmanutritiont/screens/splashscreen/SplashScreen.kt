@@ -1,4 +1,4 @@
-package rs.raf.projekat1.rmanutritiont.navigation.splashscreen
+package rs.raf.projekat1.rmanutritiont.screens.splashscreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

@@ -16,13 +16,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import rs.raf.projekat1.rmanutritiont.R
 import rs.raf.projekat1.rmanutritiont.data.FoodCategory
-import rs.raf.projekat1.rmanutritiont.favorites.FavoritesScreen
-import rs.raf.projekat1.rmanutritiont.home.CategoryScreen
-import rs.raf.projekat1.rmanutritiont.home.FiltersScreen
-import rs.raf.projekat1.rmanutritiont.home.HomeScreen
-import rs.raf.projekat1.rmanutritiont.home.HomeViewModel
-import rs.raf.projekat1.rmanutritiont.settings.SettingsScreen
-import rs.raf.projekat1.rmanutritiont.statistics.StatisticsScreen
+import rs.raf.projekat1.rmanutritiont.screens.DetailedMealScreen
+import rs.raf.projekat1.rmanutritiont.screens.favorites.FavoritesScreen
+import rs.raf.projekat1.rmanutritiont.screens.home.CategoryScreen
+import rs.raf.projekat1.rmanutritiont.screens.home.FiltersScreen
+import rs.raf.projekat1.rmanutritiont.screens.home.HomeScreen
+import rs.raf.projekat1.rmanutritiont.screens.home.HomeViewModel
+import rs.raf.projekat1.rmanutritiont.screens.settings.SettingsScreen
+import rs.raf.projekat1.rmanutritiont.screens.statistics.StatisticsScreen
 import rs.raf.projekat1.rmanutritiont.ui.components.AppBottomNavBar
 
 
@@ -85,6 +86,10 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
     ) {
         var categoryRoute: String? = ""
 
+        composable(route = SecondaryRoutes.MealDetails.name) {
+            DetailedMealScreen(navController = navController)
+        }
+
         //  Home route domain
         composable(route = TopLevelRoutes.Home.name) {
             val testList = listOf(
@@ -112,7 +117,9 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
                 })
         }
         composable(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Filter.name}") {
-            FiltersScreen(navController)
+            FiltersScreen(
+                navController,
+                onMealClicked = { navController.navigate(route = SecondaryRoutes.MealDetails.name) })
         }
         composable(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Category.name}") {
             CategoryScreen(categoryName = categoryRoute.toString())

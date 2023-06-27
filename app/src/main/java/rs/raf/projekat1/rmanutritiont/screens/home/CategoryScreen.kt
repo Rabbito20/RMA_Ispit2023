@@ -1,4 +1,4 @@
-package rs.raf.projekat1.rmanutritiont.home
+package rs.raf.projekat1.rmanutritiont.screens.home
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

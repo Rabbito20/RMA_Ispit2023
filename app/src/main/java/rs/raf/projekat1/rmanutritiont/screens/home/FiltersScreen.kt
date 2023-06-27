@@ -1,4 +1,4 @@
-package rs.raf.projekat1.rmanutritiont.home
+package rs.raf.projekat1.rmanutritiont.screens.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +38,7 @@ import rs.raf.projekat1.rmanutritiont.ui.components.SingleMealCard
 @Composable
 fun FiltersScreen(
     navController: NavController,
+    onMealClicked: () -> Unit,
     //  TODO:   FilterState
 ) {
     //  TODO:   ViewModel
@@ -108,7 +109,7 @@ fun FiltersScreen(
          * Prima sortiranu listu jela
          * [onCardClick] Otvara prozor detaljnog prikaza jela
          * */
-        MealContainer(testMealList, onCardClick = { /*todo*/ })
+        MealContainer(testMealList, onCardClick = onMealClicked)
     }
 }
 
@@ -164,5 +165,5 @@ private fun ToggleFilterButton(onClick: (String) -> Unit, text: String) {
 @Preview(showBackground = true)
 @Composable
 fun FilterPreview() {
-    FiltersScreen(navController = rememberNavController())
+    FiltersScreen(navController = rememberNavController(), onMealClicked = {})
 }

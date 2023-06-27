@@ -14,4 +14,7 @@ enum class SecondaryRoutes {
 
     //  Settings
     CreatePlan,
+
+    //  MealDetails
+    MealDetails,
 }

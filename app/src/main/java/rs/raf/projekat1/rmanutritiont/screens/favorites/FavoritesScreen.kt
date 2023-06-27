@@ -1,4 +1,4 @@
-package rs.raf.projekat1.rmanutritiont.favorites
+package rs.raf.projekat1.rmanutritiont.screens.favorites
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

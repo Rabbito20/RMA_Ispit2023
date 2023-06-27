@@ -1,4 +1,4 @@
-package rs.raf.projekat1.rmanutritiont.statistics
+package rs.raf.projekat1.rmanutritiont.screens.statistics
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
