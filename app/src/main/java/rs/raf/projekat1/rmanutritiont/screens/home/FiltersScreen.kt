@@ -41,7 +41,7 @@ import rs.raf.projekat1.rmanutritiont.ui.components.SingleMealCard
 @Composable
 fun FiltersScreen(
     navController: NavController,
-    onMealClicked: () -> Unit,
+    onMealClicked: (Meal) -> Unit,
     //  TODO:   FilterState
 ) {
     //  TODO:   ViewModel
@@ -87,7 +87,7 @@ fun FiltersScreen(
 
         //  TODO: Obraditi listu (sortirati i filtrirati)
         val testMealList = listOf(
-            Meal("Burek", null, null),
+            Meal("Burek", null, null, ),
             Meal("Musaka", null, null),
             Meal("Sarma", null, null),
         )
@@ -97,12 +97,12 @@ fun FiltersScreen(
          * Prima sortiranu listu jela
          * [onCardClick] Otvara prozor detaljnog prikaza jela
          * */
-        MealContainer(testMealList, onCardClick = onMealClicked)
+        MealContainer(testMealList, onCardClick = { onMealClicked(it) })
     }
 }
 
 @Composable
-private fun MealContainer(mealList: List<Meal>, onCardClick: () -> Unit) {
+private fun MealContainer(mealList: List<Meal>, onCardClick: (Meal) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -114,7 +114,7 @@ private fun MealContainer(mealList: List<Meal>, onCardClick: () -> Unit) {
             SingleMealCard(
                 modifier = Modifier.padding(top = 8.dp),
                 meal = meal,
-                onClick = onCardClick
+                onClick = { onCardClick(meal) }
             )
         }
     }

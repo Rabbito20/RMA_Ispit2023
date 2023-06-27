@@ -109,7 +109,7 @@ fun CategoryContainer(
             fontSize = 24.sp,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 20.dp, bottom = 12.dp)
+                .padding(top = 8.dp, bottom = 12.dp)
         )
 
         listOfCategories.forEach { category ->
