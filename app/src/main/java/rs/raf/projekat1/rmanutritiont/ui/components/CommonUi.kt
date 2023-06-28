@@ -43,6 +43,22 @@ fun RegularWidthButton(
     }
 }
 
+@Composable
+fun SimpleButton(
+    onClick: () -> Unit,
+    buttonText: String,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .padding(top = 8.dp)
+            .then(modifier)
+    ) {
+        Text(text = buttonText, textAlign = TextAlign.Center)
+    }
+}
+
 //  Contains picture, meal name
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -29,4 +29,16 @@
     <string name="create_plan">Create plan</string>
     <string name="btn_logout">Log out</string>
     <string name="user">User</string>
+    <string name="send_email_btn">Send plan via email</string>
+    <string name="day_text">Day</string>
+
+    <!--Week days-->
+    <string name="monday">MON</string>
+    <string name="tuesday">TUE</string>
+    <string name="wednesday">WED</string>
+    <string name="thursday">THU</string>
+    <string name="friday">FRI</string>
+    <string name="saturday">SAT</string>
+    <string name="sunday">SUN</string>
+
 </resources>

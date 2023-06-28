@@ -24,6 +24,7 @@ import rs.raf.projekat1.rmanutritiont.screens.home.HomeScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.HomeViewModel
 import rs.raf.projekat1.rmanutritiont.screens.home.filter.FiltersScreen
 import rs.raf.projekat1.rmanutritiont.screens.settings.SettingsScreen
+import rs.raf.projekat1.rmanutritiont.screens.settings.createPlan.CreatePlanScreen
 import rs.raf.projekat1.rmanutritiont.screens.statistics.StatisticsScreen
 import rs.raf.projekat1.rmanutritiont.ui.components.AppBottomNavBar
 
@@ -149,7 +150,12 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
 
         //  Settings route domain
         composable(route = TopLevelRoutes.Settings.name) {
-            SettingsScreen()
+            SettingsScreen(onCreatePlanClick = {
+                navController.navigate(route = "${TopLevelRoutes.Settings.name}/${SecondaryRoutes.CreatePlan.name}")
+            })
+        }
+        composable(route = "${TopLevelRoutes.Settings.name}/${SecondaryRoutes.CreatePlan.name}") {
+            CreatePlanScreen()
         }
     }
 }
