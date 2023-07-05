@@ -9,19 +9,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import rs.raf.projekat1.rmanutritiont.R
-import rs.raf.projekat1.rmanutritiont.data.FoodCategory
-import rs.raf.projekat1.rmanutritiont.data.Meal
+import rs.raf.projekat1.rmanutritiont.data.model.FoodCategory
+import rs.raf.projekat1.rmanutritiont.data.model.Meal
+import rs.raf.projekat1.rmanutritiont.navigation.routes.HomeRoute
 import rs.raf.projekat1.rmanutritiont.screens.MealScreenDetails
 import rs.raf.projekat1.rmanutritiont.screens.favorites.FavoritesScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.CategoryScreen
-import rs.raf.projekat1.rmanutritiont.screens.home.HomeScreen
-import rs.raf.projekat1.rmanutritiont.screens.home.HomeViewModel
 import rs.raf.projekat1.rmanutritiont.screens.home.filter.FiltersScreen
 import rs.raf.projekat1.rmanutritiont.screens.settings.SettingsScreen
 import rs.raf.projekat1.rmanutritiont.screens.settings.createPlan.CreatePlanScreen
@@ -101,23 +99,13 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
                 FoodCategory(categoryName = "Dinner"),
             )
 
-            val viewModel: HomeViewModel = viewModel(
-                factory = HomeViewModel.provideFactory(categoryListRepo = testList)  //  todo:   change empty list later
-            )
-
-            HomeScreen(
-                viewModel = viewModel,
-                onFilterClick = {
-                    navController.navigate(
-                        route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Filter.name}"
-                    )
-                },
-                onCategoryClicked = {
-                    categoryRoute = it
-                    navController.navigate(
-                        route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Category.name}"
-                    )
+            HomeRoute(
+                navController = navController,
+                onCategoryClicked = { categoryRouteName ->
+                    categoryRoute = categoryRouteName
+                    navController.navigate(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Category.name}")
                 })
+
         }
         composable(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Filter.name}") {
             FiltersScreen(

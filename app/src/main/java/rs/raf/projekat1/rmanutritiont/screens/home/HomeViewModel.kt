@@ -1,10 +1,6 @@
 package rs.raf.projekat1.rmanutritiont.screens.home
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import kotlinx.coroutines.flow.MutableStateFlow
-import rs.raf.projekat1.rmanutritiont.data.FoodCategory
-
+/*
 data class HomeUiState(
     val isLoading: Boolean,
     val searchInputString: String,
@@ -25,11 +21,15 @@ private data class HomeViewModelState(
     )
 }
 
+
 //  Contains companion object and provides a factory method
 class HomeViewModel(
-    categoryListRepo: List<FoodCategory>,
+    private val repository: Repository,
+//    categoryListRepo: List<FoodCategory>,
 ) : ViewModel() {
     private val searchInput = MutableStateFlow("")
+
+    val apiResponse: MutableLiveData<Response<MealCategory>> = MutableLiveData()
 
 //    private val viewModelState: StateFlow<HomeViewModelState> = categoryListRepo   //  todo: get list elements
 
@@ -39,14 +39,31 @@ class HomeViewModel(
         this.searchInput.tryEmit(searchInput.trim())
     }
 
-    companion object {
+    fun getCategories() {
+        viewModelScope.launch {
+            val response = repository.getCategories()
+            apiResponse.value = response
+        }
+    }
+
+    /*companion object {
         fun provideFactory(
-            categoryListRepo: List<FoodCategory>
+//            categoryListRepo: List<FoodCategory>
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return HomeViewModel(categoryListRepo) as T
+                return HomeViewModel() as T
             }
         }
+    }*/
+}
+
+class HomeViewModelFactory(
+    private val repository: Repository
+) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return HomeViewModel(repository) as T
     }
 }
+*/

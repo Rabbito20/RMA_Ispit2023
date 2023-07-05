@@ -24,7 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import rs.raf.projekat1.rmanutritiont.R
-import rs.raf.projekat1.rmanutritiont.data.Meal
+import rs.raf.projekat1.rmanutritiont.data.model.Meal
 
 @Composable
 fun RegularWidthButton(

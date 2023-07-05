@@ -1,4 +1,4 @@
-package rs.raf.projekat1.rmanutritiont.data
+package rs.raf.projekat1.rmanutritiont.data.model
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

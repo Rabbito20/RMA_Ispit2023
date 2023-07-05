@@ -9,7 +9,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import rs.raf.projekat1.rmanutritiont.data.Meal
+import rs.raf.projekat1.rmanutritiont.data.model.Meal
 
 @Composable
 fun MealContainer(mealList: List<Meal>, onCardClick: (Meal) -> Unit) {

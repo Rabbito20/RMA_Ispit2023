@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import rs.raf.projekat1.rmanutritiont.R
-import rs.raf.projekat1.rmanutritiont.data.Meal
+import rs.raf.projekat1.rmanutritiont.data.model.Meal
 import rs.raf.projekat1.rmanutritiont.ui.components.MealContainer
 import rs.raf.projekat1.rmanutritiont.ui.components.SearchBox
 

@@ -37,13 +37,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import rs.raf.projekat1.rmanutritiont.R
-import rs.raf.projekat1.rmanutritiont.data.FoodCategory
+import rs.raf.projekat1.rmanutritiont.data.model.FoodCategory
 import rs.raf.projekat1.rmanutritiont.ui.components.RegularWidthButton
 import rs.raf.projekat1.rmanutritiont.ui.components.SearchBox
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel,
+//    viewModel: HomeViewModel,
     onFilterClick: () -> Unit,
     onCategoryClicked: (String) -> Unit
 ) {
@@ -58,7 +58,7 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        var searchQueryState by remember { mutableStateOf("") }
+//        var searchQueryState by remember { mutableStateOf("") }
         RegularWidthButton(
             onClick = {
                 onFilterClick()
@@ -68,7 +68,7 @@ fun HomeScreen(
         )
         SearchBox(
             onNewQuery = {
-                viewModel.onSearchInputChanged(it)
+//                viewModel.onSearchInputChanged(it)
 //                searchQueryState = it
             },
             modifier = Modifier.padding(start = 16.dp, end = 16.dp)
