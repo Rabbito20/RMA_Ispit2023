@@ -43,8 +43,9 @@ import rs.raf.projekat1.rmanutritiont.ui.components.SearchBox
 
 @Composable
 fun HomeScreen(
-//    viewModel: HomeViewModel,
+    viewModel: HomeViewModel,
     onFilterClick: () -> Unit,
+    onRandomClick: () -> Unit,
     onCategoryClicked: (String) -> Unit
 ) {
     //  todo:   uiState from viewModel
@@ -60,9 +61,7 @@ fun HomeScreen(
     ) {
 //        var searchQueryState by remember { mutableStateOf("") }
         RegularWidthButton(
-            onClick = {
-                onFilterClick()
-            },
+            onClick = onFilterClick,
             buttonText = stringResource(id = R.string.filter_text),
             modifier = Modifier.padding(start = 20.dp, end = 20.dp)
         )
@@ -72,6 +71,13 @@ fun HomeScreen(
 //                searchQueryState = it
             },
             modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+        )
+
+        //  Random meal
+        RegularWidthButton(
+            onClick = onRandomClick,
+            buttonText = stringResource(id = R.string.random_meal),
+            modifier = Modifier.padding(start = 20.dp, end = 20.dp)
         )
 
         //  TODO: Add list of categories

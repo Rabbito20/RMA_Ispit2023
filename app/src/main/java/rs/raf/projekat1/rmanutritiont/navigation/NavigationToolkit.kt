@@ -1,11 +1,15 @@
 package rs.raf.projekat1.rmanutritiont.navigation
 
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -14,12 +18,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import rs.raf.projekat1.rmanutritiont.R
-import rs.raf.projekat1.rmanutritiont.data.model.FoodCategory
+import rs.raf.projekat1.rmanutritiont.data.api.MealFromApi
 import rs.raf.projekat1.rmanutritiont.data.model.Meal
 import rs.raf.projekat1.rmanutritiont.navigation.routes.HomeRoute
 import rs.raf.projekat1.rmanutritiont.screens.MealScreenDetails
 import rs.raf.projekat1.rmanutritiont.screens.favorites.FavoritesScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.CategoryScreen
+import rs.raf.projekat1.rmanutritiont.screens.home.HomeViewModel
 import rs.raf.projekat1.rmanutritiont.screens.home.filter.FiltersScreen
 import rs.raf.projekat1.rmanutritiont.screens.settings.SettingsScreen
 import rs.raf.projekat1.rmanutritiont.screens.settings.createPlan.CreatePlanScreen
@@ -84,32 +89,31 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
         startDestination = TopLevelRoutes.Home.name,
         modifier = Modifier.padding(paddingValues)
     ) {
-        var categoryRoute: String? = ""
         var meal: Meal? = null
+        var categoryRoute: String? = ""
+        val homeViewModel = HomeViewModel()
 
-        composable(route = SecondaryRoutes.MealDetails.name) {
-            MealScreenDetails(navController = navController, meal = meal)
-        }
+//        var apiMeal = homeViewModel.randomMeal.value
+        var apiMeal: MealFromApi? = null
 
         //  Home route domain
         composable(route = TopLevelRoutes.Home.name) {
-            val testList = listOf(
-                FoodCategory(categoryName = "Breakfast"),
-                FoodCategory(categoryName = "Lunch"),
-                FoodCategory(categoryName = "Dinner"),
-            )
-
             HomeRoute(
                 navController = navController,
+                viewModel = homeViewModel,
+                onRandomClicked = { randomMeal ->
+                    apiMeal = randomMeal!!
+                    navController.navigate(route = SecondaryRoutes.MealDetails.name)
+                },
                 onCategoryClicked = { categoryRouteName ->
                     categoryRoute = categoryRouteName
                     navController.navigate(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Category.name}")
-                })
-
+                }
+            )
         }
         composable(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Filter.name}") {
             FiltersScreen(
-                navController,
+//                navController,
                 onMealClicked = {
                     meal = it
                     navController.navigate(route = SecondaryRoutes.MealDetails.name)
@@ -129,12 +133,10 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
                 })
         }
 
-
         //  Statistics route domain
         composable(route = TopLevelRoutes.FoodStatistics.name) {
             StatisticsScreen()
         }
-
 
         //  Settings route domain
         composable(route = TopLevelRoutes.Settings.name) {
@@ -144,6 +146,12 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
         }
         composable(route = "${TopLevelRoutes.Settings.name}/${SecondaryRoutes.CreatePlan.name}") {
             CreatePlanScreen()
+        }
+
+        //  Meal details
+        composable(route = SecondaryRoutes.MealDetails.name) {
+            if (apiMeal != null)
+                MealScreenDetails(meal = apiMeal)
         }
     }
 }

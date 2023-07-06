@@ -2,7 +2,6 @@ package rs.raf.projekat1.rmanutritiont.screens
 
 import android.content.res.Configuration
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -28,42 +28,38 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import rs.raf.projekat1.rmanutritiont.R
-import rs.raf.projekat1.rmanutritiont.data.model.Meal
+import rs.raf.projekat1.rmanutritiont.data.api.MealFromApi
 import rs.raf.projekat1.rmanutritiont.ui.theme.BlueOp85
 import rs.raf.projekat1.rmanutritiont.ui.theme.ColorFavorite
 
 @Composable
-fun MealScreenDetails(navController: NavController, meal: Meal?) {
+fun MealScreenDetails(meal: MealFromApi?) {
     val toastContext = LocalContext.current
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(top = 20.dp),
+            .padding(top = 0.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start
     ) {
         var favoriteMeal by remember { mutableStateOf(false) }
-        val testCategories = listOf("Street food", "Breakfast")
+        val testCategories = listOf(meal?.categories)
 
-        MealHeader(meal = meal)
-        MealTitle(
-            name = meal?.name!!,
+        MealHeader(
+            mealThumbnailUrl = meal?.thumbnailUrl!!,
             onFavoriteClick = {
                 favoriteMeal = !favoriteMeal
                 Toast.makeText(toastContext, "Favorite is $favoriteMeal", Toast.LENGTH_SHORT)
@@ -71,6 +67,7 @@ fun MealScreenDetails(navController: NavController, meal: Meal?) {
             },
             favoriteMeal = favoriteMeal
         )
+        MealTitle(name = meal.name!!)
 //        MealCategories(listOfCategories = meal.categories)
         MealCategories(listOfCategories = testCategories)
 
@@ -84,8 +81,14 @@ fun MealScreenDetails(navController: NavController, meal: Meal?) {
             textAlign = TextAlign.Start
         )
 
+        Divider(
+            color = MaterialTheme.colorScheme.onBackground,
+            thickness = 2.dp,
+            modifier = Modifier.padding(start = 20.dp, end = 20.dp)
+        )
+
         Text(
-            text = meal.cookInstructions,
+            text = meal.cookInstructions!!,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 20.dp, top = 8.dp, end = 20.dp),
@@ -98,8 +101,7 @@ fun MealScreenDetails(navController: NavController, meal: Meal?) {
 }
 
 @Composable
-fun MealTitle(name: String, onFavoriteClick: () -> Unit, favoriteMeal: Boolean) {
-    val favColor = if (favoriteMeal) ColorFavorite else Color.White
+fun MealTitle(name: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -113,9 +115,45 @@ fun MealTitle(name: String, onFavoriteClick: () -> Unit, favoriteMeal: Boolean) 
             style = MaterialTheme.typography.titleLarge
         )
 
+    }
+}
+
+@Composable
+private fun MealCategories(listOfCategories: List<String?>) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, top = 16.dp, end = 20.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        listOfCategories.forEach { category ->
+            Text(text = "${category!!}\t\t", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+        }
+    }
+}
+
+@Composable
+private fun MealHeader(
+    mealThumbnailUrl: String,
+    onFavoriteClick: () -> Unit,
+    favoriteMeal: Boolean
+) {
+    val favColor = if (favoriteMeal) ColorFavorite else Color.White
+    Box(modifier = Modifier.fillMaxSize()) {
+        AsyncImage(
+            model = mealThumbnailUrl,
+            contentDescription = "Thumbnail image",
+            contentScale = ContentScale.FillWidth,
+            placeholder = painterResource(id = R.drawable.ic_meal_placeholder_48),
+            modifier = Modifier.fillMaxSize()
+        )
+
         IconButton(
             onClick = onFavoriteClick,
             modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(20.dp)
                 .size(64.dp)
                 .clip(RoundedCornerShape(50))
                 .background(BlueOp85)
@@ -126,43 +164,6 @@ fun MealTitle(name: String, onFavoriteClick: () -> Unit, favoriteMeal: Boolean) 
                 tint = favColor,
                 modifier = Modifier
                     .size(48.dp)
-            )
-        }
-    }
-}
-
-@Composable
-private fun MealCategories(listOfCategories: List<String>) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, top = 16.dp, end = 20.dp),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        listOfCategories.forEach { category ->
-            Text(text = "$category\t\t", fontSize = 12.sp, fontWeight = FontWeight.Bold)
-        }
-    }
-}
-
-@Composable
-private fun MealHeader(meal: Meal?) {
-    Box(modifier = Modifier.fillMaxWidth()) {
-        if (meal?.thumbnailUrl != null) {
-            Image(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_favorites_24),      //  Swap for async image later
-                contentDescription = "Meal image placeholder",
-                contentScale = ContentScale.FillWidth,
-                modifier = Modifier.fillMaxWidth()
-            )
-        } else {
-            Image(
-                painter = painterResource(id = R.drawable.ic_meal_placeholder_48),
-                contentDescription = "Meal image placeholder",
-                contentScale = ContentScale.FillWidth,
-                modifier = Modifier
-                    .fillMaxWidth()
             )
         }
     }
@@ -197,16 +198,5 @@ private fun TagList(tagList: List<String>) {
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PrevMealScreen() {
-    MealScreenDetails(
-        navController = rememberNavController(),
-        meal = Meal(
-            1,
-            "Naziv obroka",
-            "",
-            categories = listOf("Street food", "On the go"),
-            ingredients = emptyList(),
-            area = "Some area",
-            tagList = listOf("tag1", "tag2")
-        )
-    )
+    MealHeader(mealThumbnailUrl = "Title", onFavoriteClick = { /*TODO*/ }, favoriteMeal = false)
 }

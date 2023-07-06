@@ -10,23 +10,21 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import rs.raf.projekat1.rmanutritiont.data.api.MealApiClient
 import rs.raf.projekat1.rmanutritiont.data.api.MealApiService
-import rs.raf.projekat1.rmanutritiont.data.model.Meal
+import rs.raf.projekat1.rmanutritiont.data.api.MealFromApi
 
 
 class HomeViewModel : ViewModel() {
     private lateinit var mealApiService: MealApiService
 
-    private val _randomMeal = MutableLiveData<Meal>()
-
+    private val _randomMeal = MutableLiveData<MealFromApi>()
     //    val randomMeal: LiveData<Meal> = _randomMeal
-    var randomMeal: LiveData<Meal> = _randomMeal
+    val randomMeal: LiveData<MealFromApi> = _randomMeal
 
-    private val _mealsByIngredient = MutableLiveData<List<Meal>>()
-    val mealByIngredient: LiveData<List<Meal>> = _mealsByIngredient
+    private val _mealsByIngredient = MutableLiveData<List<MealFromApi>>()
+    val mealByIngredient: LiveData<List<MealFromApi>> = _mealsByIngredient
 
     fun fetchRandomMeal() {
         viewModelScope.launch {
-            var test = Meal()
             try {
                 mealApiService = MealApiClient.mealApiService
                 val response = withContext(Dispatchers.IO) {
@@ -36,7 +34,7 @@ class HomeViewModel : ViewModel() {
                 val meal = response.body()?.meals?.get(0)
 
                 meal?.let {
-                    _randomMeal.value = Meal(
+                    _randomMeal.value = MealFromApi(
                         id = it.id,
                         name = it.name,
                         categories = it.categories,
@@ -44,14 +42,7 @@ class HomeViewModel : ViewModel() {
                         cookInstructions = it.cookInstructions,
                         thumbnailUrl = it.thumbnailUrl
                     )
-
-//                    Log.e("Djura", "#################")
-//                    Log.e("Djura", "ViewModel Meal response -> ${it}")
                 }
-
-//                Log.e("Djura", "#################")
-//                Log.e("Djura", "ViewModel Meal response -> ${meal?.id}")
-
 
             } catch (e: Exception) {
                 Log.e("Fetch Random Meal Error", e.toString())

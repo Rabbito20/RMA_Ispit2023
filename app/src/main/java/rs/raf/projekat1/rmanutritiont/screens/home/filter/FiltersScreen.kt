@@ -29,8 +29,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import rs.raf.projekat1.rmanutritiont.R
 import rs.raf.projekat1.rmanutritiont.data.model.Meal
 import rs.raf.projekat1.rmanutritiont.ui.components.MealContainer
@@ -38,7 +36,7 @@ import rs.raf.projekat1.rmanutritiont.ui.components.SearchBox
 
 @Composable
 fun FiltersScreen(
-    navController: NavController,
+//    navController: NavController,
     onMealClicked: (Meal) -> Unit,
     //  TODO:   FilterState
 ) {
@@ -166,5 +164,5 @@ private fun RowScope.SortButton(onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun FilterPreview() {
-    FiltersScreen(navController = rememberNavController(), onMealClicked = {})
+    FiltersScreen(/*navController = rememberNavController(),*/ onMealClicked = {})
 }

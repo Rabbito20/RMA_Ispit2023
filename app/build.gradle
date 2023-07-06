@@ -79,7 +79,7 @@ dependencies {
     androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
 
     //  Third-party libraries
-    //  Coil ovde
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
     //  Retrofit i Moshi
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

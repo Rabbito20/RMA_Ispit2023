@@ -1,20 +1,20 @@
 package rs.raf.projekat1.rmanutritiont.data.api
 
 import com.squareup.moshi.Json
-import rs.raf.projekat1.rmanutritiont.data.model.Meal
 
 data class MealApiResponse(
     @Json(name = "meals")
-    val meals: List<Meal>?
+    val meals: List<MealFromApi>?
 )
 
-data class Meal(
+data class MealFromApi(
     @Json(name = "idMeal")
     val id: Int?,
     @Json(name = "strMeal")
     val name: String?,
     @Json(name = "strCategory")
-    val category: String?,
+    val categories: String?,
+//    val categories: List<String>?,
     @Json(name = "strArea")
     val area: String?,
     @Json(name = "strInstructions")

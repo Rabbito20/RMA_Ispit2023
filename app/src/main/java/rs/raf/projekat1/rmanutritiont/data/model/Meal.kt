@@ -1,5 +1,6 @@
 package rs.raf.projekat1.rmanutritiont.data.model
 
+//  Delete kasnije, jer nam treba samo MealFromApi
 data class Meal(
     val id: Int? = 0,
     val name: String = "",
