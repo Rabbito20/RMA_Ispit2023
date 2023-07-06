@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -145,30 +146,18 @@ fun CategoryCard(thumbnailUrl: String, category: CategoryFromApi, onButtonClick:
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.tertiary),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-
-            //  Placeholder za sada
-            /*Image(
-                imageVector = Icons.Filled.Star,
-                contentDescription = "",
-                modifier = Modifier
-                    .weight(1f)
-                    .size(64.dp)
-                    .padding(start = 8.dp, end = 8.dp)
-            )*/
             AsyncImage(
                 model = thumbnailUrl,
                 contentDescription = "Meal Thumbnail",
                 placeholder = painterResource(id = R.drawable.ic_meal_placeholder_48),
-                contentScale = ContentScale.FillWidth,
+                contentScale = ContentScale.FillBounds,
+                filterQuality = FilterQuality.Low,
                 modifier = Modifier
-                    .weight(1f)
-                    .clip(RoundedCornerShape(10))
-                    .size(64.dp)
-                    .padding(start = 8.dp, end = 8.dp)
+                    .clip(RoundedCornerShape(topEnd = 50.dp, bottomEnd = 50.dp))
+                    .padding(start = 0.dp, end = 8.dp)
             )
-
 
             Text(
                 text = category.strCategory!!,
@@ -178,14 +167,12 @@ fun CategoryCard(thumbnailUrl: String, category: CategoryFromApi, onButtonClick:
                 fontSize = 12.sp,
                 modifier = Modifier
                     .wrapContentSize()
-                    .weight(2f)
             )
 
             IconButton(
                 onClick = { isExpendedState = !isExpendedState },
                 modifier = Modifier
                     .size(48.dp)
-                    .weight(1f)
                     .padding(end = 4.dp)
             ) {
                 Icon(

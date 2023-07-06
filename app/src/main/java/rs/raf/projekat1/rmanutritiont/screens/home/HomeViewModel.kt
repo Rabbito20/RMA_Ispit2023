@@ -52,7 +52,6 @@ class HomeViewModel : ViewModel() {
     }
 
     fun fetchCategories() {
-        Log.e("Djura", "Category fetch STARTED...")
         viewModelScope.launch {
             try {
                 mealApiService = MealApiClient.mealApiService
@@ -67,8 +66,6 @@ class HomeViewModel : ViewModel() {
                 Log.e("Fetch Error", e.toString())
             }
         }
-        Log.e("Djura", "Category fetch ENDED...")
     }
 
 }
-

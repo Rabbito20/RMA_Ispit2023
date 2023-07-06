@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -56,7 +57,6 @@ fun MealScreenDetails(meal: MealFromApi?, onFavoriteClicked: (MealFromApi) -> Un
         horizontalAlignment = Alignment.Start
     ) {
         var favoriteMeal by remember { mutableStateOf(false) }
-        val testCategories = listOf(meal?.category)
 
         MealHeader(
             mealThumbnailUrl = meal?.thumbnailUrl!!,
@@ -70,8 +70,7 @@ fun MealScreenDetails(meal: MealFromApi?, onFavoriteClicked: (MealFromApi) -> Un
             favoriteMeal = favoriteMeal
         )
         MealTitle(name = meal.name!!)
-//        MealCategories(listOfCategories = meal.categories)
-        MealCategories(listOfCategories = testCategories)
+        MealCategories(mealCategory = meal.category!!)
 
         Text(
             text = meal.area!!,
@@ -97,8 +96,8 @@ fun MealScreenDetails(meal: MealFromApi?, onFavoriteClicked: (MealFromApi) -> Un
             style = MaterialTheme.typography.headlineMedium
         )
 
-//        TagList(tagList = meal.tagList)
-        TagList(tagList = listOf("Tag1", "Tag2", "Tag3"))
+        //  TODO: Add tags
+        TagList(tagList = listOf("Pasta", "Curry", "Meat"))
     }
 }
 
@@ -121,7 +120,7 @@ fun MealTitle(name: String) {
 }
 
 @Composable
-private fun MealCategories(listOfCategories: List<String?>) {
+private fun MealCategories(mealCategory: String?) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -129,9 +128,9 @@ private fun MealCategories(listOfCategories: List<String?>) {
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        listOfCategories.forEach { category ->
-            Text(text = "${category!!}\t\t", fontSize = 12.sp, fontWeight = FontWeight.Bold)
-        }
+        Text(text = "${mealCategory!!}\t\t", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+//        listOfCategories.forEach { category ->
+//        }
     }
 }
 
@@ -147,6 +146,7 @@ private fun MealHeader(
             model = mealThumbnailUrl,
             contentDescription = "Thumbnail image",
             contentScale = ContentScale.FillWidth,
+            filterQuality = FilterQuality.Low,
             placeholder = painterResource(id = R.drawable.ic_meal_placeholder_48),
             modifier = Modifier.fillMaxSize()
         )

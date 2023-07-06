@@ -32,6 +32,8 @@ fun HomeRoute(
 
             if (randomMeal != null)
                 onRandomClicked(randomMeal!!)
+
+            Log.e("Button click", "Random on home screen clicked!")
         },
         onCategoryClicked = { onCategoryClicked(it) }
     )
