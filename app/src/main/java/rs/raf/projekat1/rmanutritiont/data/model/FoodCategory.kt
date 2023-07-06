@@ -3,7 +3,7 @@ package rs.raf.projekat1.rmanutritiont.data.model
 //  Ovo koristimo za staticke podatke
 //  Obrisati kasnije
 data class FoodCategory(
-    val cateoryList: List<Meal> = emptyList(),
+    val categoryList: List<Meal> = emptyList(),
     val categoryName: String,
     val categoryImage: String = "",      //  Remove default later
     val categoryDescription: String = "Category description etc."

@@ -19,13 +19,13 @@ fun FavoritesScreen(
     onFavMealClick: (Meal) -> Unit
 ) {
     val testFavoriteList = listOf(
-        Meal("Burek Favorite", null, null),
-        Meal("Musaka Favorite", null, null),
-        Meal("Sarma Favorite", null, null),
+        Meal(name = "Burek Favorite"),
+        Meal(name = "Musaka Favorite"),
+        Meal(name = "Sarma Favorite"),
 
-        Meal("Burek Favorite", null, null),
-        Meal("Musaka Favorite", null, null),
-        Meal("Sarma Favorite", null, null),
+        Meal(name = "Burek Favorite"),
+        Meal(name = "Musaka Favorite"),
+        Meal(name = "Sarma Favorite"),
     )
     Column(
         modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 4.dp),

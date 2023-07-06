@@ -28,10 +28,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -147,9 +149,9 @@ private fun MealCategories(listOfCategories: List<String>) {
 @Composable
 private fun MealHeader(meal: Meal?) {
     Box(modifier = Modifier.fillMaxWidth()) {
-        if (meal?.imageVector != null) {
+        if (meal?.thumbnailUrl != null) {
             Image(
-                imageVector = meal.imageVector,
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_favorites_24),      //  Swap for async image later
                 contentDescription = "Meal image placeholder",
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier.fillMaxWidth()
@@ -198,10 +200,11 @@ fun PrevMealScreen() {
     MealScreenDetails(
         navController = rememberNavController(),
         meal = Meal(
+            1,
             "Naziv obroka",
-            null,
-            null,
+            "",
             categories = listOf("Street food", "On the go"),
+            ingredients = emptyList(),
             area = "Some area",
             tagList = listOf("tag1", "tag2")
         )

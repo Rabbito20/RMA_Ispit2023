@@ -6,6 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import rs.raf.projekat1.rmanutritiont.data.utils.Constants
 
+/*
 object RetrofitInstance {
     private val moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
 
@@ -19,3 +20,4 @@ object RetrofitInstance {
         retrofit.create(MealDbApiService::class.java)
     }
 }
+*/

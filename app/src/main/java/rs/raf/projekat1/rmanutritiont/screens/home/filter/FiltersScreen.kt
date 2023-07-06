@@ -86,9 +86,9 @@ fun FiltersScreen(
 
         //  TODO: Obraditi listu (sortirati i filtrirati)
         val testMealList = listOf(
-            Meal("Burek", null, null),
-            Meal("Musaka", null, null),
-            Meal("Sarma", null, null),
+            Meal(name = "Burek"),
+            Meal(name = "Musaka"),
+            Meal(name = "Sarma"),
         )
 
         /**

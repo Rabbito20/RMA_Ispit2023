@@ -1,69 +1,62 @@
 package rs.raf.projekat1.rmanutritiont.screens.home
 
-/*
-data class HomeUiState(
-    val isLoading: Boolean,
-    val searchInputString: String,
-    val categoryList: List<FoodCategory>,
-)
-
-private data class HomeViewModelState(
-    val isLoading: Boolean,
-    val searchInputString: String = "",
-    val categoryList: List<FoodCategory> = emptyList(),
-) {
-    //  Converts this ViewModelState to a UiState.
-
-    fun toUiState(): HomeUiState = HomeUiState(
-        isLoading = isLoading,
-        searchInputString = searchInputString,
-        categoryList = categoryList
-    )
-}
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import rs.raf.projekat1.rmanutritiont.data.api.MealApiClient
+import rs.raf.projekat1.rmanutritiont.data.api.MealApiService
+import rs.raf.projekat1.rmanutritiont.data.model.Meal
 
 
-//  Contains companion object and provides a factory method
-class HomeViewModel(
-    private val repository: Repository,
-//    categoryListRepo: List<FoodCategory>,
-) : ViewModel() {
-    private val searchInput = MutableStateFlow("")
+class HomeViewModel : ViewModel() {
+    private lateinit var mealApiService: MealApiService
 
-    val apiResponse: MutableLiveData<Response<MealCategory>> = MutableLiveData()
+    private val _randomMeal = MutableLiveData<Meal>()
 
-//    private val viewModelState: StateFlow<HomeViewModelState> = categoryListRepo   //  todo: get list elements
+    //    val randomMeal: LiveData<Meal> = _randomMeal
+    var randomMeal: LiveData<Meal> = _randomMeal
 
-//    val uiState = viewModelState.map(HomeViewModelState::toUiState)
+    private val _mealsByIngredient = MutableLiveData<List<Meal>>()
+    val mealByIngredient: LiveData<List<Meal>> = _mealsByIngredient
 
-    fun onSearchInputChanged(searchInput: String) {
-        this.searchInput.tryEmit(searchInput.trim())
-    }
-
-    fun getCategories() {
+    fun fetchRandomMeal() {
         viewModelScope.launch {
-            val response = repository.getCategories()
-            apiResponse.value = response
-        }
-    }
+            var test = Meal()
+            try {
+                mealApiService = MealApiClient.mealApiService
+                val response = withContext(Dispatchers.IO) {
+                    mealApiService.getRandomMeal()
+                }
 
-    /*companion object {
-        fun provideFactory(
-//            categoryListRepo: List<FoodCategory>
-        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return HomeViewModel() as T
+                val meal = response.body()?.meals?.get(0)
+
+                meal?.let {
+                    _randomMeal.value = Meal(
+                        id = it.id,
+                        name = it.name,
+                        categories = it.categories,
+                        area = it.area,
+                        cookInstructions = it.cookInstructions,
+                        thumbnailUrl = it.thumbnailUrl
+                    )
+
+//                    Log.e("Djura", "#################")
+//                    Log.e("Djura", "ViewModel Meal response -> ${it}")
+                }
+
+//                Log.e("Djura", "#################")
+//                Log.e("Djura", "ViewModel Meal response -> ${meal?.id}")
+
+
+            } catch (e: Exception) {
+                Log.e("Fetch Random Meal Error", e.toString())
             }
         }
-    }*/
-}
-
-class HomeViewModelFactory(
-    private val repository: Repository
-) : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return HomeViewModel(repository) as T
     }
 }
-*/
+

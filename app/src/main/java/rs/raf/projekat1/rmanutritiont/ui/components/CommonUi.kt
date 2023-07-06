@@ -1,6 +1,5 @@
 package rs.raf.projekat1.rmanutritiont.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -82,19 +81,20 @@ fun SingleMealCard(modifier: Modifier = Modifier, meal: Meal, onClick: () -> Uni
                 modifier = Modifier
                     .size(100.dp)
             ) {
-                if (meal.imageVector == null)
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_meal_placeholder_48),
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.fillMaxSize(),
-                        contentDescription = "Meal placholder image"
-                    )
-                else
-                    Image(
-                        imageVector = meal.imageVector,
-                        modifier = Modifier.fillMaxSize(),
-                        contentDescription = "Meal image"
-                    )
+//                if (meal.thumbnailUrl == null)
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_meal_placeholder_48),
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.fillMaxSize(),
+                    contentDescription = "Meal placholder image"
+                )
+//                else
+                //  TODO: Add async image
+                /*Image(
+                    painterResource = meal.thumbnailUrl,
+                    modifier = Modifier.fillMaxSize(),
+                    contentDescription = "Meal image"
+                )*/
             }
             Text(
                 text = meal.name,
@@ -111,5 +111,5 @@ fun SingleMealCard(modifier: Modifier = Modifier, meal: Meal, onClick: () -> Uni
 @Preview(showBackground = true)
 @Composable
 fun prevSingleMealCard() {
-    SingleMealCard(meal = Meal("Meal name", null, null), onClick = {})
+    SingleMealCard(meal = Meal(name = "Meal name"), onClick = {})
 }
