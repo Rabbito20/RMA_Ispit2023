@@ -10,7 +10,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import rs.raf.projekat1.rmanutritiont.data.api.MealApiClient
 import rs.raf.projekat1.rmanutritiont.data.api.MealApiService
-import rs.raf.projekat1.rmanutritiont.data.api.MealFromApi
+import rs.raf.projekat1.rmanutritiont.data.model.CategoryFromApi
+import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 
 
 class HomeViewModel : ViewModel() {
@@ -22,6 +23,9 @@ class HomeViewModel : ViewModel() {
     private val _mealsByIngredient = MutableLiveData<List<MealFromApi>>()
     val mealByIngredient: LiveData<List<MealFromApi>> = _mealsByIngredient
 
+    private var _categoryList = MutableLiveData<List<CategoryFromApi>>()
+    val categoryList: LiveData<List<CategoryFromApi>> = _categoryList
+
     fun fetchRandomMeal() {
         viewModelScope.launch {
             try {
@@ -31,22 +35,39 @@ class HomeViewModel : ViewModel() {
                 }
 
                 val meal = response.body()?.meals?.get(0)
-
                 meal?.let {
                     _randomMeal.value = MealFromApi(
                         id = it.id,
                         name = it.name,
-                        categories = it.categories,
+                        category = it.category,
                         area = it.area,
                         cookInstructions = it.cookInstructions,
                         thumbnailUrl = it.thumbnailUrl
                     )
                 }
-
             } catch (e: Exception) {
-                Log.e("Fetch Random Meal Error", e.toString())
+                Log.e("Fetch Error", e.toString())
             }
         }
+    }
+
+    fun fetchCategories() {
+        Log.e("Djura", "Category fetch STARTED...")
+        viewModelScope.launch {
+            try {
+                mealApiService = MealApiClient.mealApiService
+                val response = withContext(Dispatchers.IO) {
+                    mealApiService.getMealCategories()
+                }
+
+                val categories = response.body()?.categories
+                _categoryList.value = categories.orEmpty()
+
+            } catch (e: Exception) {
+                Log.e("Fetch Error", e.toString())
+            }
+        }
+        Log.e("Djura", "Category fetch ENDED...")
     }
 
 }

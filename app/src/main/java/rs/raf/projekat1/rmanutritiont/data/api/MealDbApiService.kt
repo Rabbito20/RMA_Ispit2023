@@ -7,7 +7,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-import rs.raf.projekat1.rmanutritiont.data.model.FoodCategory
+import rs.raf.projekat1.rmanutritiont.data.model.CategoryApiResponse
+import rs.raf.projekat1.rmanutritiont.data.model.MealApiResponse
 import rs.raf.projekat1.rmanutritiont.data.utils.Constants
 
 //class MealDbApiService : MealApiService {}
@@ -20,13 +21,12 @@ interface MealApiService {
     suspend fun searchRecipesByIngredient(@Query("i") ingredient: String): Response<List<MealApiResponse>>
 
     @GET("categories.php")
-    suspend fun getMealCategories(): Response<List<FoodCategory>>
+    suspend fun getMealCategories(): Response<CategoryApiResponse>
+//    suspend fun getMealCategories(): Response<CategoryApiResponse>
 
 }
 
 object MealApiClient {
-//    val mealApiService: MealApiService = retrofit.create(MealApiService::class.java)
-
     private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
     private val retrofit: Retrofit =
         Retrofit.Builder().baseUrl(Constants.BASE_URL)
@@ -34,13 +34,4 @@ object MealApiClient {
 
     val mealApiService: MealApiService = retrofit.create(MealApiService::class.java)
 
-
-    //  Hmmmmmmmm
-    /*suspend fun getRandomMealClient(): Response<Meal> {
-        return withContext(Dispatchers.IO) {
-            mealApiService.getRandomMeal()
-        }
-    }*/
-
-//    suspend fun searchMealsByIngredient(ingredient: String)
 }

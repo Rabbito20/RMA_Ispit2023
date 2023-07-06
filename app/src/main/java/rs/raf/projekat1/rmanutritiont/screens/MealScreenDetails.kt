@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import rs.raf.projekat1.rmanutritiont.R
-import rs.raf.projekat1.rmanutritiont.data.api.MealFromApi
+import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 import rs.raf.projekat1.rmanutritiont.ui.theme.BlueOp85
 import rs.raf.projekat1.rmanutritiont.ui.theme.ColorFavorite
 
@@ -56,7 +56,7 @@ fun MealScreenDetails(meal: MealFromApi?, onFavoriteClicked: (MealFromApi) -> Un
         horizontalAlignment = Alignment.Start
     ) {
         var favoriteMeal by remember { mutableStateOf(false) }
-        val testCategories = listOf(meal?.categories)
+        val testCategories = listOf(meal?.category)
 
         MealHeader(
             mealThumbnailUrl = meal?.thumbnailUrl!!,

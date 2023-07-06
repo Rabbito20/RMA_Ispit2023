@@ -3,7 +3,9 @@ package rs.raf.projekat1.rmanutritiont.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +33,9 @@ fun AppBottomNavBar(
     val backStackEntry = navController.currentBackStackEntryAsState()
 
     BottomAppBar(
-        modifier = Modifier.background(color = Color.DarkGray),
+        modifier = Modifier
+            .wrapContentSize()
+            .background(color = Color.DarkGray),
         tonalElevation = 5.dp
     ) {
         items.forEach { item ->

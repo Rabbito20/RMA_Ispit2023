@@ -1,6 +1,7 @@
 package rs.raf.projekat1.rmanutritiont.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -9,12 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import rs.raf.projekat1.rmanutritiont.R
-import rs.raf.projekat1.rmanutritiont.data.api.MealFromApi
+import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 import rs.raf.projekat1.rmanutritiont.navigation.routes.HomeRoute
 import rs.raf.projekat1.rmanutritiont.screens.MealScreenDetails
 import rs.raf.projekat1.rmanutritiont.screens.favorites.FavoritesScreen
@@ -56,6 +58,7 @@ fun NutritionAppSignedIn(
         ),
     )
     Scaffold(
+        modifier = Modifier.height(48.dp),
         bottomBar = {
             BottomAppBar {
                 AppBottomNavBar(
@@ -67,9 +70,6 @@ fun NutritionAppSignedIn(
                     })
             }
         }) { innerPadding ->
-
-//        val uiState by viewModel
-
         AppNavigation(
             navController = navController,
             paddingValues = innerPadding
