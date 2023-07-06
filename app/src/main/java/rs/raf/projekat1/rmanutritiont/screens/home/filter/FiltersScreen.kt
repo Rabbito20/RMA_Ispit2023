@@ -30,14 +30,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import rs.raf.projekat1.rmanutritiont.R
-import rs.raf.projekat1.rmanutritiont.data.model.Meal
+import rs.raf.projekat1.rmanutritiont.data.api.MealFromApi
 import rs.raf.projekat1.rmanutritiont.ui.components.MealContainer
 import rs.raf.projekat1.rmanutritiont.ui.components.SearchBox
 
 @Composable
 fun FiltersScreen(
 //    navController: NavController,
-    onMealClicked: (Meal) -> Unit,
+    onMealClicked: (MealFromApi) -> Unit,
     //  TODO:   FilterState
 ) {
     //  TODO:   ViewModel
@@ -83,18 +83,14 @@ fun FiltersScreen(
             selectedFilter = { selectedFilter = it })
 
         //  TODO: Obraditi listu (sortirati i filtrirati)
-        val testMealList = listOf(
-            Meal(name = "Burek"),
-            Meal(name = "Musaka"),
-            Meal(name = "Sarma"),
-        )
+        val filteredSet = mutableSetOf<MealFromApi>()
 
         /**
          * Container sa ostalim jelima
          * Prima sortiranu listu jela
          * [onCardClick] Otvara prozor detaljnog prikaza jela
          * */
-        MealContainer(testMealList, onCardClick = { onMealClicked(it) })
+        MealContainer(filteredSet, onCardClick = { onMealClicked(it) })
     }
     if (showDialog)
         SortDialog(closeDialog = { showDialog = false })

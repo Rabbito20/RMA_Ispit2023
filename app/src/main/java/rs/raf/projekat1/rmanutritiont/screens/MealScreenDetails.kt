@@ -44,7 +44,7 @@ import rs.raf.projekat1.rmanutritiont.ui.theme.BlueOp85
 import rs.raf.projekat1.rmanutritiont.ui.theme.ColorFavorite
 
 @Composable
-fun MealScreenDetails(meal: MealFromApi?) {
+fun MealScreenDetails(meal: MealFromApi?, onFavoriteClicked: (MealFromApi) -> Unit = {}) {
     val toastContext = LocalContext.current
     Column(
         modifier = Modifier
@@ -62,6 +62,8 @@ fun MealScreenDetails(meal: MealFromApi?) {
             mealThumbnailUrl = meal?.thumbnailUrl!!,
             onFavoriteClick = {
                 favoriteMeal = !favoriteMeal
+                onFavoriteClicked(meal)
+
                 Toast.makeText(toastContext, "Favorite is $favoriteMeal", Toast.LENGTH_SHORT)
                     .show()
             },

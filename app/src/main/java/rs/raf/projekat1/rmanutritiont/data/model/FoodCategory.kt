@@ -1,9 +1,11 @@
 package rs.raf.projekat1.rmanutritiont.data.model
 
+import rs.raf.projekat1.rmanutritiont.data.api.MealFromApi
+
 //  Ovo koristimo za staticke podatke
 //  Obrisati kasnije
 data class FoodCategory(
-    val categoryList: List<Meal> = emptyList(),
+    val categoryList: List<MealFromApi> = emptyList(),
     val categoryName: String,
     val categoryImage: String = "",      //  Remove default later
     val categoryDescription: String = "Category description etc."

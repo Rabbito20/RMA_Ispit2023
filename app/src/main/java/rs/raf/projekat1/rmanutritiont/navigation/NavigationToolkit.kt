@@ -1,15 +1,11 @@
 package rs.raf.projekat1.rmanutritiont.navigation
 
-import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -19,7 +15,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import rs.raf.projekat1.rmanutritiont.R
 import rs.raf.projekat1.rmanutritiont.data.api.MealFromApi
-import rs.raf.projekat1.rmanutritiont.data.model.Meal
 import rs.raf.projekat1.rmanutritiont.navigation.routes.HomeRoute
 import rs.raf.projekat1.rmanutritiont.screens.MealScreenDetails
 import rs.raf.projekat1.rmanutritiont.screens.favorites.FavoritesScreen
@@ -89,12 +84,12 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
         startDestination = TopLevelRoutes.Home.name,
         modifier = Modifier.padding(paddingValues)
     ) {
-        var meal: Meal? = null
+//        var meal: Meal? = null
         var categoryRoute: String? = ""
         val homeViewModel = HomeViewModel()
 
-//        var apiMeal = homeViewModel.randomMeal.value
         var apiMeal: MealFromApi? = null
+        val favoriteMeals = mutableSetOf<MealFromApi>()
 
         //  Home route domain
         composable(route = TopLevelRoutes.Home.name) {
@@ -115,7 +110,7 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
             FiltersScreen(
 //                navController,
                 onMealClicked = {
-                    meal = it
+                    apiMeal = it
                     navController.navigate(route = SecondaryRoutes.MealDetails.name)
                 })
         }
@@ -127,8 +122,9 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
         //  Favorites route domain
         composable(route = TopLevelRoutes.Favorites.name) {
             FavoritesScreen(
+                favoriteList = favoriteMeals,
                 onFavMealClick = {
-                    meal = it
+                    apiMeal = it
                     navController.navigate(route = SecondaryRoutes.MealDetails.name)
                 })
         }
@@ -151,7 +147,9 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
         //  Meal details
         composable(route = SecondaryRoutes.MealDetails.name) {
             if (apiMeal != null)
-                MealScreenDetails(meal = apiMeal)
+                MealScreenDetails(meal = apiMeal, onFavoriteClicked = { favMeal ->
+                    favoriteMeals.add(favMeal)
+                })
         }
     }
 }

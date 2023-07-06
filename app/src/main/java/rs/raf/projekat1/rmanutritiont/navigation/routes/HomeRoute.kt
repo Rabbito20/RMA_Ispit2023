@@ -16,7 +16,7 @@ fun HomeRoute(
     onCategoryClicked: (String) -> Unit,
 ) {
     var randomMeal: MealFromApi?
-    viewModel.fetchRandomMeal()
+    viewModel.fetchRandomMeal()     //  Needs to be called here
 
     HomeScreen(
         viewModel = viewModel,

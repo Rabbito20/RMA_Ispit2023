@@ -17,7 +17,6 @@ class HomeViewModel : ViewModel() {
     private lateinit var mealApiService: MealApiService
 
     private val _randomMeal = MutableLiveData<MealFromApi>()
-    //    val randomMeal: LiveData<Meal> = _randomMeal
     val randomMeal: LiveData<MealFromApi> = _randomMeal
 
     private val _mealsByIngredient = MutableLiveData<List<MealFromApi>>()
@@ -49,5 +48,6 @@ class HomeViewModel : ViewModel() {
             }
         }
     }
+
 }
 

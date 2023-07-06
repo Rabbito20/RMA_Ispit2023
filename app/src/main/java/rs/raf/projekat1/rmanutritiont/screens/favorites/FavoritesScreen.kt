@@ -11,22 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import rs.raf.projekat1.rmanutritiont.R
-import rs.raf.projekat1.rmanutritiont.data.model.Meal
+import rs.raf.projekat1.rmanutritiont.data.api.MealFromApi
 import rs.raf.projekat1.rmanutritiont.ui.components.MealContainer
 
 @Composable
 fun FavoritesScreen(
-    onFavMealClick: (Meal) -> Unit
+    favoriteList: Set<MealFromApi>,
+    onFavMealClick: (MealFromApi) -> Unit
 ) {
-    val testFavoriteList = listOf(
-        Meal(name = "Burek Favorite"),
-        Meal(name = "Musaka Favorite"),
-        Meal(name = "Sarma Favorite"),
-
-        Meal(name = "Burek Favorite"),
-        Meal(name = "Musaka Favorite"),
-        Meal(name = "Sarma Favorite"),
-    )
     Column(
         modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -36,6 +28,6 @@ fun FavoritesScreen(
             text = stringResource(id = R.string.favorites_title),
             style = MaterialTheme.typography.titleMedium
         )
-        MealContainer(mealList = testFavoriteList, onCardClick = { onFavMealClick(it) })
+        MealContainer(mealList = favoriteList, onCardClick = { onFavMealClick(it) })
     }
 }

@@ -8,7 +8,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import rs.raf.projekat1.rmanutritiont.data.model.FoodCategory
-import rs.raf.projekat1.rmanutritiont.data.model.Meal
 import rs.raf.projekat1.rmanutritiont.data.utils.Constants
 
 //class MealDbApiService : MealApiService {}
