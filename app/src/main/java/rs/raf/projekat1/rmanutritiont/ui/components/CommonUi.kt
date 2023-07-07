@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,9 +18,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import rs.raf.projekat1.rmanutritiont.R
@@ -65,7 +68,7 @@ fun SingleMealCard(modifier: Modifier = Modifier, meal: MealFromApi?, onClick: (
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(120.dp)
+            .height(96.dp)
             .then(modifier),
         onClick = onClick
 //        shape = RectangleShape
@@ -79,14 +82,16 @@ fun SingleMealCard(modifier: Modifier = Modifier, meal: MealFromApi?, onClick: (
         ) {
             Box(
                 modifier = Modifier
-                    .size(100.dp)
+                    .size(84.dp)
             ) {
                 AsyncImage(
                     model = meal?.thumbnailUrl!!,
                     contentDescription = "Thumbnail image",
-                    contentScale = ContentScale.FillWidth,
+                    contentScale = ContentScale.FillBounds,
                     placeholder = painterResource(id = R.drawable.ic_meal_placeholder_48),
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp))
                 )
             }
             Text(
@@ -94,18 +99,27 @@ fun SingleMealCard(modifier: Modifier = Modifier, meal: MealFromApi?, onClick: (
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier
-                    .padding(end = 20.dp)
+                    .padding(start = 12.dp, end = 20.dp)
                     .fillMaxWidth()
             )
         }
     }
 }
 
-/*
 
 @Preview(showBackground = true)
 @Composable
 fun prevSingleMealCard() {
-    SingleMealCard(meal = null, onClick = {})
+    SingleMealCard(
+        meal = MealFromApi(
+            1,
+            "Name of the meal",
+            "Category",
+            "Area",
+            "Instructions",
+            "www.url.com",
+            "tag1, tag2..."
+        ),
+        onClick = {}
+    )
 }
-*/
