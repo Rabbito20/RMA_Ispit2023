@@ -96,8 +96,8 @@ fun MealScreenDetails(meal: MealFromApi?, onFavoriteClicked: (MealFromApi) -> Un
             style = MaterialTheme.typography.headlineMedium
         )
 
-        //  TODO: Add tags
-        TagList(tagList = listOf("Pasta", "Curry", "Meat"))
+        if (meal.tags != null && meal.tags != "")
+            TagsComposable(tags = meal.tags)
     }
 }
 
@@ -172,12 +172,12 @@ private fun MealHeader(
 }
 
 @Composable
-private fun TagList(tagList: List<String>) {
+private fun TagsComposable(tags: String?) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -186,14 +186,12 @@ private fun TagList(tagList: List<String>) {
             textAlign = TextAlign.Start
         )
 
-        tagList.forEach { tag ->
-            Text(
-                text = tag,
-                modifier = Modifier.padding(end = 4.dp),
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Start
-            )
-        }
+        Text(
+            text = tags!!,
+            modifier = Modifier.padding(start = 4.dp, end = 4.dp),
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Start
+        )
     }
 }
 
@@ -201,4 +199,5 @@ private fun TagList(tagList: List<String>) {
 @Composable
 fun PrevMealScreen() {
     MealHeader(mealThumbnailUrl = "Title", onFavoriteClick = { /*TODO*/ }, favoriteMeal = false)
+//    TagsComposable(tagList = "Soup,SideDish,Lunch")
 }

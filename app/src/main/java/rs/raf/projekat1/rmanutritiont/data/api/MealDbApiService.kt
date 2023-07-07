@@ -11,8 +11,6 @@ import rs.raf.projekat1.rmanutritiont.data.model.CategoryApiResponse
 import rs.raf.projekat1.rmanutritiont.data.model.MealApiResponse
 import rs.raf.projekat1.rmanutritiont.data.utils.Constants
 
-//class MealDbApiService : MealApiService {}
-
 interface MealApiService {
     @GET("random.php")
     suspend fun getRandomMeal(): Response<MealApiResponse>

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,7 +43,8 @@ class HomeViewModel : ViewModel() {
                         category = it.category,
                         area = it.area,
                         cookInstructions = it.cookInstructions,
-                        thumbnailUrl = it.thumbnailUrl
+                        thumbnailUrl = it.thumbnailUrl,
+                        tags = it.tags
                     )
                 }
             } catch (e: Exception) {

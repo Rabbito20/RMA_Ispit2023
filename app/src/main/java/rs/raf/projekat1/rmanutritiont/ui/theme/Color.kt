@@ -16,5 +16,10 @@ val LightRed = Color(0xFFE24D42)
 
 val WhiteOp70 = Color(0xB3FFFFFF)
 val BlackOp60 = Color(0x99000000)
+
+val BlueOp30 = Color(0x4016537E)
+val BlueOp50 = Color(0x8016537E)
 val BlueOp85 = Color(0xD916537E)
+val BlueOp100 = Color(0xFF16537E)
+
 val ColorFavorite = Color (0xFFCC0000)

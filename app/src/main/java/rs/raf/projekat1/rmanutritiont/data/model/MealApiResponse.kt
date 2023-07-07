@@ -24,7 +24,9 @@ data class MealFromApi(
     @Json(name = "strInstructions")
     val cookInstructions: String?,
     @Json(name = "strMealThumb")
-    val thumbnailUrl: String?
+    val thumbnailUrl: String?,
+    @Json(name = "strTags")
+    val tags: String?
 )
 
 data class CategoryFromApi(

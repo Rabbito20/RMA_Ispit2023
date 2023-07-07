@@ -84,7 +84,6 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
         startDestination = TopLevelRoutes.Home.name,
         modifier = Modifier.padding(paddingValues)
     ) {
-//        var meal: Meal? = null
         var categoryRoute: String? = ""
         val homeViewModel = HomeViewModel()
 
@@ -106,6 +105,7 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
                 }
             )
         }
+
         composable(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Filter.name}") {
             FiltersScreen(
 //                navController,
