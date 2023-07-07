@@ -44,10 +44,12 @@ import rs.raf.projekat1.rmanutritiont.R
 import rs.raf.projekat1.rmanutritiont.data.model.CategoryFromApi
 import rs.raf.projekat1.rmanutritiont.ui.components.RegularWidthButton
 import rs.raf.projekat1.rmanutritiont.ui.components.SearchBox
+import rs.raf.projekat1.rmanutritiont.ui.components.ShimmerListItem
 
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
+    uiState: HomeUiState,
     onFilterClick: () -> Unit,
     onRandomClick: () -> Unit,
     onCategoryClicked: (String) -> Unit
@@ -91,6 +93,7 @@ fun HomeScreen(
 
         CategoryContainer(
             listOfCategories = filteredCategories,
+            cardsLoading = uiState.isLoading,
             onCategoryClick = {
                 onCategoryClicked(it)
             })
@@ -101,6 +104,7 @@ fun HomeScreen(
 fun CategoryContainer(
     modifier: Modifier = Modifier,
     listOfCategories: List<CategoryFromApi>? = emptyList(),
+    cardsLoading: Boolean,
     onCategoryClick: (String) -> Unit
 ) {
     Column(
@@ -120,12 +124,19 @@ fun CategoryContainer(
                 .padding(top = 8.dp, bottom = 12.dp)
         )
 
+
         listOfCategories?.forEach { category ->
-            CategoryCard(
-                thumbnailUrl = category.strCategoryThumb!!,
-                category = category,
-                onButtonClick = { onCategoryClick(it) }
-            )
+            ShimmerListItem(
+                isLoading = cardsLoading,
+                modifier = Modifier.padding(start = 20.dp, end = 20.dp),
+//            contentAfterLoading = {}
+            ) {
+                CategoryCard(
+                    thumbnailUrl = category.strCategoryThumb!!,
+                    category = category,
+                    onButtonClick = { onCategoryClick(it) }
+                )
+            }
         }
     }
 }
