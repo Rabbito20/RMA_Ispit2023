@@ -34,5 +34,4 @@ object MealApiClient {
             .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
 
     val mealApiService: MealRepository = retrofit.create(MealRepository::class.java)
-
 }

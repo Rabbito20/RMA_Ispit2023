@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import rs.raf.projekat1.rmanutritiont.data.api.MealApiClient
@@ -60,10 +61,28 @@ class FilterViewModel() : ViewModel() {
 
     init {
         mealApiRepo = MealApiClient.mealApiService
+        onRefresh()
 
         //  Observe for changes
         viewModelScope.launch {
             mealApiRepo.getAllMeals()
+        }
+    }
+
+    fun onRefresh() {
+        viewModelState.update {
+            it.copy(isLoading = true)
+        }
+
+        viewModelScope.launch {
+            try {
+                mealApiRepo = MealApiClient.mealApiService
+                val response = withContext(Dispatchers.IO) {
+                    //todo
+                }
+            } catch (e: Exception) {
+                Log.e("All meals fetch error", e.message.toString())
+            }
         }
     }
 
@@ -74,10 +93,23 @@ class FilterViewModel() : ViewModel() {
                 val response = withContext(Dispatchers.IO) {
                     mealApiRepo.getAllMeals()
                 }
+
+                val meals = response.body()?.meals
+
+                _mealList.value = meals.orEmpty()
+
+                meals?.forEach {
+                    Log.e("Djura", "Meal -> ${it.id}")
+                }
+
             } catch (e: Exception) {
                 Log.e("All meals fetch error", e.message.toString())
             }
         }
     }
+
+    fun fetchMealsByName() {}
+    fun fetchMealsByAlphabet() {}
+    fun fetchMealsByTags(tags: List<String>? = null) {}
 
 }

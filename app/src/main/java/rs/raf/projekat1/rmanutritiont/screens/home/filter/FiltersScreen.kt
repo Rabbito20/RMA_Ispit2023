@@ -1,5 +1,6 @@
 package rs.raf.projekat1.rmanutritiont.screens.home.filter
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,12 +37,12 @@ import rs.raf.projekat1.rmanutritiont.ui.components.SearchBox
 
 @Composable
 fun FiltersScreen(
-//    navController: NavController,
+    viewModel: FilterViewModel,
+    onRefreshAction: () -> Unit,
     onMealClicked: (MealFromApi) -> Unit,
-    //  TODO:   FilterState
 ) {
-    //  TODO:   ViewModel
     var showDialog by remember { mutableStateOf(false) }
+    val filteredList by remember { mutableStateOf(viewModel.mealList.value) }
 
     Column(
         modifier = Modifier
@@ -50,6 +51,9 @@ fun FiltersScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
+        //  TODO: ViewModel ovo da kontrolise
+        var selectedFilter by remember { mutableStateOf("") }
+
         Text(
             text = stringResource(id = R.string.filter_title),
             color = MaterialTheme.colorScheme.onBackground,
@@ -74,23 +78,29 @@ fun FiltersScreen(
             SortButton(onClick = { showDialog = !showDialog })
         }
 
-        //  TODO: ViewModel ovo da kontrolise
-        var selectedFilter by remember { mutableStateOf("") }
-
         //  Row sa 3 dugmeta kao toggle
         ToggleContainer(
             modifier = Modifier.padding(top = 8.dp),
-            selectedFilter = { selectedFilter = it })
+            selectedFilter = {
+                selectedFilter = it
+                Log.e("Djura", "Odabran filter $selectedFilter")
+            })
+
 
         //  TODO: Obraditi listu (sortirati i filtrirati)
-        val filteredSet = mutableSetOf<MealFromApi>()
+        val filteredSet = mutableListOf<MealFromApi>()
 
         /**
          * Container sa ostalim jelima
          * Prima sortiranu listu jela
          * [onCardClick] Otvara prozor detaljnog prikaza jela
          * */
-        MealContainer(filteredSet, onCardClick = { onMealClicked(it) })
+//        MealContainer(filteredSet.toSet(), onCardClick = { onMealClicked(it) })
+        MealContainer(filteredList?.toSet().orEmpty(), onCardClick = { onMealClicked(it) })
+
+        //  Ovde negde
+//        onRefreshAction()
+
     }
     if (showDialog)
         SortDialog(closeDialog = { showDialog = false })
@@ -160,5 +170,9 @@ private fun RowScope.SortButton(onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun FilterPreview() {
-    FiltersScreen(/*navController = rememberNavController(),*/ onMealClicked = {})
+    FiltersScreen(
+//        navController = rememberNavController(),
+        viewModel = FilterViewModel(),
+        onRefreshAction = {},
+        onMealClicked = {})
 }
