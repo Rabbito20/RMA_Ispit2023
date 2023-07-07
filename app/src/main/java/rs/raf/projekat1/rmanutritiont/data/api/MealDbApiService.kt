@@ -21,7 +21,9 @@ interface MealRepository {
 
     @GET("categories.php")
     suspend fun getMealCategories(): Response<CategoryApiResponse>
-//    suspend fun getMealCategories(): Response<CategoryApiResponse>
+
+    @GET("search.php?s=\"\"")
+    suspend fun getAllMeals(): Response<MealApiResponse>
 
 }
 

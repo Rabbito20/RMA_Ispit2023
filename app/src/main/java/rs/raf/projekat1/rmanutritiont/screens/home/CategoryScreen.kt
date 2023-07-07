@@ -13,7 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CategoryScreen(categoryName: String) {
+fun CategoryScreen(
+    categoryName: String,
+//    categoryMealList
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()

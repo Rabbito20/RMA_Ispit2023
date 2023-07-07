@@ -36,10 +36,6 @@ interface HomeUiState {
 }
 
 
-//private data class HomeUiState(
-//    val isLoading: Boolean
-//)
-
 private data class HomeViewModelState(
     val isLoading: Boolean = false,
     val categoriesFeed: CategoryApiResponse? = null,
@@ -63,14 +59,10 @@ class HomeViewModel(
     private val _randomMeal = MutableLiveData<MealFromApi>()
     val randomMeal: LiveData<MealFromApi> = _randomMeal
 
-    private val _mealsByIngredient = MutableLiveData<List<MealFromApi>>()
-    val mealByIngredient: LiveData<List<MealFromApi>> = _mealsByIngredient
-
     private var _categoryList = MutableLiveData<List<CategoryFromApi>>()
     val categoryList: LiveData<List<CategoryFromApi>> = _categoryList
 
     private val viewModelState = MutableStateFlow(HomeViewModelState(isLoading = true))
-
 
     val uiState = viewModelState
         .map(HomeViewModelState::toUiState)

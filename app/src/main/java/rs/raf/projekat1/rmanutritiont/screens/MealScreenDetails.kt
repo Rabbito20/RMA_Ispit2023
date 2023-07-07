@@ -1,7 +1,6 @@
 package rs.raf.projekat1.rmanutritiont.screens
 
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -63,9 +62,6 @@ fun MealScreenDetails(meal: MealFromApi?, onFavoriteClicked: (MealFromApi) -> Un
             onFavoriteClick = {
                 favoriteMeal = !favoriteMeal
                 onFavoriteClicked(meal)
-
-                Toast.makeText(toastContext, "Favorite is $favoriteMeal", Toast.LENGTH_SHORT)
-                    .show()
             },
             favoriteMeal = favoriteMeal
         )

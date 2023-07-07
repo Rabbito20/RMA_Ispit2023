@@ -22,4 +22,4 @@ val BlueOp50 = Color(0x8016537E)
 val BlueOp85 = Color(0xD916537E)
 val BlueOp100 = Color(0xFF16537E)
 
-val ColorFavorite = Color (0xFFCC0000)
+val ColorFavorite = Color (0xD9CC0000)
