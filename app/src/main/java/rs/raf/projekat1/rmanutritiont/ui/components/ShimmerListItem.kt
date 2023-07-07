@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,9 +41,11 @@ fun ShimmerListItem(
     contentAfterLoading: @Composable () -> Unit
 ) {
     if (isLoading) {
-        Row(modifier = Modifier
-            .padding(top = 8.dp)
-            .then(modifier)) {
+        Row(
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .then(modifier)
+        ) {
             Box(
                 modifier = Modifier
                     .clip(CircleShape)
@@ -80,20 +81,15 @@ fun ShimmerLoadingLine(
     contentAfterLoading: @Composable () -> Unit
 ) {
     if (isLoading) {
-        Row(
+        Box(
             modifier = Modifier
-                .clip(RoundedCornerShape(40))
+                .padding(start = 20.dp, end = 20.dp)
                 .fillMaxWidth()
-//                .shimmerEffect()
-                .then(modifier)
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(24.dp)
-                    .shimmerEffect(),
-            )
-        }
+                .height(32.dp)
+                .clip(CircleShape)
+                .shimmerEffect()
+                .then(modifier),
+        )
     } else {
         contentAfterLoading()
     }
