@@ -53,7 +53,6 @@ dependencies {
 
     //  AndroidX libraries
     implementation 'androidx.core:core-ktx:1.10.1'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
     //  Helper libraries
@@ -75,6 +74,7 @@ dependencies {
     implementation platform('androidx.compose:compose-bom:2022.10.00')
     implementation 'androidx.compose.ui:ui-tooling-preview'
     implementation 'androidx.core:core-splashscreen:1.0.1'
+    implementation "com.google.accompanist:accompanist-swiperefresh:0.27.0"
 
     androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
 
@@ -85,7 +85,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
 
-    //    implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
     implementation 'com.squareup.moshi:moshi:1.12.0'
     implementation 'com.squareup.moshi:moshi-kotlin:1.12.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
@@ -93,5 +92,23 @@ dependencies {
 
     //  Coroutine support
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1'
+
+    //  ViewModel libraries
+    def lifecycle_version = "2.6.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    // ViewModel utilities for Compose
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
+
+    // LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    // Lifecycles only (without ViewModel or LiveData)
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    // Lifecycle utilities for Compose
+    implementation "androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version"
+    // Saved state module for ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
+
+    // Annotation processor - Compiler error
+//    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
 }

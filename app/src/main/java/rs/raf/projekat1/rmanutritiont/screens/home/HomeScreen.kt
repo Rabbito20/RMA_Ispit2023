@@ -139,7 +139,7 @@ fun CategoryCard(thumbnailUrl: String, category: CategoryFromApi, onButtonClick:
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp),
-        onClick = { onButtonClick(category.strCategory!!) }
+//        onClick = { onButtonClick(category.strCategory!!) },
     ) {
         Row(
             modifier = Modifier

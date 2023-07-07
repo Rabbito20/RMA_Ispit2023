@@ -20,6 +20,8 @@
     <string name="sort_by_tag">Sort by tags</string>
     <string name="random_meal">Random meal</string>
 
+    <string name="loading_str">Loading...</string>
+
     <string name="main_screen">Main screen</string>
 
     <string name="stats_title">Statistics</string>

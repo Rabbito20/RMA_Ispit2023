@@ -11,7 +11,8 @@ import rs.raf.projekat1.rmanutritiont.data.model.CategoryApiResponse
 import rs.raf.projekat1.rmanutritiont.data.model.MealApiResponse
 import rs.raf.projekat1.rmanutritiont.data.utils.Constants
 
-interface MealApiService {
+//  MealApiService
+interface MealRepository {
     @GET("random.php")
     suspend fun getRandomMeal(): Response<MealApiResponse>
 
@@ -30,6 +31,6 @@ object MealApiClient {
         Retrofit.Builder().baseUrl(Constants.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
 
-    val mealApiService: MealApiService = retrofit.create(MealApiService::class.java)
+    val mealApiService: MealRepository = retrofit.create(MealRepository::class.java)
 
 }

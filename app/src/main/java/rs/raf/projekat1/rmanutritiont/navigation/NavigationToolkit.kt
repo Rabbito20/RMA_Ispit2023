@@ -72,20 +72,25 @@ fun NutritionAppSignedIn(
         }) { innerPadding ->
         AppNavigation(
             navController = navController,
-            paddingValues = innerPadding
+            innerPadding = innerPadding
         )
     }
 }
 
 @Composable
-fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues) {
+fun AppNavigation(
+//    appContainer: AppContainer,
+    navController: NavHostController,
+    innerPadding: PaddingValues
+) {
     NavHost(
         navController = navController,
         startDestination = TopLevelRoutes.Home.name,
-        modifier = Modifier.padding(paddingValues)
+        modifier = Modifier.padding(innerPadding)
     ) {
         //  Has to be initialized here
-        val homeViewModel = HomeViewModel.provideFactory().create(HomeViewModel::class.java)
+        val homeViewModel = HomeViewModel.provideFactory()
+            .create(HomeViewModel::class.java)
 
         var categoryRoute: String? = ""
         var apiMeal: MealFromApi? = null
@@ -93,8 +98,8 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
 
         //  Home route domain
         composable(route = TopLevelRoutes.Home.name) {
-            homeViewModel.fetchCategories()
-            homeViewModel.fetchRandomMeal()
+//            homeViewModel.fetchCategories()
+//            homeViewModel.fetchRandomMeal()
             HomeRoute(
                 navController = navController,
                 viewModel = homeViewModel,
