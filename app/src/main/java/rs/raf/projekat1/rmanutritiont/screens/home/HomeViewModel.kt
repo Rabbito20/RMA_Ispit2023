@@ -96,9 +96,15 @@ class HomeViewModel(
         viewModelScope.launch {
             val resultCategories = mealApiRepo.getMealCategories()
             viewModelState.update {
-                if (resultCategories.isSuccessful)
-                    it.copy(isLoading = false, categoriesFeed = resultCategories.body())
-                else {
+                if (resultCategories.isSuccessful) {
+                    val homeViewModelState: HomeViewModelState = try {
+                        it.copy(isLoading = false, categoriesFeed = resultCategories.body())
+                    } catch (e: Exception) {
+                        Log.e("Fetching error", e.message.toString())
+                        it.copy(isLoading = true)
+                    }
+                    homeViewModelState
+                } else {
                     it.copy(isLoading = true)
                 }
             }
