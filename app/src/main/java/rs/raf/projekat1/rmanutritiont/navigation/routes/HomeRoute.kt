@@ -16,10 +16,6 @@ fun HomeRoute(
     onRandomClicked: (MealFromApi?) -> Unit,
     onCategoryClicked: (String) -> Unit,
 ) {
-    var randomMeal: MealFromApi?
-    viewModel.fetchRandomMeal()     //  Needs to be called here
-    viewModel.fetchCategories()
-
     HomeScreen(
         viewModel = viewModel,
         onFilterClick = {
@@ -28,14 +24,12 @@ fun HomeRoute(
             )
         },
         onRandomClick = {
-            randomMeal = viewModel.randomMeal.value
-
+            val randomMeal: MealFromApi? = viewModel.randomMeal.value
             if (randomMeal != null)
-                onRandomClicked(randomMeal!!)
+                onRandomClicked(randomMeal)
 
             Log.e("Button click", "Random on home screen clicked!")
         },
         onCategoryClicked = { onCategoryClicked(it) }
     )
-
 }

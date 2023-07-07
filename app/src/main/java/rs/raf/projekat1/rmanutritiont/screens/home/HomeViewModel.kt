@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import rs.raf.projekat1.rmanutritiont.data.api.MealApiClient
@@ -15,7 +16,9 @@ import rs.raf.projekat1.rmanutritiont.data.model.CategoryFromApi
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(
+//    private var mealApiService: MealApiService
+) : ViewModel() {
     private lateinit var mealApiService: MealApiService
 
     private val _randomMeal = MutableLiveData<MealFromApi>()
@@ -66,6 +69,18 @@ class HomeViewModel : ViewModel() {
 
             } catch (e: Exception) {
                 Log.e("Fetch Error", e.toString())
+            }
+        }
+    }
+
+    //  TODO:   Finish [provideFactory()] method
+    companion object {
+        fun provideFactory(
+//            mealApiService: MealApiService,
+        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return HomeViewModel() as T
             }
         }
     }

@@ -84,18 +84,22 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
         startDestination = TopLevelRoutes.Home.name,
         modifier = Modifier.padding(paddingValues)
     ) {
-        var categoryRoute: String? = ""
-        val homeViewModel = HomeViewModel()
+        //  Has to be initialized here
+        val homeViewModel = HomeViewModel.provideFactory().create(HomeViewModel::class.java)
 
+        var categoryRoute: String? = ""
         var apiMeal: MealFromApi? = null
         val favoriteMeals = mutableSetOf<MealFromApi>()
 
         //  Home route domain
         composable(route = TopLevelRoutes.Home.name) {
+            homeViewModel.fetchCategories()
+            homeViewModel.fetchRandomMeal()
             HomeRoute(
                 navController = navController,
                 viewModel = homeViewModel,
                 onRandomClicked = { randomMeal ->
+                    homeViewModel.fetchRandomMeal()
                     apiMeal = randomMeal!!
                     navController.navigate(route = SecondaryRoutes.MealDetails.name)
                 },
@@ -108,7 +112,6 @@ fun AppNavigation(navController: NavHostController, paddingValues: PaddingValues
 
         composable(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Filter.name}") {
             FiltersScreen(
-//                navController,
                 onMealClicked = {
                     apiMeal = it
                     navController.navigate(route = SecondaryRoutes.MealDetails.name)
