@@ -17,7 +17,12 @@ import rs.raf.projekat1.rmanutritiont.R
 import rs.raf.projekat1.rmanutritiont.ui.components.RegularWidthButton
 
 @Composable
-fun SortDialog(closeDialog: () -> Unit) {
+fun SortDialog(
+    closeDialog: () -> Unit,
+    onSortByNameAlphabetClick: () -> Unit,
+    onSortByNameClick: () -> Unit,
+    onSortByTagsClick: () -> Unit,
+) {
     Dialog(onDismissRequest = closeDialog) {
         Card(modifier = Modifier.padding(20.dp), shape = RoundedCornerShape(10)) {
             //  Sort po abecedi, nazivu, tagovima
@@ -28,15 +33,24 @@ fun SortDialog(closeDialog: () -> Unit) {
                 )
 
                 RegularWidthButton(
-                    onClick = { closeDialog() },
+                    onClick = {
+                        onSortByNameAlphabetClick()
+                        closeDialog()
+                    },
                     buttonText = stringResource(id = R.string.sort_alphabetical)
                 )
                 RegularWidthButton(
-                    onClick = { closeDialog() },
+                    onClick = {
+                        onSortByNameClick()
+                        closeDialog()
+                    },
                     buttonText = stringResource(id = R.string.sort_by_name)
                 )
                 RegularWidthButton(
-                    onClick = { closeDialog() },
+                    onClick = {
+                        onSortByTagsClick()
+                        closeDialog()
+                    },
                     buttonText = stringResource(id = R.string.sort_by_tag)
                 )
 
@@ -48,5 +62,9 @@ fun SortDialog(closeDialog: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewDialog() {
-    SortDialog {}
+    SortDialog(
+        onSortByTagsClick = {},
+        onSortByNameClick = {},
+        onSortByNameAlphabetClick = {},
+        closeDialog = {})
 }

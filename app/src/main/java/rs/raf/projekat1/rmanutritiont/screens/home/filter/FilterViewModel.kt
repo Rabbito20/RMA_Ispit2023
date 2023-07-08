@@ -21,35 +21,32 @@ import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 
 interface FilterUiState {
     val isLoading: Boolean
-//    val searchInput: String
+    val searchInput: String
 
     data class NoMeals(
-        override val isLoading: Boolean
+        override val isLoading: Boolean,
+        override val searchInput: String
     ) : FilterUiState
 
     data class HasMeals(
         val mealsFeed: MealApiResponse,
         override val isLoading: Boolean,
+        override val searchInput: String
     ) : FilterUiState
 }
 
 private data class FilterViewModelState(
     val isLoading: Boolean = false,
-    val mealsFeed: MealApiResponse? = null
+    val mealsFeed: MealApiResponse? = null,
+    val searchInput: String
 ) {
-    /*
     fun toUiState(): FilterUiState = if (mealsFeed == null) {
-        FilterUiState.NoMeals(isLoading = isLoading)
-    } else {
-        FilterUiState.HasMeals(isLoading = isLoading, mealsFeed = mealsFeed)
-    }*/
-
-    fun toUiState(): FilterUiState = if (mealsFeed == null) {
-        FilterUiState.NoMeals(isLoading = isLoading)
+        FilterUiState.NoMeals(isLoading = isLoading, searchInput = searchInput)
     } else {
         FilterUiState.HasMeals(
             isLoading = isLoading,
-            mealsFeed = mealsFeed
+            mealsFeed = mealsFeed,
+            searchInput = searchInput
         )
     }
 }
@@ -67,7 +64,12 @@ class FilterViewModel() : ViewModel() {
     private var _mealList = MutableLiveData<List<MealFromApi>>()
     val mealList: LiveData<List<MealFromApi>> = _mealList
 
-    private val viewModelState = MutableStateFlow(FilterViewModelState(isLoading = true))
+    private val viewModelState = MutableStateFlow(
+        FilterViewModelState(
+            isLoading = true,
+            searchInput = _searchParameter.value.toString()
+        )
+    )
 
     val uiState = viewModelState
         .map(FilterViewModelState::toUiState)
@@ -91,7 +93,10 @@ class FilterViewModel() : ViewModel() {
         viewModelState.update {
             it.copy(isLoading = true)
         }
-        fetchAllMeals(searchString = "")
+        fetchAllMeals()
+//        onSearchInputChanged(searchString = _searchParameter.value.toString())
+        Log.e("Djura", "Search onRefresh -> ${searchParameter.value.toString()}")
+
         viewModelScope.launch {
             val resultMeals = mealApiRepo.getAllMeals(searchParameter.value.toString())
             viewModelState.update {
@@ -99,14 +104,22 @@ class FilterViewModel() : ViewModel() {
                 if (resultMeals.isSuccessful) {
                     val filterViewmModelState: FilterViewModelState = try {
 //                        delay(3000)     //  For demo
-                        it.copy(isLoading = false, mealsFeed = resultMeals.body())
+                        it.copy(
+                            isLoading = false,
+                            mealsFeed = resultMeals.body(),
+                            searchInput = searchParameter.value.toString()
+                        )
                     } catch (e: Exception) {
                         Log.e("All meals fetch error", e.message.toString())
-                        it.copy(isLoading = true)
+                        it.copy(isLoading = true, searchInput = searchParameter.value.toString())
                     }
                     filterViewmModelState
                 } else {
-                    it.copy(isLoading = true, mealsFeed = null)
+                    it.copy(
+                        isLoading = true,
+                        mealsFeed = null,
+                        searchInput = searchParameter.value.toString()
+                    )
                 }
 
             }
@@ -114,22 +127,30 @@ class FilterViewModel() : ViewModel() {
         Log.e("Filter call", "Refresh called")
     }
 
-    fun fetchAllMeals(searchString: String = "") {
+    fun fetchAllMeals() {
 
         viewModelScope.launch {
             try {
                 mealApiRepo = MealApiClient.mealApiService
                 val response = withContext(Dispatchers.IO) {
-                    mealApiRepo.getAllMeals(searchString)
-//                    mealApiRepo.getAllMeals("")
+                    mealApiRepo.getAllMeals(_searchParameter.value.toString())
                 }
 
                 val meals = response.body()?.meals
-                _mealList.value = meals.orEmpty()
+                _mealList.value = meals.orEmpty().filter { meal ->
+                    meal.name!!.contains(_searchParameter.value.toString(), ignoreCase = true)
+                }
 
             } catch (e: Exception) {
                 Log.e("All meals fetch error", e.message.toString())
             }
+        }
+    }
+
+    fun onSearchInputChanged(searchString: String) {
+        _searchParameter.value = searchString.trim()
+        viewModelState.update {
+            it.copy(isLoading = false)
         }
     }
 

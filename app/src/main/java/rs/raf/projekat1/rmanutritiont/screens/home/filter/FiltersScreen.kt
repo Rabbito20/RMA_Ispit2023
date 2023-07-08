@@ -64,12 +64,14 @@ fun FiltersScreen(
         val refreshState = rememberSwipeRefreshState(isRefreshing = uiState.isLoading)
 
         SwipeRefresh(state = refreshState, onRefresh = onRefreshAction) {
-            ContentWithData(
+            ScreenContent(
+                searchInputChange = { viewModel.onSearchInputChanged(searchString = it) },
+                searchKeyboardAction = viewModel::onRefresh,
                 sortButtonClick = { showDialog = !showDialog },
                 selectedFilter = { selectedFilter = it },
                 mealContainer = {
                     if (refreshState.isRefreshing)
-                        EmptyContent()
+                        LoadingContentBar()
                     else
                         MealContainer(
                             viewModel.mealList.value.orEmpty(),
@@ -81,11 +83,16 @@ fun FiltersScreen(
     }
 
     if (showDialog)
-        SortDialog(closeDialog = { showDialog = false })
+        SortDialog(
+            closeDialog = { showDialog = false },
+            onSortByNameAlphabetClick = {},
+            onSortByNameClick = {},
+            onSortByTagsClick = {}
+        )
 }
 
 @Composable
-private fun EmptyContent() {
+private fun LoadingContentBar() {
     Box(
         modifier = Modifier
             .wrapContentWidth()
@@ -94,7 +101,6 @@ private fun EmptyContent() {
         Text(
             text = stringResource(id = R.string.loading_str),
             modifier = Modifier
-//                .wrapContentWidth()
                 .clip(RoundedCornerShape(100))
                 .shimmerEffect()
                 .padding(4.dp)
@@ -104,10 +110,12 @@ private fun EmptyContent() {
 }
 
 @Composable
-fun ContentWithData(
+private fun ScreenContent(
     sortButtonClick: () -> Unit,
     selectedFilter: (String) -> Unit,
-    mealContainer: @Composable () -> Unit
+    mealContainer: @Composable () -> Unit,
+    searchInputChange: (String) -> Unit,
+    searchKeyboardAction: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -130,7 +138,8 @@ fun ContentWithData(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             SearchBox(
-                onNewQuery = {},
+                onNewQuery = searchInputChange,
+                keyboardActions = searchKeyboardAction,
                 modifier = Modifier
                     .weight(3f)
                     .padding(end = 4.dp)
