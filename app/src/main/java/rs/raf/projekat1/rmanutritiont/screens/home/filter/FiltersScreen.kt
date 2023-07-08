@@ -48,10 +48,8 @@ fun FiltersScreen(
     onRefreshAction: () -> Unit,
     onMealClicked: (MealFromApi) -> Unit,
 ) {
+//    var selectedFilter by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
-
-    //  TODO: ViewModel ovo da kontrolise
-    var selectedFilter by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -65,10 +63,11 @@ fun FiltersScreen(
 
         SwipeRefresh(state = refreshState, onRefresh = onRefreshAction) {
             ScreenContent(
-                searchInputChange = { viewModel.onSearchInputChanged(searchString = it) },
+                searchInputChange = {
+                    viewModel.onSearchInputChanged(searchString = it) },
                 searchKeyboardAction = viewModel::onRefresh,
                 sortButtonClick = { showDialog = !showDialog },
-                selectedFilter = { selectedFilter = it },
+//                selectedFilter = { selectedFilter = it },
                 mealContainer = {
                     if (refreshState.isRefreshing)
                         LoadingContentBar()
@@ -112,7 +111,7 @@ private fun LoadingContentBar() {
 @Composable
 private fun ScreenContent(
     sortButtonClick: () -> Unit,
-    selectedFilter: (String) -> Unit,
+//    selectedFilter: (String) -> Unit,
     mealContainer: @Composable () -> Unit,
     searchInputChange: (String) -> Unit,
     searchKeyboardAction: () -> Unit
@@ -151,7 +150,8 @@ private fun ScreenContent(
         //  Row sa 3 dugmeta kao toggle
         ToggleContainer(
             modifier = Modifier.padding(top = 8.dp),
-            selectedFilter = selectedFilter
+            selectedFilter = {}     //  Might delete later this idk
+//            selectedFilter = selectedFilter
         )
         mealContainer()
     }

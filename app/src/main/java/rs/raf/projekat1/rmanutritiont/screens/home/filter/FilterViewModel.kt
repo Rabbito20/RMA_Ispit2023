@@ -94,8 +94,6 @@ class FilterViewModel() : ViewModel() {
             it.copy(isLoading = true)
         }
         fetchAllMeals()
-//        onSearchInputChanged(searchString = _searchParameter.value.toString())
-        Log.e("Djura", "Search onRefresh -> ${searchParameter.value.toString()}")
 
         viewModelScope.launch {
             val resultMeals = mealApiRepo.getAllMeals(searchParameter.value.toString())
@@ -152,6 +150,7 @@ class FilterViewModel() : ViewModel() {
         viewModelState.update {
             it.copy(isLoading = false)
         }
+        onRefresh()
     }
 
     fun fetchMealsByName() {}
