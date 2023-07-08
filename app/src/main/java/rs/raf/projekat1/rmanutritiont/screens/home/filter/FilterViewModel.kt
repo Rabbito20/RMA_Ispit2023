@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,15 +37,29 @@ private data class FilterViewModelState(
     val isLoading: Boolean = false,
     val mealsFeed: MealApiResponse? = null
 ) {
-    fun toUiState(): FilterUiState = if (mealsFeed == null)
+    /*
+    fun toUiState(): FilterUiState = if (mealsFeed == null) {
         FilterUiState.NoMeals(isLoading = isLoading)
-    else
+    } else {
         FilterUiState.HasMeals(isLoading = isLoading, mealsFeed = mealsFeed)
+    }*/
+
+    fun toUiState(): FilterUiState = if (mealsFeed == null) {
+        FilterUiState.NoMeals(isLoading = isLoading)
+    } else {
+        FilterUiState.HasMeals(
+            isLoading = isLoading,
+            mealsFeed = mealsFeed
+        )
+    }
 }
 
 class FilterViewModel() : ViewModel() {
 
     private var mealApiRepo: MealRepository
+
+    private val _searchParameter = MutableLiveData("")
+    val searchParameter: LiveData<String> = _searchParameter
 
     private val _mealsByIngredient = MutableLiveData<List<MealFromApi>>()
     val mealByIngredient: LiveData<List<MealFromApi>> = _mealsByIngredient
@@ -56,8 +71,11 @@ class FilterViewModel() : ViewModel() {
 
     val uiState = viewModelState
         .map(FilterViewModelState::toUiState)
-        .stateIn(viewModelScope, SharingStarted.Eagerly, viewModelScope)    //  HMMMM
-
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Eagerly,
+            viewModelState.value.toUiState()
+        )
 
     init {
         mealApiRepo = MealApiClient.mealApiService
@@ -65,7 +83,7 @@ class FilterViewModel() : ViewModel() {
 
         //  Observe for changes
         viewModelScope.launch {
-            mealApiRepo.getAllMeals()
+            mealApiRepo.getAllMeals(searchParameter = searchParameter.value.toString())
         }
     }
 
@@ -73,34 +91,41 @@ class FilterViewModel() : ViewModel() {
         viewModelState.update {
             it.copy(isLoading = true)
         }
-
+        fetchAllMeals(searchString = "")
         viewModelScope.launch {
-            try {
-                mealApiRepo = MealApiClient.mealApiService
-                val response = withContext(Dispatchers.IO) {
-                    //todo
+            val resultMeals = mealApiRepo.getAllMeals(searchParameter.value.toString())
+            viewModelState.update {
+
+                if (resultMeals.isSuccessful) {
+                    val filterViewmModelState: FilterViewModelState = try {
+//                        delay(3000)     //  For demo
+                        it.copy(isLoading = false, mealsFeed = resultMeals.body())
+                    } catch (e: Exception) {
+                        Log.e("All meals fetch error", e.message.toString())
+                        it.copy(isLoading = true)
+                    }
+                    filterViewmModelState
+                } else {
+                    it.copy(isLoading = true, mealsFeed = null)
                 }
-            } catch (e: Exception) {
-                Log.e("All meals fetch error", e.message.toString())
+
             }
-        }
+        }   //  launch end
+        Log.e("Filter call", "Refresh called")
     }
 
-    fun fetchAllMeals() {
+    fun fetchAllMeals(searchString: String = "") {
+
         viewModelScope.launch {
             try {
                 mealApiRepo = MealApiClient.mealApiService
                 val response = withContext(Dispatchers.IO) {
-                    mealApiRepo.getAllMeals()
+                    mealApiRepo.getAllMeals(searchString)
+//                    mealApiRepo.getAllMeals("")
                 }
 
                 val meals = response.body()?.meals
-
                 _mealList.value = meals.orEmpty()
-
-                meals?.forEach {
-                    Log.e("Djura", "Meal -> ${it.id}")
-                }
 
             } catch (e: Exception) {
                 Log.e("All meals fetch error", e.message.toString())
@@ -111,5 +136,14 @@ class FilterViewModel() : ViewModel() {
     fun fetchMealsByName() {}
     fun fetchMealsByAlphabet() {}
     fun fetchMealsByTags(tags: List<String>? = null) {}
+
+    companion object {
+        fun provideFactory(): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return FilterViewModel() as T
+            }
+        }
+    }
 
 }

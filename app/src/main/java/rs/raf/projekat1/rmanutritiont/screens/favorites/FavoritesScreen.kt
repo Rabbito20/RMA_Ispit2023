@@ -16,7 +16,7 @@ import rs.raf.projekat1.rmanutritiont.ui.components.MealContainer
 
 @Composable
 fun FavoritesScreen(
-    favoriteList: Set<MealFromApi>,
+    favoriteList: List<MealFromApi>,
     onFavMealClick: (MealFromApi) -> Unit
 ) {
     Column(

@@ -1,5 +1,6 @@
 package rs.raf.projekat1.rmanutritiont.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +13,8 @@ import androidx.compose.ui.unit.dp
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 
 @Composable
-fun MealContainer(mealList: Set<MealFromApi>, onCardClick: (MealFromApi) -> Unit) {
+//fun MealContainer(mealList: Set<MealFromApi>, onCardClick: (MealFromApi) -> Unit) {
+fun MealContainer(mealList: List<MealFromApi>, onCardClick: (MealFromApi) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()

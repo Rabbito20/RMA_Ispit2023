@@ -1,21 +1,15 @@
 package rs.raf.projekat1.rmanutritiont.navigation.routes
 
 import android.util.Log
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import rs.raf.projekat1.rmanutritiont.R
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 import rs.raf.projekat1.rmanutritiont.navigation.SecondaryRoutes
@@ -23,6 +17,7 @@ import rs.raf.projekat1.rmanutritiont.navigation.TopLevelRoutes
 import rs.raf.projekat1.rmanutritiont.screens.home.HomeScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.HomeUiState
 import rs.raf.projekat1.rmanutritiont.screens.home.HomeViewModel
+import rs.raf.projekat1.rmanutritiont.ui.components.LoadingContent
 import rs.raf.projekat1.rmanutritiont.ui.components.ShimmerLoadingLine
 
 @Composable
@@ -41,9 +36,7 @@ fun HomeRoute(
         empty = when (uiState) {
             is HomeUiState.HasCategories -> false
             is HomeUiState.NoCategories -> uiState.isLoading
-            else -> {
-                true
-            }
+            else -> true
         },
         loading = uiState.isLoading,
         emptyContent = {
@@ -54,7 +47,7 @@ fun HomeRoute(
             )
             Text(text = stringResource(id = R.string.loading_str))
         },
-        content = {
+        loadedContent = {
             HomeScreen(
                 viewModel = viewModel,
                 uiState = uiState,
@@ -75,30 +68,4 @@ fun HomeRoute(
         },
         onRefresh = viewModel::onRefresh
     )
-}
-
-@Composable
-fun LoadingContent(
-    empty: Boolean,
-    emptyContent: @Composable () -> Unit,
-    loading: Boolean,
-    content: @Composable () -> Unit,
-    onRefresh: () -> Unit,      //  TODO
-//    onSearchInputChanged: (String) -> Unit,
-) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        if (empty) {
-            emptyContent()
-        } else {
-            val state = rememberSwipeRefreshState(isRefreshing = loading)
-//        Box(modifier = Modifier) {
-            SwipeRefresh(state = state, onRefresh = { onRefresh() }) {
-                content()
-            }
-        }
-    }
 }

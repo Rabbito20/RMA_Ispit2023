@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import rs.raf.projekat1.rmanutritiont.data.FavoritesList
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 import rs.raf.projekat1.rmanutritiont.navigation.routes.FilterRoute
 import rs.raf.projekat1.rmanutritiont.navigation.routes.HomeRoute
@@ -38,7 +37,8 @@ fun AppNavigation(
 
         var categoryRoute: String? = ""
         var apiMeal: MealFromApi? = null
-        val favoriteMeals = mutableSetOf<MealFromApi>()
+//        val favoriteMeals = mutableSetOf<MealFromApi>()
+        val favoriteMeals = mutableListOf<MealFromApi>()
 
         //  Home route domain
         composable(route = TopLevelRoutes.Home.name) {
@@ -58,14 +58,15 @@ fun AppNavigation(
         }
 
         composable(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Filter.name}") {
-            val filterViewModel = FilterViewModel()
+            val filterViewModel =
+                FilterViewModel.provideFactory().create(FilterViewModel::class.java)
 
             FilterRoute(
                 navController = navController,
                 viewModel = filterViewModel,
                 onMealClick = {
-                apiMeal = it
-            })
+                    apiMeal = it
+                })
         }
         composable(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Category.name}") {
             CategoryScreen(categoryName = categoryRoute.toString())
