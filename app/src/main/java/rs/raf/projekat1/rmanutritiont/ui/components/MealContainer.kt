@@ -1,6 +1,5 @@
 package rs.raf.projekat1.rmanutritiont.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 
 @Composable
-//fun MealContainer(mealList: Set<MealFromApi>, onCardClick: (MealFromApi) -> Unit) {
 fun MealContainer(mealList: List<MealFromApi>, onCardClick: (MealFromApi) -> Unit) {
     Column(
         modifier = Modifier
@@ -21,7 +19,8 @@ fun MealContainer(mealList: List<MealFromApi>, onCardClick: (MealFromApi) -> Uni
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Top,
     ) {
-        mealList.forEach { meal ->
+        //  Turn a list into a set in case there happen to be duplicate meals in the list
+        mealList.toSet().forEach { meal ->
             SingleMealCard(
                 modifier = Modifier.padding(top = 8.dp),
                 meal = meal,
