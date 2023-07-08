@@ -49,7 +49,6 @@ fun FiltersScreen(
     onMealClicked: (MealFromApi) -> Unit,
 ) {
     var showDialog by remember { mutableStateOf(false) }
-    val filteredList by remember { mutableStateOf(viewModel.mealList.value.orEmpty()) }
 
     //  TODO: ViewModel ovo da kontrolise
     var selectedFilter by remember { mutableStateOf("") }
@@ -61,7 +60,7 @@ fun FiltersScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        //  Refresh screen
+        //  Refresh screen state
         val refreshState = rememberSwipeRefreshState(isRefreshing = uiState.isLoading)
 
         SwipeRefresh(state = refreshState, onRefresh = onRefreshAction) {

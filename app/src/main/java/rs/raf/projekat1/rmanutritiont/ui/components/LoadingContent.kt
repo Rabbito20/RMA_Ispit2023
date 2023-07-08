@@ -34,29 +34,3 @@ fun LoadingContent(
         }
     }
 }
-
-@Composable
-fun FilterLoadingContent(
-    empty: Boolean,
-    emptyContent: @Composable () -> Unit,
-    loading: Boolean,
-    content: @Composable () -> Unit,
-    onRefresh: () -> Unit,
-) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        if (empty) {
-            emptyContent()
-        } else {
-            val state = rememberSwipeRefreshState(isRefreshing = loading)
-            SwipeRefresh(
-                state = state,
-                onRefresh = { onRefresh() }) {
-                content()
-            }
-        }
-    }
-}
