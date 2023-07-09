@@ -45,11 +45,13 @@ import rs.raf.projekat1.rmanutritiont.ui.components.shimmerEffect
 fun FiltersScreen(
     viewModel: FilterViewModel,
     uiState: FilterUiState,
-    onRefreshAction: () -> Unit,
+//    onRefreshAction: () -> Unit,
     onMealClicked: (MealFromApi) -> Unit,
 ) {
-//    var selectedFilter by remember { mutableStateOf("") }
+    var selectedFilter by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
+    var refreshCode by remember { mutableStateOf(RefreshCodes.CODE_S) }
+
 
     Column(
         modifier = Modifier
@@ -61,14 +63,25 @@ fun FiltersScreen(
         //  Refresh screen state
         val refreshState = rememberSwipeRefreshState(isRefreshing = uiState.isLoading)
 
-        SwipeRefresh(state = refreshState, onRefresh = onRefreshAction) {
+        SwipeRefresh(state = refreshState, onRefresh = { viewModel.onRefresh(refreshCode) }) {
             ScreenContent(
                 searchInputChange = {
-                    viewModel.onSearchInputChanged(searchString = it) },
-                searchKeyboardAction = viewModel::onRefresh,
+                    viewModel.onSearchInputChanged(searchString = it)
+                },
+                searchKeyboardAction = { viewModel.onRefresh(refreshCode) },
                 sortButtonClick = { showDialog = !showDialog },
-//                selectedFilter = { selectedFilter = it },
+                selectedFilter = { selectedFilter = it },
+                onAreaFilterClicked = {
+                    refreshCode = RefreshCodes.CODE_A
+                    viewModel.fetchMealsByArea()
+                },
+                onCategoryFilterClicked = {
+                    refreshCode = RefreshCodes.CODE_C
+                    viewModel.fetchMealsByCategory()
+                },
+                onIngredientsFilterClicked = {},
                 mealContainer = {
+                    Text(text = selectedFilter)
                     if (refreshState.isRefreshing)
                         LoadingContentBar()
                     else
@@ -111,7 +124,10 @@ private fun LoadingContentBar() {
 @Composable
 private fun ScreenContent(
     sortButtonClick: () -> Unit,
-//    selectedFilter: (String) -> Unit,
+    selectedFilter: (String) -> Unit,
+    onAreaFilterClicked: () -> Unit,
+    onCategoryFilterClicked: () -> Unit,
+    onIngredientsFilterClicked: () -> Unit,
     mealContainer: @Composable () -> Unit,
     searchInputChange: (String) -> Unit,
     searchKeyboardAction: () -> Unit
@@ -150,15 +166,23 @@ private fun ScreenContent(
         //  Row sa 3 dugmeta kao toggle
         ToggleContainer(
             modifier = Modifier.padding(top = 8.dp),
-            selectedFilter = {}     //  Might delete later this idk
-//            selectedFilter = selectedFilter
+            onAreaFilterClick = onAreaFilterClicked,
+            onCategoryFilterClick = onCategoryFilterClicked,
+            onIngredientsFilterClick = onIngredientsFilterClicked,
+            selectedFilter = selectedFilter
         )
         mealContainer()
     }
 }
 
 @Composable
-private fun ToggleContainer(modifier: Modifier = Modifier, selectedFilter: (String) -> Unit) {
+private fun ToggleContainer(
+    modifier: Modifier = Modifier,
+    selectedFilter: (String) -> Unit,
+    onAreaFilterClick: () -> Unit,
+    onCategoryFilterClick: () -> Unit,
+    onIngredientsFilterClick: () -> Unit,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -166,15 +190,24 @@ private fun ToggleContainer(modifier: Modifier = Modifier, selectedFilter: (Stri
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         ToggleFilterButton(
-            onClick = { selectedFilter(it) },
+            onClick = {
+                selectedFilter(it)
+                onAreaFilterClick()
+            },
             text = stringResource(id = R.string.area)
         )
         ToggleFilterButton(
-            onClick = { selectedFilter(it) },
+            onClick = {
+                selectedFilter(it)
+                onCategoryFilterClick()
+            },
             text = stringResource(id = R.string.category)
         )
         ToggleFilterButton(
-            onClick = { selectedFilter(it) },
+            onClick = {
+                selectedFilter(it)
+                onIngredientsFilterClick()
+            },
             text = stringResource(id = R.string.ingredients)
         )
     }
@@ -225,7 +258,7 @@ fun FilterPreview() {
 //        navController = rememberNavController(),
         viewModel = FilterViewModel(),
         uiState = viewModel(),
-        onRefreshAction = {},
+//        onRefreshAction = {},
         onMealClicked = {}
     )
 }

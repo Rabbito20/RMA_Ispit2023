@@ -85,7 +85,7 @@ fun SingleMealCard(modifier: Modifier = Modifier, meal: MealFromApi?, onClick: (
                     .size(84.dp)
             ) {
                 AsyncImage(
-                    model = meal?.thumbnailUrl!!,
+                    model = meal?.thumbnailUrl.toString(),
                     contentDescription = "Thumbnail image",
                     contentScale = ContentScale.FillBounds,
                     placeholder = painterResource(id = R.drawable.ic_meal_placeholder_48),
@@ -95,7 +95,7 @@ fun SingleMealCard(modifier: Modifier = Modifier, meal: MealFromApi?, onClick: (
                 )
             }
             Text(
-                text = meal?.name!!,
+                text = meal?.name.toString(),
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier

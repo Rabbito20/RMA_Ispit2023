@@ -102,7 +102,7 @@ fun AppNavigation(
         composable(route = SecondaryRoutes.MealDetails.name) {
             if (apiMeal != null)
                 MealScreenDetails(
-                    meal = apiMeal,
+                    meal = apiMeal!!,
                     onFavoriteClicked = { favMeal ->
                         favoriteMeals.add(favMeal)
                     })

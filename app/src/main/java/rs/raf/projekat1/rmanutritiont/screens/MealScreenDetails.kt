@@ -29,7 +29,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,7 +44,6 @@ import rs.raf.projekat1.rmanutritiont.ui.theme.ColorFavorite
 
 @Composable
 fun MealScreenDetails(meal: MealFromApi?, onFavoriteClicked: (MealFromApi) -> Unit = {}) {
-    val toastContext = LocalContext.current
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -58,7 +56,7 @@ fun MealScreenDetails(meal: MealFromApi?, onFavoriteClicked: (MealFromApi) -> Un
         var favoriteMeal by remember { mutableStateOf(false) }
 
         MealHeader(
-            mealThumbnailUrl = meal?.thumbnailUrl!!,
+            mealThumbnailUrl = meal?.thumbnailUrl!!.toString(),
             onFavoriteClick = {
                 favoriteMeal = !favoriteMeal
                 onFavoriteClicked(meal)

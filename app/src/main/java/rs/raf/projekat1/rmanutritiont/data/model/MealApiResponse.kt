@@ -29,6 +29,16 @@ data class MealFromApi(
     val tags: String?
 )
 
+data class AreaFromApi(
+    @Json(name = "strArea")
+    val areaList: List<String>?
+)
+
+data class TagsFromApi(
+    @Json(name = "strTags")
+    val tagsList: List<String>?
+)
+
 data class CategoryFromApi(
     @Json(name = "idCategory")
     val idCategory: Int?,

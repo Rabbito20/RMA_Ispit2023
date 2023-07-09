@@ -17,12 +17,12 @@ fun FilterRoute(
     onMealClick: (MealFromApi) -> Unit,
 ) {
     val uiState: FilterUiState by viewModel.uiState.collectAsStateWithLifecycle()
-    viewModel.fetchAllMeals()
+//    viewModel.fetchAllMeals()
 
     FiltersScreen(
         viewModel = viewModel,
         uiState = uiState,
-        onRefreshAction = viewModel::onRefresh,
+//        onRefreshAction = { viewModel::onRefresh },
         onMealClicked = {
             onMealClick(it)
             navController.navigate(route = SecondaryRoutes.MealDetails.name)
