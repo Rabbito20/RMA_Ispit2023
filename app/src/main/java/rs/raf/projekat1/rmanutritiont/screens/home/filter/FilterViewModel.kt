@@ -172,6 +172,7 @@ class FilterViewModel() : ViewModel() {
                     mealApiRepo.getAllMeals(_searchParameter.value.toString())
                 }
 
+                //  Search name
                 val meals = response.body()?.meals
                 _mealList.value = meals.orEmpty().filter { meal ->
                     meal.name!!.contains(_searchParameter.value.toString(), ignoreCase = true)

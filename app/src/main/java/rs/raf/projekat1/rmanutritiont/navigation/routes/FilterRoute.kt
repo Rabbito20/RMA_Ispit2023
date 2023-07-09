@@ -17,7 +17,6 @@ fun FilterRoute(
     onMealClick: (MealFromApi) -> Unit,
 ) {
     val uiState: FilterUiState by viewModel.uiState.collectAsStateWithLifecycle()
-//    viewModel.fetchAllMeals()
 
     FiltersScreen(
         viewModel = viewModel,
