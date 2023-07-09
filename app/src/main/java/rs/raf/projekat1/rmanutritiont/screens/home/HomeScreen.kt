@@ -1,6 +1,5 @@
 package rs.raf.projekat1.rmanutritiont.screens.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,11 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,69 +29,82 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import rs.raf.projekat1.rmanutritiont.R
-import rs.raf.projekat1.rmanutritiont.data.FoodCategory
+import rs.raf.projekat1.rmanutritiont.data.model.CategoryFromApi
 import rs.raf.projekat1.rmanutritiont.ui.components.RegularWidthButton
 import rs.raf.projekat1.rmanutritiont.ui.components.SearchBox
+import rs.raf.projekat1.rmanutritiont.ui.components.ShimmerListItem
 
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
+    uiState: HomeUiState,
     onFilterClick: () -> Unit,
+    onRandomClick: () -> Unit,
     onCategoryClicked: (String) -> Unit
 ) {
-    //  todo:   uiState from viewModel
-    //  val uiState by viewModel.ui
-
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())      // Not needed but in an edge case
-            .padding(start = 20.dp, top = 24.dp, end = 20.dp),
+            .verticalScroll(rememberScrollState())
+            .padding(start = 20.dp, top = 0.dp, end = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        var searchQueryState by remember { mutableStateOf("") }
+        val categoryList by remember { mutableStateOf(viewModel.categoryList.value) }
+        var searchQuery by remember { mutableStateOf("") }
+        var filteredCategories by remember { mutableStateOf(categoryList) }
+
+        filteredCategories = categoryList?.filter {
+            it.strCategory!!.contains(searchQuery, ignoreCase = true)
+        }
+
         RegularWidthButton(
-            onClick = {
-                onFilterClick()
-            },
+            onClick = onFilterClick,
             buttonText = stringResource(id = R.string.filter_text),
             modifier = Modifier.padding(start = 20.dp, end = 20.dp)
         )
         SearchBox(
             onNewQuery = {
-                viewModel.onSearchInputChanged(it)
-//                searchQueryState = it
+                //  TODO: Sredi u ViewModelu
+//                viewModel.onSearchInputChanged(it)
+                searchQuery = it
             },
             modifier = Modifier.padding(start = 16.dp, end = 16.dp)
         )
 
-        //  TODO: Add list of categories
-        val testList = listOf(
-            FoodCategory(categoryName = "Breakfast"),
-            FoodCategory(categoryName = "Lunch"),
-            FoodCategory(categoryName = "Dinner"),
+        //  Random meal
+        RegularWidthButton(
+            onClick = onRandomClick,
+            buttonText = stringResource(id = R.string.random_meal),
+            modifier = Modifier.padding(start = 20.dp, end = 20.dp)
         )
+
         CategoryContainer(
-            listOfCategories = testList,
+            listOfCategories = filteredCategories,
+            cardsLoading = uiState.isLoading,
             onCategoryClick = {
                 onCategoryClicked(it)
             })
-
     }
 }
 
 @Composable
 fun CategoryContainer(
     modifier: Modifier = Modifier,
-    listOfCategories: List<FoodCategory> = emptyList(),
+    listOfCategories: List<CategoryFromApi>? = emptyList(),
+    cardsLoading: Boolean,
     onCategoryClick: (String) -> Unit
 ) {
     Column(
@@ -112,61 +124,66 @@ fun CategoryContainer(
                 .padding(top = 8.dp, bottom = 12.dp)
         )
 
-        listOfCategories.forEach { category ->
-            CategoryCard(
-                image = category.categoryImage,
-                category = category,
-                onButtonClick = { onCategoryClick(it) }
-            )
+
+        listOfCategories?.forEach { category ->
+            ShimmerListItem(
+                isLoading = cardsLoading,
+                modifier = Modifier.padding(start = 20.dp, end = 20.dp),
+//            contentAfterLoading = {}
+            ) {
+                CategoryCard(
+                    thumbnailUrl = category.strCategoryThumb!!,
+                    category = category,
+                    onButtonClick = { onCategoryClick(it) }
+                )
+            }
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryCard(image: String, category: FoodCategory, onButtonClick: (String) -> Unit) {
+fun CategoryCard(thumbnailUrl: String, category: CategoryFromApi, onButtonClick: (String) -> Unit) {
     var isExpendedState by remember { mutableStateOf(false) }
 
     OutlinedCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp),
-        onClick = { onButtonClick(category.categoryName) }
+//        onClick = { onButtonClick(category.strCategory!!) },
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.tertiary),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-
-            //  Placeholder za sada
-            Image(
-                imageVector = Icons.Filled.Star,
-                contentDescription = "",
+            AsyncImage(
+                model = thumbnailUrl,
+                contentDescription = "Meal Thumbnail",
+                placeholder = painterResource(id = R.drawable.ic_meal_placeholder_48),
+                contentScale = ContentScale.FillBounds,
+                filterQuality = FilterQuality.Low,
                 modifier = Modifier
-                    .weight(1f)
-                    .size(64.dp)
-                    .padding(start = 8.dp, end = 8.dp)
+                    .clip(RoundedCornerShape(topEnd = 50.dp, bottomEnd = 50.dp))
+                    .padding(start = 0.dp, end = 8.dp)
             )
 
             Text(
-                text = category.categoryName,
+                text = category.strCategory!!,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 12.sp,
                 modifier = Modifier
                     .wrapContentSize()
-                    .weight(2f)
             )
 
             IconButton(
                 onClick = { isExpendedState = !isExpendedState },
                 modifier = Modifier
                     .size(48.dp)
-                    .weight(1f)
                     .padding(end = 4.dp)
             ) {
                 Icon(
@@ -181,7 +198,7 @@ fun CategoryCard(image: String, category: FoodCategory, onButtonClick: (String) 
         if (isExpendedState) {
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = category.categoryDescription,
+                    text = category.strCategoryDescription!!,
                     modifier = Modifier.padding(8.dp)
                 )
             }

@@ -20,7 +20,9 @@ import rs.raf.projekat1.rmanutritiont.R
 import rs.raf.projekat1.rmanutritiont.ui.components.RegularWidthButton
 
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(
+    onCreatePlanClick: () -> Unit,
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -36,7 +38,7 @@ fun SettingsScreen() {
 
         Spacer(modifier = Modifier.height(96.dp))
         RegularWidthButton(
-            onClick = { /*TODO*/ },
+            onClick = onCreatePlanClick,
             buttonText = stringResource(id = R.string.create_plan),
             modifier = Modifier.padding(start = 20.dp, end = 20.dp)
         )
@@ -51,7 +53,7 @@ fun SettingsScreen() {
         )
 
         Button(
-            onClick = { /*TODO: Log out*/ },
+            onClick = { /*TODO*/ },
             modifier = Modifier.padding(top = 20.dp)
         ) {
             Text(text = stringResource(id = R.string.btn_logout))
@@ -62,5 +64,5 @@ fun SettingsScreen() {
 @Preview(showBackground = true)
 @Composable
 fun SettingsPrev() {
-    SettingsScreen()
+    SettingsScreen(onCreatePlanClick = {})
 }

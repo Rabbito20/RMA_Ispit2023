@@ -2,17 +2,18 @@ package rs.raf.projekat1.rmanutritiont.screens.home.filter
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,26 +32,109 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import rs.raf.projekat1.rmanutritiont.R
-import rs.raf.projekat1.rmanutritiont.data.Meal
+import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
+import rs.raf.projekat1.rmanutritiont.ui.components.MealContainer
 import rs.raf.projekat1.rmanutritiont.ui.components.SearchBox
-import rs.raf.projekat1.rmanutritiont.ui.components.SingleMealCard
+import rs.raf.projekat1.rmanutritiont.ui.components.shimmerEffect
 
 @Composable
 fun FiltersScreen(
-    navController: NavController,
-    onMealClicked: (Meal) -> Unit,
-    //  TODO:   FilterState
+    viewModel: FilterViewModel,
+    uiState: FilterUiState,
+//    onRefreshAction: () -> Unit,
+    onMealClicked: (MealFromApi) -> Unit,
 ) {
-    //  TODO:   ViewModel
+    var selectedFilter by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
+    var refreshCode by remember { mutableStateOf(RefreshCodes.CODE_S) }
+
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
+        //  Refresh screen state
+        val refreshState = rememberSwipeRefreshState(isRefreshing = uiState.isLoading)
+
+        SwipeRefresh(state = refreshState, onRefresh = { viewModel.onRefresh(refreshCode) }) {
+            ScreenContent(
+                searchInputChange = {
+                    viewModel.onSearchInputChanged(searchString = it)
+                },
+                searchKeyboardAction = { viewModel.onRefresh(refreshCode) },
+                sortButtonClick = { showDialog = !showDialog },
+                selectedFilter = { selectedFilter = it },
+                onAreaFilterClicked = {
+                    refreshCode = RefreshCodes.CODE_A
+                    viewModel.fetchMealsByArea()
+                },
+                onCategoryFilterClicked = {
+                    refreshCode = RefreshCodes.CODE_C
+                    viewModel.fetchMealsByCategory()
+                },
+                onIngredientsFilterClicked = {},
+                mealContainer = {
+                    Text(text = selectedFilter)
+                    if (refreshState.isRefreshing)
+                        LoadingContentBar()
+                    else
+                        MealContainer(
+                            viewModel.mealList.value.orEmpty(),
+                            onCardClick = { onMealClicked(it) }
+                        )
+                }
+            )
+        }
+    }
+
+    if (showDialog)
+        SortDialog(
+            closeDialog = { showDialog = false },
+            onSortByNameAlphabetClick = {},
+            onSortByNameClick = {},
+            onSortByTagsClick = {}
+        )
+}
+
+@Composable
+private fun LoadingContentBar() {
+    Box(
+        modifier = Modifier
+            .wrapContentWidth()
+            .fillMaxHeight()
+    ) {
+        Text(
+            text = stringResource(id = R.string.loading_str),
+            modifier = Modifier
+                .clip(RoundedCornerShape(100))
+                .shimmerEffect()
+                .padding(4.dp)
+                .align(Alignment.Center)
+        )
+    }
+}
+
+@Composable
+private fun ScreenContent(
+    sortButtonClick: () -> Unit,
+    selectedFilter: (String) -> Unit,
+    onAreaFilterClicked: () -> Unit,
+    onCategoryFilterClicked: () -> Unit,
+    onIngredientsFilterClicked: () -> Unit,
+    mealContainer: @Composable () -> Unit,
+    searchInputChange: (String) -> Unit,
+    searchKeyboardAction: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
@@ -69,62 +153,36 @@ fun FiltersScreen(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             SearchBox(
-                onNewQuery = {},
+                onNewQuery = searchInputChange,
+                keyboardActions = searchKeyboardAction,
                 modifier = Modifier
                     .weight(3f)
                     .padding(end = 4.dp)
             )
 
-            SortButton(onClick = { showDialog = !showDialog })
+            SortButton(onClick = sortButtonClick)
         }
-
-        //  TODO: ViewModel ovo da kontrolise
-        var selectedFilter by remember { mutableStateOf("") }
 
         //  Row sa 3 dugmeta kao toggle
         ToggleContainer(
             modifier = Modifier.padding(top = 8.dp),
-            selectedFilter = { selectedFilter = it })
-
-        //  TODO: Obraditi listu (sortirati i filtrirati)
-        val testMealList = listOf(
-            Meal("Burek", null, null),
-            Meal("Musaka", null, null),
-            Meal("Sarma", null, null),
+            onAreaFilterClick = onAreaFilterClicked,
+            onCategoryFilterClick = onCategoryFilterClicked,
+            onIngredientsFilterClick = onIngredientsFilterClicked,
+            selectedFilter = selectedFilter
         )
-
-        /**
-         * Container sa ostalim jelima
-         * Prima sortiranu listu jela
-         * [onCardClick] Otvara prozor detaljnog prikaza jela
-         * */
-        MealContainer(testMealList, onCardClick = { onMealClicked(it) })
-    }
-    if (showDialog)
-        SortDialog(closeDialog = { showDialog = false })
-}
-
-@Composable
-private fun MealContainer(mealList: List<Meal>, onCardClick: (Meal) -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.Top,
-
-        ) {
-        mealList.forEach { meal ->
-            SingleMealCard(
-                modifier = Modifier.padding(top = 8.dp),
-                meal = meal,
-                onClick = { onCardClick(meal) }
-            )
-        }
+        mealContainer()
     }
 }
 
 @Composable
-private fun ToggleContainer(modifier: Modifier = Modifier, selectedFilter: (String) -> Unit) {
+private fun ToggleContainer(
+    modifier: Modifier = Modifier,
+    selectedFilter: (String) -> Unit,
+    onAreaFilterClick: () -> Unit,
+    onCategoryFilterClick: () -> Unit,
+    onIngredientsFilterClick: () -> Unit,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -132,15 +190,24 @@ private fun ToggleContainer(modifier: Modifier = Modifier, selectedFilter: (Stri
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         ToggleFilterButton(
-            onClick = { selectedFilter(it) },
+            onClick = {
+                selectedFilter(it)
+                onAreaFilterClick()
+            },
             text = stringResource(id = R.string.area)
         )
         ToggleFilterButton(
-            onClick = { selectedFilter(it) },
+            onClick = {
+                selectedFilter(it)
+                onCategoryFilterClick()
+            },
             text = stringResource(id = R.string.category)
         )
         ToggleFilterButton(
-            onClick = { selectedFilter(it) },
+            onClick = {
+                selectedFilter(it)
+                onIngredientsFilterClick()
+            },
             text = stringResource(id = R.string.ingredients)
         )
     }
@@ -187,5 +254,11 @@ private fun RowScope.SortButton(onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun FilterPreview() {
-    FiltersScreen(navController = rememberNavController(), onMealClicked = {})
+    FiltersScreen(
+//        navController = rememberNavController(),
+        viewModel = FilterViewModel(),
+        uiState = viewModel(),
+//        onRefreshAction = {},
+        onMealClicked = {}
+    )
 }

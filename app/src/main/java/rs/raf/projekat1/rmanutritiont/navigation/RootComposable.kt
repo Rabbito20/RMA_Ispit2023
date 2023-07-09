@@ -6,11 +6,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import rs.raf.projekat1.rmanutritiont.screens.splashscreen.SplashScreen
 import rs.raf.projekat1.rmanutritiont.ui.theme.RmaNutritionTTheme
 
 @Composable
-fun RootComposable(/*appContainer: AppContainer*/) {
+fun RootComposable() {
     RmaNutritionTTheme {
 
         // A surface container using the 'background' color from the theme

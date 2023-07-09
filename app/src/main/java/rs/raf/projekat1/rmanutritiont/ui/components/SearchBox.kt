@@ -30,7 +30,8 @@ import rs.raf.projekat1.rmanutritiont.R
 fun SearchBox(
     modifier: Modifier = Modifier,
     hint: String = "",
-    onNewQuery: (String) -> Unit
+    onNewQuery: (String) -> Unit,
+    keyboardActions: () -> Unit = {}
 ) {
     val placeholderSource = stringResource(id = R.string.search)
     val placeholderText by remember { mutableStateOf(placeholderSource) }
@@ -54,7 +55,10 @@ fun SearchBox(
         textStyle = TextStyle(textAlign = TextAlign.Start),
         shape = RoundedCornerShape(percent = 50),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { keyboardController?.hide() }),
+        keyboardActions = KeyboardActions(onSearch = {
+            keyboardController?.hide()
+            keyboardActions()
+        }),
         modifier = Modifier
             .fillMaxWidth()
             .then(modifier)
