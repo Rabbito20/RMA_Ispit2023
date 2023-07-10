@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 import rs.raf.projekat1.rmanutritiont.navigation.routes.FilterRoute
 import rs.raf.projekat1.rmanutritiont.navigation.routes.HomeRoute
-import rs.raf.projekat1.rmanutritiont.screens.MealScreenDetails
+import rs.raf.projekat1.rmanutritiont.screens.details.MealScreenDetails
 import rs.raf.projekat1.rmanutritiont.screens.favorites.FavoritesScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.CategoryScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.HomeViewModel
@@ -60,6 +60,8 @@ fun AppNavigation(
         composable(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Filter.name}") {
             val filterViewModel =
                 FilterViewModel.provideFactory().create(FilterViewModel::class.java)
+
+//            val filterViewModel = viewModel<FilterViewModel>()        //  HMMM
 
             FilterRoute(
                 navController = navController,

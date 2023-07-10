@@ -95,9 +95,7 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
     // To use Kotlin annotation processing tool (kapt)
     kapt "androidx.room:room-compiler:$room_version"
-    //  Might not need this
-    // To use Kotlin Symbol Processing (KSP)
-//    ksp "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
 
     //  Coroutine support
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1'
@@ -117,7 +115,7 @@ dependencies {
     // Saved state module for ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
 
-    // Annotation processor - Compiler error
+//         Annotation processor - NOT NEEDED
 //    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
 }

@@ -1,4 +1,4 @@
-package rs.raf.projekat1.rmanutritiont.screens
+package rs.raf.projekat1.rmanutritiont.screens.details
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background

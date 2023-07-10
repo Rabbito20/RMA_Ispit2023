@@ -249,7 +249,9 @@ class FilterViewModel() : ViewModel() {
     fun fetchMealsByTags(tags: List<String>? = null) {}
 
     companion object {
-        fun provideFactory(): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+        fun provideFactory(
+            //  TODO:   Add SearchParameter and MealList as args
+        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return FilterViewModel() as T
