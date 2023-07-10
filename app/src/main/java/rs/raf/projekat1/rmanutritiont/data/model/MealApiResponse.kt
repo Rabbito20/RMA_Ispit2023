@@ -1,6 +1,8 @@
 package rs.raf.projekat1.rmanutritiont.data.model
 
+import androidx.room.TypeConverter
 import com.squareup.moshi.Json
+import rs.raf.projekat1.rmanutritiont.data.local.LocalMeal
 
 data class MealApiResponse(
     @Json(name = "meals")
@@ -14,7 +16,7 @@ data class CategoryApiResponse(
 
 data class MealFromApi(
     @Json(name = "idMeal")
-    val id: Int?,
+    val idOnApi: Int?,
     @Json(name = "strMeal")
     val name: String?,
     @Json(name = "strCategory")
@@ -27,7 +29,13 @@ data class MealFromApi(
     val thumbnailUrl: String?,
     @Json(name = "strTags")
     val tags: String?
-)
+) {
+
+    @TypeConverter
+    fun fromApiToLocal(mealFromApi: MealFromApi): LocalMeal {
+        return LocalMeal(id = mealFromApi.idOnApi!!, meal = mealFromApi)
+    }
+}
 
 data class AreaFromApi(
     @Json(name = "strArea")
@@ -49,3 +57,4 @@ data class CategoryFromApi(
     @Json(name = "strCategoryDescription")
     val strCategoryDescription: String?,
 )
+

@@ -114,7 +114,7 @@ class HomeViewModel(
                 val meal = response.body()?.meals?.get(0)
                 meal?.let {
                     _randomMeal.value = MealFromApi(
-                        id = it.id,
+                        idOnApi = it.idOnApi,
                         name = it.name,
                         category = it.category,
                         area = it.area,

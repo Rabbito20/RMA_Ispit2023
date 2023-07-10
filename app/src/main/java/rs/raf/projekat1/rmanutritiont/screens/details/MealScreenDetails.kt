@@ -43,7 +43,10 @@ import rs.raf.projekat1.rmanutritiont.ui.theme.BlueOp85
 import rs.raf.projekat1.rmanutritiont.ui.theme.ColorFavorite
 
 @Composable
-fun MealScreenDetails(meal: MealFromApi?, onFavoriteClicked: (MealFromApi) -> Unit = {}) {
+fun MealScreenDetails(
+    meal: MealFromApi?,
+    onFavoriteClicked: (MealFromApi) -> Unit = {},
+) {
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)

@@ -6,9 +6,12 @@ import androidx.navigation.NavHostController
 import rs.raf.projekat1.rmanutritiont.screens.login.LoginScreen
 
 @Composable
-fun LoginAppContainer(navController: NavController) {
+fun LoginAppContainer(navController: NavController, signedInState: () -> Unit) {
 
     //  TODO: Check login logic
-    LoginScreen(onLoginClick = { /*todo*/ })
+    LoginScreen(onLoginClick = {
+        signedInState()
+//        navController.popBackStack()
+    })
 
 }
