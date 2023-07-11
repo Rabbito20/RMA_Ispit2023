@@ -9,6 +9,12 @@ import androidx.room.RoomDatabase
 )
 abstract class LocalMealDatabase: RoomDatabase() {
 
-    abstract val dao: MealDao
+//    abstract val dao: MealDao
+
+    abstract fun mealDao() : MealDao
+
+    fun printDbLogcat() {
+//        val mealDao = MealDao()
+    }
 
 }

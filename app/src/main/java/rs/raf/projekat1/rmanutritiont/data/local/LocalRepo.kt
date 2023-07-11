@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.Upsert
@@ -42,7 +44,9 @@ interface MealDao {
      * Insert [meal] in the Database.
      * If there is no meal, new meal will be created, otherwise update the existing meal.
      * */
-    @Upsert
+
+//    @Upsert()
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertMeal(meal: LocalFavoriteMeal)
 
     @Delete

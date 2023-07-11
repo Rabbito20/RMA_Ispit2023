@@ -57,7 +57,7 @@ class FilterViewModel() : ViewModel() {
     private var mealApiRepo: MealRepository
 
     private val _searchParameter = MutableLiveData("")
-    val searchParameter: LiveData<String> = _searchParameter
+    private val searchParameter: LiveData<String> = _searchParameter
 
     private val _mealsByIngredient = MutableLiveData<List<MealFromApi>>()
     val mealByIngredient: LiveData<List<MealFromApi>> = _mealsByIngredient
@@ -72,7 +72,6 @@ class FilterViewModel() : ViewModel() {
     val tagList: LiveData<List<TagsFromApi>> = _tagList
 
     //  Kategorije nabavi sa Home strane
-
 
     private val viewModelState = MutableStateFlow(
         FilterViewModelState(

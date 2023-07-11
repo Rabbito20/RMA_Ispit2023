@@ -1,72 +1,63 @@
 package rs.raf.projekat1.rmanutritiont.screens.details
 
-//  TODO: This VM from scratch
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import rs.raf.projekat1.rmanutritiont.data.api.MealApiClient
+import rs.raf.projekat1.rmanutritiont.data.api.MealRepository
+import rs.raf.projekat1.rmanutritiont.data.local.MealDao
+import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 
-/*
 data class DetailsViewModelState(
-    val mealId: Int = 0,
-    val mealName: String = "",
-    val mealArea: String = "",
-    val mealCategory: String = "",
-    val mealInstruct: String = "",
-    val mealThumb: String = "",
-    val mealTags: String = "",
+    val meal: MealFromApi,
+    val isFavorite: Boolean
 )
-*/
 
-/*
 class DetailsViewModel(
+    meal: MealFromApi,
+    isFavorite: Boolean,
     private val dao: MealDao
 ) : ViewModel() {
-    private val _state = MutableStateFlow(DetailsViewModelState())
 
-    fun onEvent(event: MealEvent) {
-        when (event) {
-            is MealEvent.DeleteMeal -> {
-                viewModelScope.launch {
-                    dao.deleteMeal(event.meal)
-                }
+    private var mealApiRepo: MealRepository = MealApiClient.mealApiService
+
+    private val _isFavorite = MutableLiveData<Boolean>(false)
+    private val isFavorite: LiveData<Boolean> = _isFavorite
+
+    private val viewModelState =
+        MutableStateFlow(DetailsViewModelState(meal, isFavorite))
+
+    val uiState =
+        viewModelState.stateIn(viewModelScope, SharingStarted.Eagerly, viewModelState.value)
+
+    fun isFavoriteChangeState(meal: MealFromApi) {
+        _isFavorite.value = !_isFavorite.value!!
+
+        viewModelScope.launch {
+            if (isFavorite.value!!)
+                dao.upsertMeal(meal.fromApiToLocal())
+            else
+                dao.deleteMeal(meal.fromApiToLocal())
+        }
+    }
+
+    companion object {
+        fun provideFactory(
+            meal: MealFromApi,
+            isFavorite: Boolean,
+            dao: MealDao
+        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return DetailsViewModel(meal, isFavorite, dao) as T
             }
-
-            MealEvent.SaveMeal -> {
-                val id = _state.value.mealId
-                val name = _state.value.mealName
-                val area = _state.value.mealName
-                val category = _state.value.mealCategory
-                val instruct = _state.value.mealInstruct
-                val thumb = _state.value.mealThumb
-                val tags = _state.value.mealTags
-
-                if (name.isBlank() || area.isBlank() || category.isBlank() || instruct.isBlank() || thumb.isBlank())
-                    return
-
-                val meal = LocalMeal(
-                    id = id,
-                    name = name,
-                    area = area,
-                    category = category,
-                    cookInstructions = instruct,
-                    thumbnailUrl = thumb,
-                    tags = tags
-                )
-
-                _state.update {
-                    it.copy()
-                }
-
-            }
-
-            is MealEvent.SetMealArea -> TODO()
-            is MealEvent.SetMealCategory -> TODO()
-            is MealEvent.SetMealInstruct -> TODO()
-            is MealEvent.SetMealName -> TODO()
-            is MealEvent.SetMealTags -> TODO()
-            is MealEvent.SetMealThumb -> TODO()
-
-            is MealEvent.SortMeals -> TODO()
-//            MealEvent.HideDialog -> TODO()
-//            MealEvent.ShowDialog -> TODO()
         }
     }
 }
-*/
+
