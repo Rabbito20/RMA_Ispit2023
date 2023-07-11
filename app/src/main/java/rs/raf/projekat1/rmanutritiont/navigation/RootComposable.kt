@@ -21,14 +21,14 @@ fun RootComposable() {
             color = MaterialTheme.colorScheme.background
         ) {
             val navController = rememberNavController()
+
+            //  true while developing
+//            var isSignedIn: Boolean by remember { mutableStateOf(true) }
             var isSignedIn: Boolean by remember { mutableStateOf(false) }
 
             when (isSignedIn) {
                 true -> NutritionAppSignedIn(navController)
                 false -> LoginAppContainer(navController, signedInState = { isSignedIn = true })
-                else -> {
-                    /* TODO: loading */
-                }
             }
 
         }
