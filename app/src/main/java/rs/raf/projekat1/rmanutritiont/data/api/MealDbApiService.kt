@@ -33,10 +33,12 @@ interface MealRepository {
     @GET("list.php")
     suspend fun getMealIngredients(@Query("i") searchParameter: String): Response<MealApiResponse>
 
+    @GET("filter.php")
+    suspend fun searchRecipesByCategory(@Query("i") category: String): Response<MealApiResponse>
 
     //  TODO
 //    @GET("filter.php")
-//    suspend fun searchRecipesByIngredient(@Query("i") ingredient: String): Response<List<MealApiResponse>>
+//    suspend fun searchRecipesByIngredient(@Query("i") ingredient: String): Response<MealApiResponse>
 }
 
 object MealApiClient {

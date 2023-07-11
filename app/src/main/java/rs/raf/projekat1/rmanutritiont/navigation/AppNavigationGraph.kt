@@ -20,6 +20,7 @@ import rs.raf.projekat1.rmanutritiont.screens.details.DetailsViewModel
 import rs.raf.projekat1.rmanutritiont.screens.details.MealScreenDetails
 import rs.raf.projekat1.rmanutritiont.screens.favorites.FavoritesScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.HomeViewModel
+import rs.raf.projekat1.rmanutritiont.screens.home.category.CategoryViewModel
 import rs.raf.projekat1.rmanutritiont.screens.home.filter.FilterViewModel
 import rs.raf.projekat1.rmanutritiont.screens.settings.SettingsScreen
 import rs.raf.projekat1.rmanutritiont.screens.settings.createPlan.CreatePlanScreen
@@ -72,8 +73,14 @@ fun AppNavigation(
                 })
         }
         composable(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Category.name}") {
-            //  todo: viewModel
-            CategoryRoute(navController = navController, categoryRoute = categoryRoute)
+            val categoryViewModel =
+                CategoryViewModel.provideFactory(categoryRoute)
+                    .create(CategoryViewModel::class.java)
+
+            CategoryRoute(
+                navController = navController,
+                categoryViewModel = categoryViewModel
+            )
         }
 
 

@@ -4,29 +4,47 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
+import rs.raf.projekat1.rmanutritiont.ui.components.MealContainer
 
 @Composable
 fun CategoryScreen(
-    categoryName: String,
+    categoryUiState: CategoryUiState,
+    mealList: List<MealFromApi>? = null,
     onMealClick: () -> Unit
 //    categoryMealList
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+//            .verticalScroll(rememberScrollState())
             .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 4.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = categoryName)
-        Text(text = "Yet to be implemented")
+        Text(
+            text = categoryUiState.categoryName,
+            color = MaterialTheme.colorScheme.onBackground,
+//            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp,
+            modifier = Modifier
+//                .fillMaxWidth()
+                .padding(top = 8.dp, bottom = 12.dp)
+        )
+
+        MealContainer(mealList = mealList.orEmpty(), onCardClick = {
+            //  TODO
+            onMealClick()
+        })
     }
 }
+

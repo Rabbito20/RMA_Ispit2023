@@ -54,7 +54,7 @@ private data class HomeViewModelState(
 class HomeViewModel(
 //    private var mealApiRepo: MealRepository
 ) : ViewModel() {
-    private lateinit var mealApiRepo: MealRepository
+    private var mealApiRepo: MealRepository
 
     private val _randomMeal = MutableLiveData<MealFromApi>()
     val randomMeal: LiveData<MealFromApi> = _randomMeal

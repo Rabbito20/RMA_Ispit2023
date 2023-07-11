@@ -59,11 +59,11 @@ class FilterViewModel() : ViewModel() {
     private val _searchParameter = MutableLiveData("")
     private val searchParameter: LiveData<String> = _searchParameter
 
-    private val _mealsByIngredient = MutableLiveData<List<MealFromApi>>()
-    val mealByIngredient: LiveData<List<MealFromApi>> = _mealsByIngredient
-
     private var _mealList = MutableLiveData<List<MealFromApi>>()
     val mealList: LiveData<List<MealFromApi>> = _mealList
+
+    private val _mealsByIngredient = MutableLiveData<List<MealFromApi>>()
+    val mealByIngredient: LiveData<List<MealFromApi>> = _mealsByIngredient
 
     private var _areaList = MutableLiveData<List<String>>()
     val areaList: LiveData<List<String>> = _areaList
@@ -92,12 +92,12 @@ class FilterViewModel() : ViewModel() {
     init {
         mealApiRepo = MealApiClient.mealApiService
         onSearchInputChanged("")
-//        fetchAllMeals()
 //        onRefresh(RefreshCodes.CODE_S)
 
         //  Observe for changes
         viewModelScope.launch {
             _mealList.value
+            _searchParameter.value
 //            mealApiRepo.getAllMeals(searchParameter = searchParameter.value.toString())
         }
     }

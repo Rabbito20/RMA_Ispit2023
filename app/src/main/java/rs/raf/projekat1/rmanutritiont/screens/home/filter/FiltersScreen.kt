@@ -29,10 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import rs.raf.projekat1.rmanutritiont.R
@@ -51,7 +49,6 @@ fun FiltersScreen(
     var selectedFilter by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     var refreshCode by remember { mutableStateOf(RefreshCodes.CODE_S) }
-
 
     Column(
         modifier = Modifier
@@ -251,6 +248,7 @@ private fun RowScope.SortButton(onClick: () -> Unit) {
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun FilterPreview() {
@@ -262,3 +260,4 @@ fun FilterPreview() {
         onMealClicked = {}
     )
 }
+*/
