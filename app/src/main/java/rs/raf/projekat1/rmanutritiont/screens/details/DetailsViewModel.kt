@@ -22,7 +22,7 @@ data class DetailsViewModelState(
 )
 
 class DetailsViewModel(
-    meal: LocalFavoriteMeal,
+    meal: LocalFavoriteMeal?,
 //    meal: MealFromApi,
     isFavorite: Boolean,
     private val dao: MealDao

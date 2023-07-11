@@ -3,11 +3,14 @@ package rs.raf.projekat1.rmanutritiont.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import kotlinx.coroutines.coroutineScope
 import rs.raf.projekat1.rmanutritiont.data.local.LocalMealDatabase
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 import rs.raf.projekat1.rmanutritiont.navigation.routes.FilterRoute
@@ -15,8 +18,8 @@ import rs.raf.projekat1.rmanutritiont.navigation.routes.HomeRoute
 import rs.raf.projekat1.rmanutritiont.screens.details.DetailsViewModel
 import rs.raf.projekat1.rmanutritiont.screens.details.MealScreenDetails
 import rs.raf.projekat1.rmanutritiont.screens.favorites.FavoritesScreen
-import rs.raf.projekat1.rmanutritiont.screens.home.CategoryScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.HomeViewModel
+import rs.raf.projekat1.rmanutritiont.screens.home.category.CategoryScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.filter.FilterViewModel
 import rs.raf.projekat1.rmanutritiont.screens.settings.SettingsScreen
 import rs.raf.projekat1.rmanutritiont.screens.settings.createPlan.CreatePlanScreen
@@ -30,6 +33,9 @@ fun AppNavigation(
     localDb: LocalMealDatabase,
     innerPadding: PaddingValues
 ) {
+    var categoryRoute: String? by remember { mutableStateOf("") }
+    var apiMeal: MealFromApi? by remember { mutableStateOf(null) }
+
     NavHost(
         navController = navController,
         startDestination = TopLevelRoutes.Home.name,
@@ -39,9 +45,6 @@ fun AppNavigation(
         val homeViewModel = HomeViewModel.provideFactory()
             .create(HomeViewModel::class.java)
 
-        var categoryRoute: String? = ""
-        var apiMeal: MealFromApi? = null
-//        val favoriteMeals = mutableSetOf<MealFromApi>()
         val favoriteMeals = mutableListOf<MealFromApi>()
 
         //  Home route domain
@@ -121,6 +124,7 @@ fun AppNavigation(
                     onFavoriteClicked = { favMeal ->
                         viewModel.isFavoriteChangeState(favMeal)
 
+                        //  Add or remove meal from Favorites
                         if (favoriteMeals.contains(favMeal)) {
                             favoriteMeals.remove(favMeal)
                         } else {

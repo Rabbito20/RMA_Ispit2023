@@ -1,4 +1,4 @@
-package rs.raf.projekat1.rmanutritiont.screens.home
+package rs.raf.projekat1.rmanutritiont.screens.home.category
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
