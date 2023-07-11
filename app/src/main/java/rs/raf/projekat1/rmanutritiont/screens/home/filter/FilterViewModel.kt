@@ -72,6 +72,7 @@ class FilterViewModel() : ViewModel() {
     val tagList: LiveData<List<TagsFromApi>> = _tagList
 
     //  Kategorije nabavi sa Home strane
+    //  TODO: Categories, area and ingredients
 
     private val viewModelState = MutableStateFlow(
         FilterViewModelState(

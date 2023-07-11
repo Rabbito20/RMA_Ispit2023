@@ -15,15 +15,16 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun CategoryScreen(
     categoryName: String,
+    onMealClick: () -> Unit
 //    categoryMealList
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(top = 20.dp),
+            .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 4.dp),
         verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.Start
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = categoryName)
         Text(text = "Yet to be implemented")

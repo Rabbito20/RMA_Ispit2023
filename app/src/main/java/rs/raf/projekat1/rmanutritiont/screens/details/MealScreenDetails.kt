@@ -66,6 +66,7 @@ fun MealScreenDetails(
         MealHeader(
             mealThumbnailUrl = meal.thumbnailUrl!!.toString(),
             onFavoriteClick = {
+                //  TODO: Open dialog onClick for further Favorites data
                 favoriteMeal = !favoriteMeal
                 onFavoriteClicked(meal)
             },

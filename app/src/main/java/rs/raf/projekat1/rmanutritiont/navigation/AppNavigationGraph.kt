@@ -13,13 +13,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import rs.raf.projekat1.rmanutritiont.data.local.LocalMealDatabase
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
+import rs.raf.projekat1.rmanutritiont.navigation.routes.CategoryRoute
 import rs.raf.projekat1.rmanutritiont.navigation.routes.FilterRoute
 import rs.raf.projekat1.rmanutritiont.navigation.routes.HomeRoute
 import rs.raf.projekat1.rmanutritiont.screens.details.DetailsViewModel
 import rs.raf.projekat1.rmanutritiont.screens.details.MealScreenDetails
 import rs.raf.projekat1.rmanutritiont.screens.favorites.FavoritesScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.HomeViewModel
-import rs.raf.projekat1.rmanutritiont.screens.home.category.CategoryScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.filter.FilterViewModel
 import rs.raf.projekat1.rmanutritiont.screens.settings.SettingsScreen
 import rs.raf.projekat1.rmanutritiont.screens.settings.createPlan.CreatePlanScreen
@@ -28,26 +28,22 @@ import rs.raf.projekat1.rmanutritiont.screens.statistics.StatisticsScreen
 
 @Composable
 fun AppNavigation(
-//    appContainer: AppContainer,
     navController: NavHostController,
     localDb: LocalMealDatabase,
     innerPadding: PaddingValues
 ) {
-    var categoryRoute: String? by remember { mutableStateOf("") }
+    var categoryRoute: String by remember { mutableStateOf("") }
     var apiMeal: MealFromApi? by remember { mutableStateOf(null) }
+    val favoriteMeals = mutableListOf<MealFromApi>()
 
     NavHost(
         navController = navController,
         startDestination = TopLevelRoutes.Home.name,
         modifier = Modifier.padding(innerPadding)
     ) {
-        //  Has to be initialized here
+        //  Home route domain
         val homeViewModel = HomeViewModel.provideFactory()
             .create(HomeViewModel::class.java)
-
-        val favoriteMeals = mutableListOf<MealFromApi>()
-
-        //  Home route domain
         composable(route = TopLevelRoutes.Home.name) {
             HomeRoute(
                 navController = navController,
@@ -76,7 +72,8 @@ fun AppNavigation(
                 })
         }
         composable(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Category.name}") {
-            CategoryScreen(categoryName = categoryRoute.toString())
+            //  todo: viewModel
+            CategoryRoute(navController = navController, categoryRoute = categoryRoute)
         }
 
 
