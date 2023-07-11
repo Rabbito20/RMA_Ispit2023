@@ -10,10 +10,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import rs.raf.projekat1.rmanutritiont.data.local.LocalMealDatabase
 import rs.raf.projekat1.rmanutritiont.ui.theme.RmaNutritionTTheme
 
 @Composable
-fun RootComposable() {
+fun RootComposable(localDb: LocalMealDatabase) {
     RmaNutritionTTheme {
         // A surface container using the 'background' color from the theme
         Surface(
@@ -23,11 +24,11 @@ fun RootComposable() {
             val navController = rememberNavController()
 
             //  true while developing
-//            var isSignedIn: Boolean by remember { mutableStateOf(true) }
-            var isSignedIn: Boolean by remember { mutableStateOf(false) }
+            var isSignedIn: Boolean by remember { mutableStateOf(true) }
+//            var isSignedIn: Boolean by remember { mutableStateOf(false) }
 
             when (isSignedIn) {
-                true -> NutritionAppSignedIn(navController)
+                true -> NutritionAppSignedIn(navController, localDb)
                 false -> LoginAppContainer(navController, signedInState = { isSignedIn = true })
             }
 

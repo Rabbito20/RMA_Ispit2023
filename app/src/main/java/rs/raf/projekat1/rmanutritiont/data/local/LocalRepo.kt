@@ -10,7 +10,7 @@ import androidx.room.Upsert
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 
 @Entity
-data class LocalMeal(
+data class LocalFavoriteMeal(
     @Embedded
     val meal: MealFromApi?,
 
@@ -43,10 +43,10 @@ interface MealDao {
      * If there is no meal, new meal will be created, otherwise update the existing meal.
      * */
     @Upsert
-    suspend fun upsertMeal(meal: LocalMeal)
+    suspend fun upsertMeal(meal: LocalFavoriteMeal)
 
     @Delete
-    suspend fun deleteMeal(meal: LocalMeal)
+    suspend fun deleteMeal(meal: LocalFavoriteMeal)
 
 
 //    @Query("SELECT * from LocalMeal ORDER BY name ASC")

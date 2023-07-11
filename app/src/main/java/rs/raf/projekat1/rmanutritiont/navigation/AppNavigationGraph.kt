@@ -1,5 +1,6 @@
 package rs.raf.projekat1.rmanutritiont.navigation
 
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -7,6 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import rs.raf.projekat1.rmanutritiont.data.local.LocalMealDatabase
+import rs.raf.projekat1.rmanutritiont.data.local.MealEvent
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 import rs.raf.projekat1.rmanutritiont.navigation.routes.FilterRoute
 import rs.raf.projekat1.rmanutritiont.navigation.routes.HomeRoute
@@ -24,6 +27,7 @@ import rs.raf.projekat1.rmanutritiont.screens.statistics.StatisticsScreen
 fun AppNavigation(
 //    appContainer: AppContainer,
     navController: NavHostController,
+    localDb: LocalMealDatabase,
     innerPadding: PaddingValues
 ) {
     NavHost(
@@ -60,8 +64,6 @@ fun AppNavigation(
         composable(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Filter.name}") {
             val filterViewModel =
                 FilterViewModel.provideFactory().create(FilterViewModel::class.java)
-
-//            val filterViewModel = viewModel<FilterViewModel>()        //  HMMM
 
             FilterRoute(
                 navController = navController,
@@ -106,8 +108,23 @@ fun AppNavigation(
                 MealScreenDetails(
                     meal = apiMeal!!,
                     onFavoriteClicked = { favMeal ->
-                        favoriteMeals.add(favMeal)
-                    })
+                        if (favoriteMeals.contains(favMeal)) {
+                            favoriteMeals.remove(favMeal)
+                            MealEvent.DeleteMeal(favMeal.fromApiToLocal())
+                        }
+                        else {
+                            favoriteMeals.add(favMeal)
+                            MealEvent.SaveMeal(favMeal.fromApiToLocal())
+                        }
+
+                        //  ############
+//                        favMeal.fromApiToLocal()
+//                        MealEvent.SaveMeal
+//                        Log.e("Djura", "Save Fav meal ${favMeal.name}")
+                        //  ############
+                    },
+                    isFavorite = favoriteMeals.contains(apiMeal)
+                )
         }
     }
 }

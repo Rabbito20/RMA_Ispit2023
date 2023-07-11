@@ -46,6 +46,7 @@ import rs.raf.projekat1.rmanutritiont.ui.theme.ColorFavorite
 fun MealScreenDetails(
     meal: MealFromApi?,
     onFavoriteClicked: (MealFromApi) -> Unit = {},
+    isFavorite: Boolean = false
 ) {
     Column(
         modifier = Modifier
@@ -56,7 +57,7 @@ fun MealScreenDetails(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start
     ) {
-        var favoriteMeal by remember { mutableStateOf(false) }
+        var favoriteMeal by remember { mutableStateOf(isFavorite) }
 
         MealHeader(
             mealThumbnailUrl = meal?.thumbnailUrl!!.toString(),

@@ -12,13 +12,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import rs.raf.projekat1.rmanutritiont.R
+import rs.raf.projekat1.rmanutritiont.data.local.LocalMealDatabase
 import rs.raf.projekat1.rmanutritiont.ui.components.AppBottomNavBar
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NutritionAppSignedIn(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    localDb: LocalMealDatabase
 ) {
     val navBarList = listOf(
         BottomNavItem(
@@ -57,6 +59,7 @@ fun NutritionAppSignedIn(
         }) { innerPadding ->
         AppNavigation(
             navController = navController,
+            localDb = localDb,
             innerPadding = innerPadding
         )
     }

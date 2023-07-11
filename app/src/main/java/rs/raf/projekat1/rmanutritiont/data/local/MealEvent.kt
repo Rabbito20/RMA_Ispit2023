@@ -3,8 +3,9 @@ package rs.raf.projekat1.rmanutritiont.data.local
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 
 sealed interface MealEvent {
-    object SaveMeal : MealEvent
-    data class DeleteMeal(val meal: LocalMeal) : MealEvent
+//    object SaveMeal : MealEvent
+    data class SaveMeal(val meal: LocalFavoriteMeal) : MealEvent
+    data class DeleteMeal(val meal: LocalFavoriteMeal) : MealEvent
 
     data class SetMeal(val meal: MealFromApi) : MealEvent
 

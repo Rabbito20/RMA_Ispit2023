@@ -2,7 +2,7 @@ package rs.raf.projekat1.rmanutritiont.data.model
 
 import androidx.room.TypeConverter
 import com.squareup.moshi.Json
-import rs.raf.projekat1.rmanutritiont.data.local.LocalMeal
+import rs.raf.projekat1.rmanutritiont.data.local.LocalFavoriteMeal
 
 data class MealApiResponse(
     @Json(name = "meals")
@@ -32,8 +32,8 @@ data class MealFromApi(
 ) {
 
     @TypeConverter
-    fun fromApiToLocal(mealFromApi: MealFromApi): LocalMeal {
-        return LocalMeal(id = mealFromApi.idOnApi!!, meal = mealFromApi)
+    fun fromApiToLocal(): LocalFavoriteMeal {
+        return LocalFavoriteMeal(id = idOnApi!!, meal = this)
     }
 }
 
