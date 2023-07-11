@@ -58,9 +58,6 @@ class CategoryViewModel(
 
     private var mealApiRepo: MealRepository
 
-    private val _categoryNameVm = MutableLiveData(categoryName)
-    val categoryNameVm: LiveData<String> = _categoryNameVm
-
     private var _mealList = MutableLiveData<List<MealFromApi>>()
     val mealList: LiveData<List<MealFromApi>> = _mealList
 
@@ -86,7 +83,6 @@ class CategoryViewModel(
     }
 
     fun onRefresh() {
-        categoryName = categoryNameVm.value.toString()
         getMealsByCategory()
     }
 

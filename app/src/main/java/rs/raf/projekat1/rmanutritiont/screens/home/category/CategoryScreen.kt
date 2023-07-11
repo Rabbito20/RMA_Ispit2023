@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
+import rs.raf.projekat1.rmanutritiont.ui.components.LoadingContentBarWithText
 import rs.raf.projekat1.rmanutritiont.ui.components.MealContainer
 
 @Composable
@@ -40,11 +41,14 @@ fun CategoryScreen(
 //                .fillMaxWidth()
                 .padding(top = 8.dp, bottom = 12.dp)
         )
-
-        MealContainer(mealList = mealList.orEmpty(), onCardClick = {
-            //  TODO
-            onMealClick()
-        })
+        when (categoryUiState.isLoading) {
+            true -> LoadingContentBarWithText()
+            false -> {
+                MealContainer(mealList = mealList.orEmpty(), onCardClick = {
+                    //  TODO
+                    onMealClick()
+                })
+            }
+        }
     }
 }
-

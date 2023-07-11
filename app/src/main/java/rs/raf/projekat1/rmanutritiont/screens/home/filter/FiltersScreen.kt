@@ -2,17 +2,14 @@ package rs.raf.projekat1.rmanutritiont.screens.home.filter
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -35,9 +32,9 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import rs.raf.projekat1.rmanutritiont.R
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
+import rs.raf.projekat1.rmanutritiont.ui.components.LoadingContentBarWithText
 import rs.raf.projekat1.rmanutritiont.ui.components.MealContainer
 import rs.raf.projekat1.rmanutritiont.ui.components.SearchBox
-import rs.raf.projekat1.rmanutritiont.ui.components.shimmerEffect
 
 @Composable
 fun FiltersScreen(
@@ -80,7 +77,7 @@ fun FiltersScreen(
                 mealContainer = {
                     Text(text = selectedFilter)         //  While Debugging / Building
                     if (refreshState.isRefreshing)
-                        LoadingContentBar()
+                        LoadingContentBarWithText()
                     else
                         MealContainer(
                             viewModel.mealList.value.orEmpty(),
@@ -98,24 +95,6 @@ fun FiltersScreen(
             onSortByNameClick = {},
             onSortByTagsClick = {}
         )
-}
-
-@Composable
-private fun LoadingContentBar() {
-    Box(
-        modifier = Modifier
-            .wrapContentWidth()
-            .fillMaxHeight()
-    ) {
-        Text(
-            text = stringResource(id = R.string.loading_str),
-            modifier = Modifier
-                .clip(RoundedCornerShape(100))
-                .shimmerEffect()
-                .padding(4.dp)
-                .align(Alignment.Center)
-        )
-    }
 }
 
 @Composable
