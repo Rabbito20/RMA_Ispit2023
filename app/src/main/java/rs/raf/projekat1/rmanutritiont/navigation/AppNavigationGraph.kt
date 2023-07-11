@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import kotlinx.coroutines.coroutineScope
 import rs.raf.projekat1.rmanutritiont.data.local.LocalMealDatabase
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 import rs.raf.projekat1.rmanutritiont.navigation.routes.FilterRoute
@@ -108,7 +109,8 @@ fun AppNavigation(
 
             if (apiMeal != null) {
                 val viewModel = DetailsViewModel.provideFactory(
-                    meal = apiMeal!!,
+//                    meal = dao.getLatestMeal()?.meal?.fromApiToLocal()!!,
+                    meal = apiMeal!!.fromApiToLocal(),
                     dao = dao,
                     isFavorite = isFav
                 ).create(DetailsViewModel::class.java)
@@ -124,7 +126,6 @@ fun AppNavigation(
                         } else {
                             favoriteMeals.add(favMeal)
                         }
-
                     },
                     isFavorite = isFav
                 )

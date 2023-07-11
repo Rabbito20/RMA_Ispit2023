@@ -49,7 +49,8 @@ fun MealScreenDetails(
     onFavoriteClicked: (MealFromApi) -> Unit = {},
     isFavorite: Boolean = false
 ) {
-    val meal by remember { mutableStateOf(viewModel.uiState.value.meal) }
+    //
+    val meal by remember { mutableStateOf(viewModel.uiState.value.meal.mealApi!!) }
 
     Column(
         modifier = Modifier
@@ -63,7 +64,7 @@ fun MealScreenDetails(
         var favoriteMeal by remember { mutableStateOf(isFavorite) }
 
         MealHeader(
-            mealThumbnailUrl = meal?.thumbnailUrl!!.toString(),
+            mealThumbnailUrl = meal.thumbnailUrl!!.toString(),
             onFavoriteClick = {
                 favoriteMeal = !favoriteMeal
                 onFavoriteClicked(meal)

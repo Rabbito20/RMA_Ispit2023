@@ -7,17 +7,17 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
+import androidx.room.Query
 import androidx.room.TypeConverter
-import androidx.room.Upsert
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 
 @Entity
 data class LocalFavoriteMeal(
     @Embedded
-    val meal: MealFromApi?,
+    val mealApi: MealFromApi?,
 
     @PrimaryKey
-    val id: Int = meal?.idOnApi!!
+    val id: Int = mealApi?.idOnApi!!
 
 //    val name: String?,
 //    val area: String?,
@@ -28,13 +28,13 @@ data class LocalFavoriteMeal(
 ) {
     @TypeConverter
     fun fromLocalToApi(): MealFromApi = MealFromApi(
-        idOnApi = meal?.idOnApi,
-        name = meal?.name,
-        category = meal?.category,
-        area = meal?.area,
-        cookInstructions = meal?.cookInstructions,
-        thumbnailUrl = meal?.thumbnailUrl,
-        tags = meal?.tags
+        idOnApi = mealApi?.idOnApi,
+        name = mealApi?.name,
+        category = mealApi?.category,
+        area = mealApi?.area,
+        cookInstructions = mealApi?.cookInstructions,
+        thumbnailUrl = mealApi?.thumbnailUrl,
+        tags = mealApi?.tags
     )
 }
 
@@ -51,6 +51,12 @@ interface MealDao {
 
     @Delete
     suspend fun deleteMeal(meal: LocalFavoriteMeal)
+
+    @Query("SELECT * FROM LocalFavoriteMeal ORDER BY id DESC LIMIT 1")
+    fun getLatestMeal(): LocalFavoriteMeal?
+
+    @Query("SELECT * FROM LocalFavoriteMeal")
+    fun getAllMealsLocal(): List<LocalFavoriteMeal>
 
 
 //    @Query("SELECT * from LocalMeal ORDER BY name ASC")

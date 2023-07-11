@@ -11,26 +11,37 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import rs.raf.projekat1.rmanutritiont.data.api.MealApiClient
 import rs.raf.projekat1.rmanutritiont.data.api.MealRepository
+import rs.raf.projekat1.rmanutritiont.data.local.LocalFavoriteMeal
 import rs.raf.projekat1.rmanutritiont.data.local.MealDao
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 
 data class DetailsViewModelState(
-    val meal: MealFromApi,
+    val meal: LocalFavoriteMeal,
+//    val meal: MealFromApi,
     val isFavorite: Boolean
 )
 
 class DetailsViewModel(
-    meal: MealFromApi,
+    meal: LocalFavoriteMeal,
+//    meal: MealFromApi,
     isFavorite: Boolean,
     private val dao: MealDao
 ) : ViewModel() {
 
     private var mealApiRepo: MealRepository = MealApiClient.mealApiService
 
-    private val _isFavorite = MutableLiveData<Boolean>(false)
+    private val _isFavorite = MutableLiveData(false)
     private val isFavorite: LiveData<Boolean> = _isFavorite
 
-    private val viewModelState =
+    //  This screen won't open until we have opened at least one meal
+    private val viewModelState = if (meal == null)
+        MutableStateFlow(
+            DetailsViewModelState(
+                dao.getLatestMeal()?.mealApi?.fromApiToLocal()!!,
+                isFavorite
+            )
+        )
+    else
         MutableStateFlow(DetailsViewModelState(meal, isFavorite))
 
     val uiState =
@@ -49,7 +60,8 @@ class DetailsViewModel(
 
     companion object {
         fun provideFactory(
-            meal: MealFromApi,
+            meal: LocalFavoriteMeal,
+//            meal: MealFromApi,
             isFavorite: Boolean,
             dao: MealDao
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
