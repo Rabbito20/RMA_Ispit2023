@@ -10,6 +10,7 @@ import retrofit2.http.Query
 import rs.raf.projekat1.rmanutritiont.data.model.AreaFromApi
 import rs.raf.projekat1.rmanutritiont.data.model.CategoryApiResponse
 import rs.raf.projekat1.rmanutritiont.data.model.MealApiResponse
+import rs.raf.projekat1.rmanutritiont.data.model.ResponseById
 import rs.raf.projekat1.rmanutritiont.data.utils.Constants
 
 //  MealApiService
@@ -21,7 +22,7 @@ interface MealRepository {
     suspend fun getMealCategories(): Response<CategoryApiResponse>
 
     @GET("search.php")
-    suspend fun getAllMeals(@Query("s") searchParameter: String): Response<MealApiResponse>
+    suspend fun getMealsByName(@Query("s") searchParameter: String): Response<MealApiResponse>
 
     @GET("list.php")
     suspend fun getMealAreas(@Query("a") searchParameter: String): Response<AreaFromApi>
@@ -30,11 +31,14 @@ interface MealRepository {
     suspend fun getMealsByCategory(@Query("c") searchParameter: String): Response<MealApiResponse>
     //  Think about the category name
 
-    @GET("list.php")
-    suspend fun getMealIngredients(@Query("i") searchParameter: String): Response<MealApiResponse>
+//    @GET("list.php")
+//    suspend fun getMealIngredients(@Query("i") searchParameter: String): Response<MealApiResponse>
 
     @GET("filter.php")
-    suspend fun searchRecipesByCategory(@Query("i") category: String): Response<MealApiResponse>
+    suspend fun searchRecipesByCategory(@Query("c") category: String): Response<MealApiResponse>
+
+    @GET("lookup.php")
+    suspend fun searchRecipesById(@Query("i") apiId: String): Response<ResponseById>
 
     //  TODO
 //    @GET("filter.php")

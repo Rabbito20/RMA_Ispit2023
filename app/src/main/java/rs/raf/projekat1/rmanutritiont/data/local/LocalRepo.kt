@@ -17,7 +17,7 @@ data class LocalFavoriteMeal(
     val mealApi: MealFromApi?,
 
     @PrimaryKey
-    val id: Int = mealApi?.idOnApi!!
+    val id: String = mealApi?.idOnApi!!
 
 //    val name: String?,
 //    val area: String?,
@@ -28,7 +28,7 @@ data class LocalFavoriteMeal(
 ) {
     @TypeConverter
     fun fromLocalToApi(): MealFromApi = MealFromApi(
-        idOnApi = mealApi?.idOnApi,
+        idOnApi = mealApi!!.idOnApi,
         name = mealApi?.name,
         category = mealApi?.category,
         area = mealApi?.area,

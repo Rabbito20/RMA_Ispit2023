@@ -123,11 +123,11 @@ class FilterViewModel() : ViewModel() {
 
                     else -> {
                         fetchAllMeals()
-                        mealApiRepo.getAllMeals(searchQuery)
+                        mealApiRepo.getMealsByName(searchQuery)
                     }
                 }
 //            resultMeals
-            val resultMeals = mealApiRepo.getAllMeals(searchQuery)
+            val resultMeals = mealApiRepo.getMealsByName(searchQuery)
             //  =====================
 
 //            val filter = when (code) { }
@@ -169,7 +169,7 @@ class FilterViewModel() : ViewModel() {
             try {
                 mealApiRepo = MealApiClient.mealApiService
                 val response = withContext(Dispatchers.IO) {
-                    mealApiRepo.getAllMeals(_searchParameter.value.toString())
+                    mealApiRepo.getMealsByName(_searchParameter.value.toString())
                 }
 
                 //  Search name
@@ -225,7 +225,7 @@ class FilterViewModel() : ViewModel() {
             try {
                 mealApiRepo = MealApiClient.mealApiService
                 val response = withContext(Dispatchers.IO) {
-                    mealApiRepo.getAllMeals(_searchParameter.value.toString())
+                    mealApiRepo.getMealsByName(_searchParameter.value.toString())
 //                    mealApiRepo.getMealsByCategory(_searchParameter.value.toString())
                 }
 

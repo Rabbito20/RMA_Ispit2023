@@ -1,5 +1,6 @@
 package rs.raf.projekat1.rmanutritiont.navigation
 
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -14,10 +15,10 @@ import androidx.navigation.compose.composable
 import rs.raf.projekat1.rmanutritiont.data.local.LocalMealDatabase
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 import rs.raf.projekat1.rmanutritiont.navigation.routes.CategoryRoute
+import rs.raf.projekat1.rmanutritiont.navigation.routes.DetailsRoute
 import rs.raf.projekat1.rmanutritiont.navigation.routes.FilterRoute
 import rs.raf.projekat1.rmanutritiont.navigation.routes.HomeRoute
 import rs.raf.projekat1.rmanutritiont.screens.details.DetailsViewModel
-import rs.raf.projekat1.rmanutritiont.screens.details.MealScreenDetails
 import rs.raf.projekat1.rmanutritiont.screens.favorites.FavoritesScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.HomeViewModel
 import rs.raf.projekat1.rmanutritiont.screens.home.category.CategoryViewModel
@@ -79,7 +80,12 @@ fun AppNavigation(
 
             CategoryRoute(
                 navController = navController,
-                categoryViewModel = categoryViewModel
+                categoryViewModel = categoryViewModel,
+                onMealClick = {
+//                    apiMeal = it
+//                    navController.navigate(route = SecondaryRoutes.MealDetails.name)
+                    Log.e("Djura", "Meal:\n $it")
+                }
             )
         }
 
@@ -117,15 +123,15 @@ fun AppNavigation(
             if (apiMeal != null) {
                 val viewModel = DetailsViewModel.provideFactory(
 //                    meal = dao.getLatestMeal()?.meal?.fromApiToLocal()!!,
-                    meal = apiMeal!!.fromApiToLocal(),
+//                    meal = apiMeal!!.fromApiToLocal(),
+                    meal = apiMeal!!,
                     dao = dao,
                     isFavorite = isFav
                 ).create(DetailsViewModel::class.java)
 
-                MealScreenDetails(
-//                    meal = apiMeal!!,
+                DetailsRoute(
                     viewModel = viewModel,
-                    onFavoriteClicked = { favMeal ->
+                    onFavoriteClick = { favMeal ->
                         viewModel.isFavoriteChangeState(favMeal)
 
                         //  Add or remove meal from Favorites

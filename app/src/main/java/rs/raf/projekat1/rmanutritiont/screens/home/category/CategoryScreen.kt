@@ -20,7 +20,7 @@ import rs.raf.projekat1.rmanutritiont.ui.components.MealContainer
 fun CategoryScreen(
     categoryUiState: CategoryUiState,
     mealList: List<MealFromApi>? = null,
-    onMealClick: () -> Unit
+    onMealClick: (MealFromApi) -> Unit
 //    categoryMealList
 ) {
     Column(
@@ -44,10 +44,7 @@ fun CategoryScreen(
         when (categoryUiState.isLoading) {
             true -> LoadingContentBarWithText()
             false -> {
-                MealContainer(mealList = mealList.orEmpty(), onCardClick = {
-                    //  TODO
-                    onMealClick()
-                })
+                MealContainer(mealList = mealList.orEmpty(), onCardClick = { onMealClick(it) })
             }
         }
     }

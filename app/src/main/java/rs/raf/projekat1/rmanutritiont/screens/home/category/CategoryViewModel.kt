@@ -98,7 +98,6 @@ class CategoryViewModel(
                 val meals = response.body()?.meals
                 val mealsByCategory = mutableListOf<MealFromApi>()
 
-                //  ################
                 meals.orEmpty().forEach { meal ->
                     val m = MealFromApi(
                         idOnApi = meal.idOnApi,
@@ -111,9 +110,8 @@ class CategoryViewModel(
                     )
                     mealsByCategory.add(m)
                 }
-                //  ################
-                _mealList.value = mealsByCategory
 
+                _mealList.value = mealsByCategory
 
             } catch (e: Exception) {
                 Log.e("Meals fetch error", e.message.toString())

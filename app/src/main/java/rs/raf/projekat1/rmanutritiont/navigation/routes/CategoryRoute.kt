@@ -15,7 +15,7 @@ import rs.raf.projekat1.rmanutritiont.screens.home.category.CategoryViewModel
 fun CategoryRoute(
     navController: NavController,
     categoryViewModel: CategoryViewModel,
-//    onMealClick: () -> Unit
+    onMealClick: (MealFromApi) -> Unit
 ) {
     val uiState: CategoryUiState by categoryViewModel.uiState.collectAsStateWithLifecycle()
 //    val mealList: List<MealFromApi> = mutableListOf()
@@ -24,7 +24,7 @@ fun CategoryRoute(
     val refreshState = rememberSwipeRefreshState(isRefreshing = uiState.isLoading)
 
     SwipeRefresh(state = refreshState, onRefresh = { categoryViewModel.onRefresh() }) {
-        CategoryScreen(categoryUiState = uiState, mealList = mealList, onMealClick = {})
+        CategoryScreen(categoryUiState = uiState, mealList = mealList, onMealClick = onMealClick)
     }
 
 }

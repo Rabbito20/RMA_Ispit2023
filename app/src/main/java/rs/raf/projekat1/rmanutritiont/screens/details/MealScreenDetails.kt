@@ -49,8 +49,9 @@ fun MealScreenDetails(
     onFavoriteClicked: (MealFromApi) -> Unit = {},
     isFavorite: Boolean = false
 ) {
-    //
-    val meal by remember { mutableStateOf(viewModel.uiState.value.meal.mealApi!!) }
+    val meal by remember { mutableStateOf(viewModel.uiState.value.meal!!) }
+//    Log.e("Djura", "#")
+//    Log.e("Djura", "Meal Screen:\n$meal")
 
     Column(
         modifier = Modifier

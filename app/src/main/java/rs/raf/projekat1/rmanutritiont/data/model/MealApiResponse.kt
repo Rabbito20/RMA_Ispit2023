@@ -14,9 +14,40 @@ data class CategoryApiResponse(
     val categories: List<CategoryFromApi>?
 )
 
+data class ResponseById(
+    @Json(name = "idMeal")
+    val apiId: String,
+    @Json(name = "strMeal")
+    val name: String?,
+    @Json(name = "strCategory")
+    val category: String?,
+    @Json(name = "strArea")
+    val area: String?,
+    @Json(name = "strInstructions")
+    val cookInstructions: String?,
+    @Json(name = "strMealThumb")
+    val thumbnailUrl: String?,
+    @Json(name = "strTags")
+    val tags: String?,
+    @Json(name = "strIngredients")
+    val ingredients: List<String>?,
+) {
+    fun fromApiByIdToRegularApiMeal(): MealFromApi {
+        return MealFromApi(
+            idOnApi = apiId,
+            name = name,
+            category = category,
+            area = area,
+            cookInstructions = cookInstructions,
+            thumbnailUrl = thumbnailUrl,
+            tags = tags,
+        )
+    }
+}
+
 data class MealFromApi(
     @Json(name = "idMeal")
-    val idOnApi: Int?,
+    val idOnApi: String,
     @Json(name = "strMeal")
     val name: String?,
     @Json(name = "strCategory")
@@ -33,7 +64,7 @@ data class MealFromApi(
 
     @TypeConverter
     fun fromApiToLocal(): LocalFavoriteMeal {
-        return LocalFavoriteMeal(id = idOnApi!!, mealApi = this)
+        return LocalFavoriteMeal(id = idOnApi.toString(), mealApi = this)
     }
 }
 
