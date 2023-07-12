@@ -20,6 +20,7 @@ import rs.raf.projekat1.rmanutritiont.ui.components.AppBottomNavBar
 @Composable
 fun NutritionAppSignedIn(
     navController: NavHostController = rememberNavController(),
+    logOutButtonClick: () -> Unit,
     localDb: LocalMealDatabase
 ) {
     val navBarList = listOf(
@@ -60,7 +61,8 @@ fun NutritionAppSignedIn(
         AppNavigation(
             navController = navController,
             localDb = localDb,
-            innerPadding = innerPadding
+            innerPadding = innerPadding,
+            logOutButtonClick = logOutButtonClick
         )
     }
 }

@@ -22,6 +22,7 @@ import rs.raf.projekat1.rmanutritiont.ui.components.RegularWidthButton
 @Composable
 fun SettingsScreen(
     onCreatePlanClick: () -> Unit,
+    onLogOutClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -53,7 +54,7 @@ fun SettingsScreen(
         )
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = onLogOutClick,
             modifier = Modifier.padding(top = 20.dp)
         ) {
             Text(text = stringResource(id = R.string.btn_logout))
@@ -64,5 +65,5 @@ fun SettingsScreen(
 @Preview(showBackground = true)
 @Composable
 fun SettingsPrev() {
-    SettingsScreen(onCreatePlanClick = {})
+    SettingsScreen(onCreatePlanClick = {}, onLogOutClick = {})
 }

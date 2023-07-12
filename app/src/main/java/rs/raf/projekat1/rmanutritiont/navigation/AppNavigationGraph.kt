@@ -31,7 +31,8 @@ import rs.raf.projekat1.rmanutritiont.screens.statistics.StatisticsScreen
 fun AppNavigation(
     navController: NavHostController,
     localDb: LocalMealDatabase,
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
+    logOutButtonClick: () -> Unit,
 ) {
     var categoryRoute: String by remember { mutableStateOf("") }
     var apiMeal: MealFromApi? by remember { mutableStateOf(null) }
@@ -83,7 +84,6 @@ fun AppNavigation(
                 categoryViewModel = categoryViewModel,
                 onMealClick = {
                     apiMeal = it
-
                     navController.navigate(route = SecondaryRoutes.MealDetails.name)
                 }
             )
@@ -106,9 +106,15 @@ fun AppNavigation(
 
         //  Settings route domain
         composable(route = TopLevelRoutes.Settings.name) {
-            SettingsScreen(onCreatePlanClick = {
-                navController.navigate(route = "${TopLevelRoutes.Settings.name}/${SecondaryRoutes.CreatePlan.name}")
-            })
+            SettingsScreen(
+                onCreatePlanClick = {
+                    navController.navigate(
+                        route =
+                        "${TopLevelRoutes.Settings.name}/${SecondaryRoutes.CreatePlan.name}"
+                    )
+                },
+                onLogOutClick = logOutButtonClick
+            )
         }
         composable(route = "${TopLevelRoutes.Settings.name}/${SecondaryRoutes.CreatePlan.name}") {
             CreatePlanScreen()
