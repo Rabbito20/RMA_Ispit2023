@@ -31,6 +31,7 @@ interface CategoryUiState {
 
     data class HasMeals(
         val mealsFeed: MealApiResponse?,
+        val selectedMeal: MealFromApi?,
         override val isLoading: Boolean,
         override val categoryName: String,
     ) : CategoryUiState
@@ -40,6 +41,7 @@ private data class CategoryViewModelState(
     val isLoading: Boolean = false,
     val categoryName: String,
     val mealsFeed: MealApiResponse? = null,
+    val selectedMeal: MealFromApi? = null,
 ) {
     fun toUiState(): CategoryUiState = if (mealsFeed == null) {
         CategoryUiState.NoMeals(isLoading = isLoading, categoryName = categoryName)
@@ -47,7 +49,8 @@ private data class CategoryViewModelState(
         CategoryUiState.HasMeals(
             isLoading = isLoading,
             mealsFeed = mealsFeed,
-            categoryName = categoryName
+            categoryName = categoryName,
+            selectedMeal = selectedMeal
         )
     }
 }
@@ -60,6 +63,9 @@ class CategoryViewModel(
 
     private var _mealList = MutableLiveData<List<MealFromApi>>()
     val mealList: LiveData<List<MealFromApi>> = _mealList
+
+    private var _selectedMeal = MutableLiveData<MealFromApi>()
+    private val selectedMeal: LiveData<MealFromApi> = _selectedMeal
 
     private val viewModelState = MutableStateFlow(
         CategoryViewModelState(
@@ -78,45 +84,82 @@ class CategoryViewModel(
 
         //  Observe for changes
         viewModelScope.launch {
+            _selectedMeal.value
             _mealList.value
         }
     }
 
-    fun onRefresh() {
-        getMealsByCategory()
+    fun getSelectedMeal(): MealFromApi? {
+//        viewModelState.update { it.copy(isLoading = false, selectedMeal = selectedMeal.value) }
+        return _selectedMeal.value
     }
 
-    private fun getMealsByCategory() {
+    fun fetchSingleMealData(name: String?) {
         viewModelState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             try {
                 mealApiRepo = MealApiClient.mealApiService
                 val response = withContext(Dispatchers.IO) {
-                    mealApiRepo.searchRecipesByCategory(categoryName)
+                    mealApiRepo.getMealsByName(name.toString())
                 }
+                val resp = response.body()?.meals?.first()!!
+                _selectedMeal.value = MealFromApi(
+                    idOnApi = resp.idOnApi,
+                    name = resp.name,
+                    category = resp.category,
+                    area = resp.area,
+                    cookInstructions = resp.cookInstructions,
+                    thumbnailUrl = resp.thumbnailUrl,
+                    tags = resp.tags
+                )
 
-                val meals = response.body()?.meals
-                val mealsByCategory = mutableListOf<MealFromApi>()
-
-                meals.orEmpty().forEach { meal ->
-                    val m = MealFromApi(
-                        idOnApi = meal.idOnApi,
-                        name = meal.name,
-                        category = categoryName,
-                        area = meal.area,
-                        cookInstructions = meal.cookInstructions,
-                        thumbnailUrl = meal.thumbnailUrl,
-                        tags = meal.tags
-                    )
-                    mealsByCategory.add(m)
-                }
-
-                _mealList.value = mealsByCategory
-
+                viewModelState.update { it.copy(isLoading = false, selectedMeal = resp) }
             } catch (e: Exception) {
                 Log.e("Meals fetch error", e.message.toString())
             }
-            viewModelState.update { it.copy(isLoading = false) }
+        }
+    }
+
+    fun onRefresh() {
+        getMealsByCategory()
+//        Log.e("Djura", "==================== ViewModel ====================")
+//        Log.e("Djura", "New meal is\n${selectedMeal.value}")
+//        Log.e("Djura", "===================================================")
+    }
+
+    private fun getMealsByCategory() {
+        viewModelState.update { it.copy(isLoading = true) }
+        repeat(2) {
+            viewModelScope.launch {
+                try {
+                    mealApiRepo = MealApiClient.mealApiService
+                    val response = withContext(Dispatchers.IO) {
+                        mealApiRepo.searchRecipesByCategory(categoryName)
+                    }
+
+                    val meals = response.body()?.meals
+                    val mealsByCategory = mutableListOf<MealFromApi>()
+
+                    meals.orEmpty().forEach { meal ->
+                        val m = MealFromApi(
+                            idOnApi = meal.idOnApi,
+                            name = meal.name,
+                            category = categoryName,
+                            area = meal.area,
+                            cookInstructions = meal.cookInstructions,
+                            thumbnailUrl = meal.thumbnailUrl,
+                            tags = meal.tags
+                        )
+                        mealsByCategory.add(m)
+                    }
+
+                    _mealList.value = mealsByCategory
+
+                } catch (e: Exception) {
+                    Log.e("Meals fetch error", e.message.toString())
+                }
+                viewModelState.update { it.copy(isLoading = false) }
+            }
         }
     }
 

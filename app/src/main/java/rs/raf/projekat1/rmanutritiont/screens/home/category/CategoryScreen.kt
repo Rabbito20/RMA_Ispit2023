@@ -21,7 +21,6 @@ fun CategoryScreen(
     categoryUiState: CategoryUiState,
     mealList: List<MealFromApi>? = null,
     onMealClick: (MealFromApi) -> Unit
-//    categoryMealList
 ) {
     Column(
         modifier = Modifier

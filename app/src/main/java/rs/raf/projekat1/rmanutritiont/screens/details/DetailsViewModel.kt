@@ -15,20 +15,21 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import rs.raf.projekat1.rmanutritiont.data.api.MealApiClient
 import rs.raf.projekat1.rmanutritiont.data.api.MealRepository
-import rs.raf.projekat1.rmanutritiont.data.local.MealDao
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 
 data class DetailsViewModelState(
 //    val meal: LocalFavoriteMeal,
     val meal: MealFromApi?,
+    val isLoading: Boolean,
     val isFavorite: Boolean
 )
 
 class DetailsViewModel(
 //    meal: LocalFavoriteMeal?,
     meal: MealFromApi,
+    isLoading: Boolean,
     isFavorite: Boolean,
-    private val dao: MealDao
+//    private val dao: MealDao
 ) : ViewModel() {
 
     private var mealApiRepo: MealRepository = MealApiClient.mealApiService
@@ -36,20 +37,28 @@ class DetailsViewModel(
     private val _isFavorite = MutableLiveData(false)
     private val isFavorite: LiveData<Boolean> = _isFavorite
 
-    private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
-    val isLoading: LiveData<Boolean> = _isLoading
+//    private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
+//    val isLoading: LiveData<Boolean> = _isLoading
 
     //  This screen won't open until we have opened at least one meal
     private val viewModelState = if (meal == null)
         MutableStateFlow(
             DetailsViewModelState(
 //                dao.getLatestMeal()?.mealApi?.fromApiToLocal()!!,
-                dao.getLatestMeal()?.mealApi,
-                isFavorite
+//                dao.getLatestMeal()?.mealApi,
+                meal = meal,
+                isLoading = true,
+                isFavorite,
             )
         )
     else
-        MutableStateFlow(DetailsViewModelState(meal, isFavorite))
+        MutableStateFlow(
+            DetailsViewModelState(
+                meal,
+                isFavorite = isFavorite,
+                isLoading = isLoading
+            )
+        )
 
     val uiState =
         viewModelState.stateIn(viewModelScope, SharingStarted.Eagerly, viewModelState.value)
@@ -61,7 +70,7 @@ class DetailsViewModel(
 
     fun onRefresh() {
         viewModelScope.launch {
-            _isLoading.value = true
+            viewModelState.update { it.copy(isLoading = true) }
             try {
                 val response = withContext(Dispatchers.IO) {
                     mealApiRepo.getMealsByName(uiState.value.meal?.name.toString())
@@ -70,13 +79,38 @@ class DetailsViewModel(
                 val meal = response.body()?.meals?.first()
 
                 if (response.isSuccessful)
-                    viewModelState.update { it.copy(meal = meal) }
+                    viewModelState.update { it.copy(meal = meal, isLoading = false) }
 
             } catch (e: Exception) {
                 Log.e("Details fetch error", e.message.toString())
             }
         }
-        _isLoading.value = false
+    }
+
+    fun fetchSingleMealData(name: String?) {
+        viewModelState.update { it.copy(isLoading = true) }
+        viewModelScope.launch {
+            try {
+                mealApiRepo = MealApiClient.mealApiService
+                val response = withContext(Dispatchers.IO) {
+                    mealApiRepo.getMealsByName(name.toString())
+                }
+                val resp = response.body()?.meals?.first()!!
+                val mealData = MealFromApi(
+                    idOnApi = resp.idOnApi,
+                    name = resp.name,
+                    category = resp.category,
+                    area = resp.area,
+                    cookInstructions = resp.cookInstructions,
+                    thumbnailUrl = resp.thumbnailUrl,
+                    tags = resp.tags
+                )
+
+                viewModelState.update { it.copy(meal = mealData, isLoading = false) }
+            } catch (e: Exception) {
+                Log.e("Meals fetch error", e.message.toString())
+            }
+        }
     }
 
     fun isFavoriteChangeState(meal: MealFromApi) {
@@ -96,11 +130,12 @@ class DetailsViewModel(
 //            meal: LocalFavoriteMeal,
             meal: MealFromApi,
             isFavorite: Boolean,
-            dao: MealDao
+            isLoading: Boolean,
+//            dao: MealDao
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return DetailsViewModel(meal, isFavorite, dao) as T
+                return DetailsViewModel(meal, isFavorite, isLoading) as T
             }
         }
     }

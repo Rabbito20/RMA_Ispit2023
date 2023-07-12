@@ -44,15 +44,11 @@ import rs.raf.projekat1.rmanutritiont.ui.theme.ColorFavorite
 
 @Composable
 fun MealScreenDetails(
-//    meal: MealFromApi?,
-    viewModel: DetailsViewModel,
+    meal: MealFromApi,
+//    viewModel: DetailsViewModel,      //  Meal was extracted from VM in the DetailsRoute
     onFavoriteClicked: (MealFromApi) -> Unit = {},
     isFavorite: Boolean = false
 ) {
-    val meal by remember { mutableStateOf(viewModel.uiState.value.meal!!) }
-//    Log.e("Djura", "#")
-//    Log.e("Djura", "Meal Screen:\n$meal")
-
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)

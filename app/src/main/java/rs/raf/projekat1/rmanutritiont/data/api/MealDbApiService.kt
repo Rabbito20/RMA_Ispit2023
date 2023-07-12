@@ -22,7 +22,7 @@ interface MealRepository {
     suspend fun getMealCategories(): Response<CategoryApiResponse>
 
     @GET("search.php")
-    suspend fun getMealsByName(@Query("s") searchParameter: String): Response<MealApiResponse>
+    suspend fun getMealsByName(@Query("s") searchParameter: String = ""): Response<MealApiResponse>
 
     @GET("list.php")
     suspend fun getMealAreas(@Query("a") searchParameter: String): Response<AreaFromApi>

@@ -1,6 +1,5 @@
 package rs.raf.projekat1.rmanutritiont.navigation
 
-import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -73,22 +72,22 @@ fun AppNavigation(
                     apiMeal = it
                 })
         }
+
         composable(route = "${TopLevelRoutes.Home.name}/${SecondaryRoutes.Category.name}") {
             val categoryViewModel =
                 CategoryViewModel.provideFactory(categoryRoute)
                     .create(CategoryViewModel::class.java)
 
             CategoryRoute(
-                navController = navController,
+//                navController = navController,
                 categoryViewModel = categoryViewModel,
                 onMealClick = {
-//                    apiMeal = it
-//                    navController.navigate(route = SecondaryRoutes.MealDetails.name)
-                    Log.e("Djura", "Meal:\n $it")
+                    apiMeal = it
+
+                    navController.navigate(route = SecondaryRoutes.MealDetails.name)
                 }
             )
         }
-
 
         //  Favorites route domain
         composable(route = TopLevelRoutes.Favorites.name) {
@@ -120,14 +119,16 @@ fun AppNavigation(
             val dao = localDb.mealDao()
             val isFav = favoriteMeals.contains(apiMeal)
 
-            if (apiMeal != null) {
-                val viewModel = DetailsViewModel.provideFactory(
+            val viewModel = DetailsViewModel.provideFactory(
 //                    meal = dao.getLatestMeal()?.meal?.fromApiToLocal()!!,
 //                    meal = apiMeal!!.fromApiToLocal(),
-                    meal = apiMeal!!,
-                    dao = dao,
-                    isFavorite = isFav
-                ).create(DetailsViewModel::class.java)
+                meal = apiMeal!!,
+                isLoading = false,
+//                    dao = dao,
+                isFavorite = isFav
+            ).create(DetailsViewModel::class.java)
+
+            if (apiMeal != null) {
 
                 DetailsRoute(
                     viewModel = viewModel,
@@ -145,5 +146,6 @@ fun AppNavigation(
                 )
             }
         }
+
     }
 }
