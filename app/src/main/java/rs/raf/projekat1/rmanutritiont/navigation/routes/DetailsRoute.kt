@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -40,12 +42,14 @@ fun DetailsRoute(
 
             false -> {
                 val meal = uiState.meal!!
-                MealScreenDetails(
-                    meal = meal,
+                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                    MealScreenDetails(
+                        meal = meal,
 //                    viewModel = viewModel,
-                    onFavoriteClicked = { onFavoriteClick(it) },
-                    isFavorite = isFavorite
-                )
+                        onFavoriteClicked = { onFavoriteClick(it) },
+                        isFavorite = isFavorite
+                    )
+                }
             }
         }
     }

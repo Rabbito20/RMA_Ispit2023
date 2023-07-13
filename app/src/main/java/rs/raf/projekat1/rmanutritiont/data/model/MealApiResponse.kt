@@ -64,7 +64,7 @@ data class MealFromApi(
 
     @TypeConverter
     fun fromApiToLocal(): LocalFavoriteMeal {
-        return LocalFavoriteMeal(id = idOnApi.toString(), mealApi = this)
+        return LocalFavoriteMeal(id = idOnApi, mealApi = this)
     }
 }
 

@@ -17,7 +17,10 @@ data class LocalFavoriteMeal(
     val mealApi: MealFromApi?,
 
     @PrimaryKey
-    val id: String = mealApi?.idOnApi!!
+    val id: String = mealApi?.idOnApi!!,
+
+//    val date: String?,
+//    val categoryTime: String?
 
 //    val name: String?,
 //    val area: String?,
@@ -53,10 +56,10 @@ interface MealDao {
     suspend fun deleteMeal(meal: LocalFavoriteMeal)
 
     @Query("SELECT * FROM LocalFavoriteMeal ORDER BY id DESC LIMIT 1")
-    fun getLatestMeal(): LocalFavoriteMeal?
+    suspend fun getLatestMeal(): LocalFavoriteMeal?
 
     @Query("SELECT * FROM LocalFavoriteMeal")
-    fun getAllMealsLocal(): List<LocalFavoriteMeal>
+    suspend fun getAllMealsLocal(): List<LocalFavoriteMeal>
 
 
 //    @Query("SELECT * from LocalMeal ORDER BY name ASC")

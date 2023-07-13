@@ -17,4 +17,5 @@ enum class SecondaryRoutes {
 
     //  MealDetails
     MealDetails,
+    LocalMealDetails,
 }

@@ -119,10 +119,12 @@ class DetailsViewModel(
 
         //  Some Db error, java.lang.IllegalStateException: Room cannot verify the data integrity
         viewModelScope.launch {
-            if (isFavorite.value!!)
-                dao.upsertMeal(meal.fromApiToLocal())
-            else
-                dao.deleteMeal(meal.fromApiToLocal())
+            dao.upsertMeal(meal.fromApiToLocal())
+
+//            if (isFavorite.value!!)
+//                dao.upsertMeal(meal.fromApiToLocal())
+//            else
+//                dao.deleteMeal(meal.fromApiToLocal())
         }
     }
 

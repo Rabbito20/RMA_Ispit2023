@@ -10,9 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -49,25 +47,26 @@ fun MealScreenDetails(
     onFavoriteClicked: (MealFromApi) -> Unit = {},
     isFavorite: Boolean = false
 ) {
+    var showDialog: Boolean by remember { mutableStateOf(false) }
+    var isFavoriteMeal by remember { mutableStateOf(isFavorite) }
+
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+//            .verticalScroll(rememberScrollState())
             .padding(top = 0.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start
     ) {
-        var favoriteMeal by remember { mutableStateOf(isFavorite) }
 
         MealHeader(
             mealThumbnailUrl = meal.thumbnailUrl!!.toString(),
             onFavoriteClick = {
-                //  TODO: Open dialog onClick for further Favorites data
-                favoriteMeal = !favoriteMeal
-                onFavoriteClicked(meal)
+//                onFavoriteClicked(meal)
+                showDialog = !showDialog
             },
-            favoriteMeal = favoriteMeal
+            favoriteMeal = isFavoriteMeal
         )
         MealTitle(name = meal.name!!)
         MealCategories(mealCategory = meal.category!!)
@@ -99,6 +98,18 @@ fun MealScreenDetails(
         if (meal.tags != null && meal.tags != "")
             TagsComposable(tags = meal.tags)
     }
+
+    if (showDialog)
+        FavoriteDialog(
+            isFavorite = isFavoriteMeal,
+            onDismiss = { showDialog = false },
+            onOkClick = {
+                showDialog = !showDialog
+                isFavoriteMeal = !isFavoriteMeal
+                onFavoriteClicked(meal)
+            },
+        )
+
 }
 
 @Composable

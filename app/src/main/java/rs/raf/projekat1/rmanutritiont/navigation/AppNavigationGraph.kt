@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import rs.raf.projekat1.rmanutritiont.data.local.LocalFavoriteMeal
 import rs.raf.projekat1.rmanutritiont.data.local.LocalMealDatabase
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 import rs.raf.projekat1.rmanutritiont.navigation.routes.CategoryRoute
@@ -18,10 +19,12 @@ import rs.raf.projekat1.rmanutritiont.navigation.routes.DetailsRoute
 import rs.raf.projekat1.rmanutritiont.navigation.routes.FavoritesRoute
 import rs.raf.projekat1.rmanutritiont.navigation.routes.FilterRoute
 import rs.raf.projekat1.rmanutritiont.navigation.routes.HomeRoute
+import rs.raf.projekat1.rmanutritiont.navigation.routes.LocalMealRoute
 import rs.raf.projekat1.rmanutritiont.screens.details.DetailsViewModel
 import rs.raf.projekat1.rmanutritiont.screens.home.HomeViewModel
 import rs.raf.projekat1.rmanutritiont.screens.home.category.CategoryViewModel
 import rs.raf.projekat1.rmanutritiont.screens.home.filter.FilterViewModel
+import rs.raf.projekat1.rmanutritiont.screens.localdetails.LocalDetailsViewModel
 import rs.raf.projekat1.rmanutritiont.screens.settings.SettingsScreen
 import rs.raf.projekat1.rmanutritiont.screens.settings.createPlan.CreatePlanScreen
 import rs.raf.projekat1.rmanutritiont.screens.statistics.StatisticsScreen
@@ -36,7 +39,10 @@ fun AppNavigation(
 ) {
     var categoryRoute: String by remember { mutableStateOf("") }
     var apiMeal: MealFromApi? by remember { mutableStateOf(null) }
-    val favoriteMeals = mutableListOf<MealFromApi>()
+//    val favoriteMeals = mutableListOf<MealFromApi>()
+
+    val favoriteMeals = mutableListOf<LocalFavoriteMeal>()
+    var localMeal: LocalFavoriteMeal? by remember { mutableStateOf(null) }
 
     NavHost(
         navController = navController,
@@ -94,8 +100,11 @@ fun AppNavigation(
             FavoritesRoute(
                 favoriteList = favoriteMeals,
                 onMealClicked = {
-                    apiMeal = it
-                    navController.navigate(route = SecondaryRoutes.MealDetails.name)
+//                    apiMeal = it
+//                    navController.navigate(route = SecondaryRoutes.MealDetails.name)
+
+                    localMeal = it.fromApiToLocal()
+                    navController.navigate(route = SecondaryRoutes.LocalMealDetails.name)
                 }
             )
         }
@@ -124,7 +133,7 @@ fun AppNavigation(
         //  Meal details
         composable(route = SecondaryRoutes.MealDetails.name) {
             val dao = localDb.mealDao()
-            val isFav = favoriteMeals.contains(apiMeal)
+            val isFav = favoriteMeals.contains(apiMeal?.fromApiToLocal())
 
             val viewModel = DetailsViewModel.provideFactory(
 //                    meal = dao.getLatestMeal()?.meal?.fromApiToLocal()!!,
@@ -140,17 +149,34 @@ fun AppNavigation(
                     viewModel = viewModel,
                     onFavoriteClick = { meal ->
                         viewModel.isFavoriteChangeState(meal)
+                        navController.popBackStack()
+                        navController.navigate(route = SecondaryRoutes.LocalMealDetails.name)
 
-                        //  Add or remove meal from Favorites
-                        if (isFav) {
-                            favoriteMeals.remove(meal)
-                        } else {
-                            favoriteMeals.add(meal)
-                        }
+                        localMeal = meal.fromApiToLocal()
+                        favoriteMeals.add(localMeal!!)
                     },
                     isFavorite = isFav
                 )
             }
+        }
+
+        //  Opening Local Favorites meal
+        composable(route = SecondaryRoutes.LocalMealDetails.name) {
+            val dao = localDb.mealDao()
+
+            val localViewModel = LocalDetailsViewModel.provideFactory(localMeal!!, dao)
+                .create(LocalDetailsViewModel::class.java)
+
+            LocalMealRoute(
+                localMeal = localMeal!!,
+                viewModel = localViewModel,
+                onClickFavorite = { meal ->
+                    localViewModel.removeFromFavorite(meal)
+                    navController.popBackStack()
+                    navController.navigate(route = SecondaryRoutes.MealDetails.name)
+
+                    favoriteMeals.remove(localMeal)
+                })
         }
 
     }
