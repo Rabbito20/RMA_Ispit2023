@@ -1,8 +1,6 @@
 package rs.raf.projekat1.rmanutritiont.screens.details
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -35,18 +33,10 @@ class DetailsViewModel(
 
     private var mealApiRepo: MealRepository = MealApiClient.mealApiService
 
-    private val _isFavorite = MutableLiveData(false)
-    private val isFavorite: LiveData<Boolean> = _isFavorite
-
-//    private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
-//    val isLoading: LiveData<Boolean> = _isLoading
-
     //  This screen won't open until we have opened at least one meal
     private val viewModelState = if (meal == null)
         MutableStateFlow(
             DetailsViewModelState(
-//                dao.getLatestMeal()?.mealApi?.fromApiToLocal()!!,
-//                dao.getLatestMeal()?.mealApi,
                 meal = meal,
                 isLoading = true,
                 isFavorite,
@@ -114,17 +104,11 @@ class DetailsViewModel(
         }
     }
 
-    fun isFavoriteChangeState(meal: MealFromApi) {
-        _isFavorite.value = !_isFavorite.value!!
-
+    fun addMealToLocalDb(meal: MealFromApi) {
         //  Some Db error, java.lang.IllegalStateException: Room cannot verify the data integrity
         viewModelScope.launch {
             dao.upsertMeal(meal.fromApiToLocal())
 
-//            if (isFavorite.value!!)
-//                dao.upsertMeal(meal.fromApiToLocal())
-//            else
-//                dao.deleteMeal(meal.fromApiToLocal())
         }
     }
 
