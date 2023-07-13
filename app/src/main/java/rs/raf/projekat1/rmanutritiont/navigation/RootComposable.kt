@@ -36,7 +36,7 @@ fun RootComposable(localDb: LocalMealDatabase) {
                 false -> LoginAppContainer(
                     navController,
                     signedInState = {
-                        //  TODO: Add sign in logic
+                        //  TODO: Add sign in logic (username and password check)
                         isSignedIn = true
                     }
                 )
