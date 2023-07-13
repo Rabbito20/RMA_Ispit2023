@@ -15,10 +15,10 @@ import rs.raf.projekat1.rmanutritiont.data.local.LocalMealDatabase
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 import rs.raf.projekat1.rmanutritiont.navigation.routes.CategoryRoute
 import rs.raf.projekat1.rmanutritiont.navigation.routes.DetailsRoute
+import rs.raf.projekat1.rmanutritiont.navigation.routes.FavoritesRoute
 import rs.raf.projekat1.rmanutritiont.navigation.routes.FilterRoute
 import rs.raf.projekat1.rmanutritiont.navigation.routes.HomeRoute
 import rs.raf.projekat1.rmanutritiont.screens.details.DetailsViewModel
-import rs.raf.projekat1.rmanutritiont.screens.favorites.FavoritesScreen
 import rs.raf.projekat1.rmanutritiont.screens.home.HomeViewModel
 import rs.raf.projekat1.rmanutritiont.screens.home.category.CategoryViewModel
 import rs.raf.projekat1.rmanutritiont.screens.home.filter.FilterViewModel
@@ -91,12 +91,13 @@ fun AppNavigation(
 
         //  Favorites route domain
         composable(route = TopLevelRoutes.Favorites.name) {
-            FavoritesScreen(
+            FavoritesRoute(
                 favoriteList = favoriteMeals,
-                onFavMealClick = {
+                onMealClicked = {
                     apiMeal = it
                     navController.navigate(route = SecondaryRoutes.MealDetails.name)
-                })
+                }
+            )
         }
 
         //  Statistics route domain
@@ -137,14 +138,14 @@ fun AppNavigation(
             if (apiMeal != null) {
                 DetailsRoute(
                     viewModel = viewModel,
-                    onFavoriteClick = { favMeal ->
-                        viewModel.isFavoriteChangeState(favMeal)
+                    onFavoriteClick = { meal ->
+                        viewModel.isFavoriteChangeState(meal)
 
                         //  Add or remove meal from Favorites
-                        if (favoriteMeals.contains(favMeal)) {
-                            favoriteMeals.remove(favMeal)
+                        if (isFav) {
+                            favoriteMeals.remove(meal)
                         } else {
-                            favoriteMeals.add(favMeal)
+                            favoriteMeals.add(meal)
                         }
                     },
                     isFavorite = isFav
