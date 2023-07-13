@@ -15,13 +15,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import rs.raf.projekat1.rmanutritiont.data.api.MealApiClient
 import rs.raf.projekat1.rmanutritiont.data.api.MealRepository
+import rs.raf.projekat1.rmanutritiont.data.local.MealDao
 import rs.raf.projekat1.rmanutritiont.data.model.MealFromApi
 
 data class DetailsViewModelState(
 //    val meal: LocalFavoriteMeal,
     val meal: MealFromApi?,
     val isLoading: Boolean,
-    val isFavorite: Boolean
+    val isFavorite: Boolean,
 )
 
 class DetailsViewModel(
@@ -29,7 +30,7 @@ class DetailsViewModel(
     meal: MealFromApi,
     isLoading: Boolean,
     isFavorite: Boolean,
-//    private val dao: MealDao
+    private val dao: MealDao,
 ) : ViewModel() {
 
     private var mealApiRepo: MealRepository = MealApiClient.mealApiService
@@ -117,12 +118,12 @@ class DetailsViewModel(
         _isFavorite.value = !_isFavorite.value!!
 
         //  Some Db error, java.lang.IllegalStateException: Room cannot verify the data integrity
-//        viewModelScope.launch {
-//            if (isFavorite.value!!)
-//                dao.upsertMeal(meal.fromApiToLocal())
-//            else
-//                dao.deleteMeal(meal.fromApiToLocal())
-//        }
+        viewModelScope.launch {
+            if (isFavorite.value!!)
+                dao.upsertMeal(meal.fromApiToLocal())
+            else
+                dao.deleteMeal(meal.fromApiToLocal())
+        }
     }
 
     companion object {
@@ -131,11 +132,11 @@ class DetailsViewModel(
             meal: MealFromApi,
             isFavorite: Boolean,
             isLoading: Boolean,
-//            dao: MealDao
+            dao: MealDao,
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return DetailsViewModel(meal, isFavorite, isLoading) as T
+                return DetailsViewModel(meal, isFavorite, isLoading, dao) as T
             }
         }
     }

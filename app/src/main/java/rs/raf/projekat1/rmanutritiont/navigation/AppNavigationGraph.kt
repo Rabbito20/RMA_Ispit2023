@@ -130,12 +130,11 @@ fun AppNavigation(
 //                    meal = apiMeal!!.fromApiToLocal(),
                 meal = apiMeal!!,
                 isLoading = false,
-//                    dao = dao,
+                dao = dao,
                 isFavorite = isFav
             ).create(DetailsViewModel::class.java)
 
             if (apiMeal != null) {
-
                 DetailsRoute(
                     viewModel = viewModel,
                     onFavoriteClick = { favMeal ->
