@@ -22,6 +22,9 @@ fun CategoryScreen(
     mealList: List<MealFromApi>? = null,
     onMealClick: (MealFromApi) -> Unit
 ) {
+    val titleText =
+        if (categoryUiState.isLoading) categoryUiState.categoryName
+        else "${categoryUiState.categoryName} (${mealList?.size})"
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -31,7 +34,7 @@ fun CategoryScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = categoryUiState.categoryName,
+            text = titleText,
             color = MaterialTheme.colorScheme.onBackground,
 //            textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
