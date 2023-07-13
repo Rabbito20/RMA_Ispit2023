@@ -28,7 +28,6 @@ fun CategoryScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-//            .verticalScroll(rememberScrollState())
             .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 4.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally

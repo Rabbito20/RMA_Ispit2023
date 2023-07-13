@@ -112,7 +112,7 @@ fun SingleMealCard(modifier: Modifier = Modifier, meal: MealFromApi?, onClick: (
 fun prevSingleMealCard() {
     SingleMealCard(
         meal = MealFromApi(
-           " 1",
+            "1",
             "Name of the meal",
             "Category",
             "Area",
