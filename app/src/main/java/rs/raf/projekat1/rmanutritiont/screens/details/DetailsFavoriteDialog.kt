@@ -35,8 +35,6 @@ fun IsFavoriteDialog(
     isFavorite: Boolean,
 //    viewModel: DetailsViewModel,
     onDismiss: () -> Unit,
-    date: (String) -> Unit,
-    dayTime: (String) -> Unit,
 //    onOkClick: () -> Unit,
     onOkClick: (String, String) -> Unit,
 ) {
@@ -45,9 +43,7 @@ fun IsFavoriteDialog(
     when (isFavorite) {
         false -> AddToFavorites(
             onDismiss = onDismiss,
-            date = date,
-            dayTime = dayTime,
-            onOkClick = {dayTime, date ->
+            onOkClick = { dayTime, date ->
 //            timeOfDayText = dayTime       //  DEBUG
 //                onOkClick(dayTime, date)
                 onOkClick(dayTime, date)
@@ -63,7 +59,7 @@ fun IsFavoriteDialog(
 }
 
 @Composable
-fun RemoveFromFavoritesDialog(onOkClick: () -> Unit, onDismiss: () -> Unit) {
+private fun RemoveFromFavoritesDialog(onOkClick: () -> Unit, onDismiss: () -> Unit) {
     Dialog(onDismissRequest = onDismiss) {
         Card(modifier = Modifier.padding(20.dp), shape = RoundedCornerShape(10)) {
             Column(
@@ -83,10 +79,10 @@ fun RemoveFromFavoritesDialog(onOkClick: () -> Unit, onDismiss: () -> Unit) {
 }
 
 @Composable
-fun AddToFavorites(
+private fun AddToFavorites(
     onDismiss: () -> Unit,
-    date: (String) -> Unit,
-    dayTime: (String) -> Unit,
+//    date: (String) -> Unit,
+//    dayTime: (String) -> Unit,
     onOkClick: (String, String) -> Unit        //  HMMMMMMM
 //    onOkClick: () -> Unit        //  HMMMMMMM
 ) {

@@ -47,8 +47,8 @@ fun DetailsRoute(
                         meal = meal,
 //                        viewModel = viewModel,
                         onFavoriteClicked = { apiMeal, timeText, date ->
+                            //  Not working well!!!
                             onFavoriteClick(apiMeal, timeText)
-                            Log.e("Djura", "Details route -> ${apiMeal.name} $timeText $date")
                         },
                         isFavorite = isFavorite
                     )

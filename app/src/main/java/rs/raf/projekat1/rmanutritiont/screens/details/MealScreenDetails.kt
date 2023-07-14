@@ -1,7 +1,6 @@
 package rs.raf.projekat1.rmanutritiont.screens.details
 
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -51,6 +50,18 @@ fun MealScreenDetails(
     var showDialog: Boolean by remember { mutableStateOf(false) }
     var isFavoriteMeal by remember { mutableStateOf(isFavorite) }
 
+    if (showDialog)
+        IsFavoriteDialog(
+            isFavorite = isFavoriteMeal,
+//            viewModel = viewModel!!,
+            onDismiss = { showDialog = false },
+            onOkClick = { dayTime, date ->
+                showDialog = !showDialog
+                isFavoriteMeal = !isFavoriteMeal
+                onFavoriteClicked(meal, date, dayTime)
+            },
+        )
+
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -99,28 +110,6 @@ fun MealScreenDetails(
         if (meal.tags != null && meal.tags != "")
             TagsComposable(tags = meal.tags)
     }
-
-    //  ##########################
-    var dateString by remember { mutableStateOf("") }
-    var dayString by remember { mutableStateOf("") }
-    //  ##########################
-
-    if (showDialog)
-        IsFavoriteDialog(
-            isFavorite = isFavoriteMeal,
-//            viewModel = viewModel!!,
-            date = { dateString = it },
-            dayTime = { dayString = it },
-            onDismiss = { showDialog = false },
-            onOkClick = { dayTime, date ->
-                showDialog = !showDialog
-                isFavoriteMeal = !isFavoriteMeal
-                onFavoriteClicked(meal, date, dayTime)
-            },
-        )
-
-    if (!showDialog)
-        Log.e("Djura", "${meal.idOnApi}     $dayString      $dateString")
 
 }
 
