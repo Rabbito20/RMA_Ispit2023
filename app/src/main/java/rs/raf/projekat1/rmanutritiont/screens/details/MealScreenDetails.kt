@@ -1,6 +1,7 @@
 package rs.raf.projekat1.rmanutritiont.screens.details
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,8 +44,8 @@ import rs.raf.projekat1.rmanutritiont.ui.theme.ColorFavorite
 @Composable
 fun MealScreenDetails(
     meal: MealFromApi,
-//    viewModel: DetailsViewModel,      //  Meal was extracted from VM in the DetailsRoute
-    onFavoriteClicked: (MealFromApi, String) -> Unit,
+//    viewModel: DetailsViewModel?,
+    onFavoriteClicked: (MealFromApi, String, String) -> Unit,
     isFavorite: Boolean = false
 ) {
     var showDialog: Boolean by remember { mutableStateOf(false) }
@@ -99,16 +100,27 @@ fun MealScreenDetails(
             TagsComposable(tags = meal.tags)
     }
 
+    //  ##########################
+    var dateString by remember { mutableStateOf("") }
+    var dayString by remember { mutableStateOf("") }
+    //  ##########################
+
     if (showDialog)
-        FavoriteDialog(
+        IsFavoriteDialog(
             isFavorite = isFavoriteMeal,
+//            viewModel = viewModel!!,
+            date = { dateString = it },
+            dayTime = { dayString = it },
             onDismiss = { showDialog = false },
-            onOkClick = {timeOfDayText ->
+            onOkClick = { dayTime, date ->
                 showDialog = !showDialog
                 isFavoriteMeal = !isFavoriteMeal
-                onFavoriteClicked(meal, timeOfDayText)
+                onFavoriteClicked(meal, date, dayTime)
             },
         )
+
+    if (!showDialog)
+        Log.e("Djura", "${meal.idOnApi}     $dayString      $dateString")
 
 }
 

@@ -1,5 +1,7 @@
 package rs.raf.projekat1.rmanutritiont.screens.details
 
+import android.app.DatePickerDialog
+import android.widget.DatePicker
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,26 +19,43 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import rs.raf.projekat1.rmanutritiont.R
 import rs.raf.projekat1.rmanutritiont.ui.components.RegularWidthButton
 import rs.raf.projekat1.rmanutritiont.ui.components.SimpleButton
+import java.util.Calendar
+import java.util.Date
 
 @Composable
-fun FavoriteDialog(
+fun IsFavoriteDialog(
     isFavorite: Boolean,
+//    viewModel: DetailsViewModel,
     onDismiss: () -> Unit,
-    onOkClick: (String) -> Unit,
+    date: (String) -> Unit,
+    dayTime: (String) -> Unit,
+//    onOkClick: () -> Unit,
+    onOkClick: (String, String) -> Unit,
 ) {
-    val timeOfDayText by remember { mutableStateOf("") }
+
+//    var timeOfDayText by remember { mutableStateOf("") }
     when (isFavorite) {
-        false -> AddToFavorites(onDismiss = onDismiss, onOkClick = { onOkClick(timeOfDayText) })
+        false -> AddToFavorites(
+            onDismiss = onDismiss,
+            date = date,
+            dayTime = dayTime,
+            onOkClick = {dayTime, date ->
+//            timeOfDayText = dayTime       //  DEBUG
+//                onOkClick(dayTime, date)
+                onOkClick(dayTime, date)
+            })
+
         true -> RemoveFromFavoritesDialog(
-            onOkClick = { onOkClick(timeOfDayText) },
+            onOkClick = { onOkClick("", "") },
+//            onOkClick = { onOkClick() },
             onDismiss = onDismiss
         )
     }
@@ -64,7 +83,13 @@ fun RemoveFromFavoritesDialog(onOkClick: () -> Unit, onDismiss: () -> Unit) {
 }
 
 @Composable
-fun AddToFavorites(onDismiss: () -> Unit, onOkClick: (String) -> Unit) {
+fun AddToFavorites(
+    onDismiss: () -> Unit,
+    date: (String) -> Unit,
+    dayTime: (String) -> Unit,
+    onOkClick: (String, String) -> Unit        //  HMMMMMMM
+//    onOkClick: () -> Unit        //  HMMMMMMM
+) {
     Dialog(onDismissRequest = onDismiss) {
         Card(modifier = Modifier.padding(20.dp), shape = RoundedCornerShape(10)) {
             Column(
@@ -72,8 +97,10 @@ fun AddToFavorites(onDismiss: () -> Unit, onOkClick: (String) -> Unit) {
                     .padding(20.dp),
                 verticalArrangement = Arrangement.Center
             ) {
+                var dayTimeText by remember { mutableStateOf("") }
+                var dateString by remember { mutableStateOf("") }
                 //  Pick date
-                DatePicker()
+                DatePicker(onDatePickClick = { dateString = it })
 
                 //  Pick category (Breakfast, Lunch, Dinner)
                 Text(
@@ -81,13 +108,13 @@ fun AddToFavorites(onDismiss: () -> Unit, onOkClick: (String) -> Unit) {
                     style = MaterialTheme.typography.titleSmall,
                     textAlign = TextAlign.Center,
                 )
-                var timeText by remember { mutableStateOf("") }
-                CategoryPicker(onCategoryClick = { timeText = it })
+                CategoryPicker(onCategoryClick = { dayTimeText = it })
 
                 OkCancelButtons(
                     onOkClick = {
-                        //  + return previous data
-                        onOkClick(timeText)
+//                        Log.e("Djura", "DayTime ->  $dayTimeText    |   Date    ->  $dateString")
+                        onOkClick(dayTimeText, dateString)
+//                        onOkClick()
                         onDismiss()
                     },
                     onCancelClick = onDismiss
@@ -98,8 +125,36 @@ fun AddToFavorites(onDismiss: () -> Unit, onOkClick: (String) -> Unit) {
 }
 
 @Composable
-private fun DatePicker() {
-    //todo
+private fun DatePicker(onDatePickClick: (String) -> Unit) {
+    val placeholder = stringResource(id = R.string.pick_date)
+    var dateText by remember { mutableStateOf("/") }
+    val context = LocalContext.current
+
+    val mCalendar = Calendar.getInstance()
+    val year = mCalendar.get(Calendar.YEAR)
+    val month = mCalendar.get(Calendar.MONTH)
+    val day = mCalendar.get(Calendar.DAY_OF_MONTH)
+
+    mCalendar.time = Date()
+
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
+            dateText = "$mDayOfMonth/${mMonth + 1}/$mYear"
+        },
+        year, month, day
+    )
+
+    SimpleButton(
+        onClick = {
+            datePickerDialog.show()
+            onDatePickClick(dateText)
+        },
+        buttonText = if (dateText != "/") dateText else placeholder,
+        modifier = Modifier
+            .padding(bottom = 32.dp)
+            .fillMaxWidth()
+    )
 }
 
 @Composable
@@ -111,16 +166,19 @@ private fun CategoryPicker(onCategoryClick: (String) -> Unit) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val breakfastTxt = stringResource(id = R.string.lunch)
         RegularWidthButton(
-            onClick = { onCategoryClick(R.string.breakfast.toString()) },
+            onClick = { onCategoryClick(breakfastTxt) },
             buttonText = stringResource(id = R.string.breakfast),
         )
+        val lunchTxt = stringResource(id = R.string.lunch)
         RegularWidthButton(
-            onClick = { onCategoryClick(R.string.lunch.toString()) },
+            onClick = { onCategoryClick(lunchTxt) },
             buttonText = stringResource(id = R.string.lunch),
         )
+        val dinnerTxt = stringResource(id = R.string.dinner)
         RegularWidthButton(
-            onClick = { onCategoryClick(R.string.dinner.toString()) },
+            onClick = { onCategoryClick(dinnerTxt) },
             buttonText = stringResource(id = R.string.dinner),
         )
     }
@@ -142,14 +200,14 @@ private fun OkCancelButtons(onOkClick: () -> Unit, onCancelClick: () -> Unit) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PrevFavDialogFalse() {
-    FavoriteDialog(isFavorite = false, onDismiss = {}, onOkClick = {})
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PrevFavDialogTrue() {
-    FavoriteDialog(isFavorite = true, onDismiss = {}, onOkClick = {})
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PrevFavDialogFalse() {
+//    IsFavoriteDialog(isFavorite = false, onDismiss = {}, onOkClick = { _, _ -> })
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun PrevFavDialogTrue() {
+//    IsFavoriteDialog(isFavorite = true, viewModel = DetailsViewModel(null, dao = ), onDismiss = {}, onOkClick = { _, _ -> })
+//}

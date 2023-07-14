@@ -1,6 +1,8 @@
 package rs.raf.projekat1.rmanutritiont.screens.details
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -33,6 +35,12 @@ class DetailsViewModel(
 
     private var mealApiRepo: MealRepository = MealApiClient.mealApiService
 
+    private var _dayTime = MutableLiveData("")
+    val dayTime: LiveData<String> = _dayTime
+
+    private var _dateTime = MutableLiveData("")
+    val dateTime: LiveData<String> = _dateTime
+
     //  This screen won't open until we have opened at least one meal
     private val viewModelState = if (meal == null)
         MutableStateFlow(
@@ -57,6 +65,14 @@ class DetailsViewModel(
     init {
         mealApiRepo = MealApiClient.mealApiService
         onRefresh()
+    }
+
+    fun setDayTime(dayTime: String) {
+        _dayTime.value = dayTime
+    }
+
+    fun setDate(dateTime: String) {
+        _dateTime.value = dateTime
     }
 
     fun onRefresh() {

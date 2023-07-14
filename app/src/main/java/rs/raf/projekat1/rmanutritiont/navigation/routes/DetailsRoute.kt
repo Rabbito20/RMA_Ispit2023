@@ -45,9 +45,10 @@ fun DetailsRoute(
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                     MealScreenDetails(
                         meal = meal,
-//                    viewModel = viewModel,
-                        onFavoriteClicked = { apiMeal, timeText ->
+//                        viewModel = viewModel,
+                        onFavoriteClicked = { apiMeal, timeText, date ->
                             onFavoriteClick(apiMeal, timeText)
+                            Log.e("Djura", "Details route -> ${apiMeal.name} $timeText $date")
                         },
                         isFavorite = isFavorite
                     )

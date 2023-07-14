@@ -32,6 +32,7 @@
     <string name="lunch">Lunch</string>
     <string name="dinner">Dinner</string>
     <string name="remove_from_favorites_text">Remove from favorites?</string>
+    <string name="pick_date">Pick date</string>
 
     <string name="ok_text">OK</string>
     <string name="cancel_text">Cancel</string>

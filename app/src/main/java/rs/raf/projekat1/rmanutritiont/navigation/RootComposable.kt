@@ -24,8 +24,8 @@ fun RootComposable(localDb: LocalMealDatabase) {
             val navController = rememberNavController()
 
             //  true while developing
-//            var isSignedIn: Boolean by remember { mutableStateOf(true) }
-            var isSignedIn: Boolean by remember { mutableStateOf(false) }
+            var isSignedIn: Boolean by remember { mutableStateOf(true) }
+//            var isSignedIn: Boolean by remember { mutableStateOf(false) }
 
             when (isSignedIn) {
                 true -> NutritionAppSignedIn(

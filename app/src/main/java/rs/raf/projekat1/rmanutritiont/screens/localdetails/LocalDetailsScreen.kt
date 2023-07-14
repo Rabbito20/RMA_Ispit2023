@@ -1,5 +1,6 @@
 package rs.raf.projekat1.rmanutritiont.screens.localdetails
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,7 +30,8 @@ fun LocalMealScreenDetails(
     ) {
         MealScreenDetails(
             meal = localMeal.mealApi!!,
-            onFavoriteClicked = { apiMeal, mealTime ->
+//            viewModel = null,
+            onFavoriteClicked = { apiMeal, mealTime, date ->
                 onLocalFavoriteClicked(apiMeal.fromApiToLocal())
             },
             isFavorite = true
@@ -43,7 +45,8 @@ fun LocalMealScreenDetails(
 
 @Composable
 private fun LocalDataComponent(modifier: Modifier = Modifier) {
-    Row(modifier = modifier) {
-        Text(text = "Date...")
+    Row(modifier = modifier, horizontalArrangement = Arrangement.SpaceEvenly) {
+        Text(text = "Breakfast")
+        Text(text = "14/07/2023")
     }
 }
