@@ -61,6 +61,9 @@ interface MealDao {
     @Query("SELECT * FROM LocalFavoriteMeal")
     suspend fun getAllMealsLocal(): List<LocalFavoriteMeal>
 
+    @Query("SELECT * FROM LocalFavoriteMeal WHERE name LIKE :searchParameter")
+    suspend fun getMealsByName(searchParameter: String): List<LocalFavoriteMeal>
+
 
 //    @Query("SELECT * from LocalMeal ORDER BY name ASC")
 //    suspend fun getLocalMealsByName(): Flow<List<LocalMeal>>

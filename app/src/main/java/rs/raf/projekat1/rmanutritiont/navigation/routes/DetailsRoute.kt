@@ -22,7 +22,7 @@ import rs.raf.projekat1.rmanutritiont.ui.components.LoadingContentBarWithText
 fun DetailsRoute(
     viewModel: DetailsViewModel,
     isFavorite: Boolean,
-    onFavoriteClick: (MealFromApi) -> Unit
+    onFavoriteClick: (MealFromApi, String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -46,7 +46,9 @@ fun DetailsRoute(
                     MealScreenDetails(
                         meal = meal,
 //                    viewModel = viewModel,
-                        onFavoriteClicked = { onFavoriteClick(it) },
+                        onFavoriteClicked = { apiMeal, timeText ->
+                            onFavoriteClick(apiMeal, timeText)
+                        },
                         isFavorite = isFavorite
                     )
                 }

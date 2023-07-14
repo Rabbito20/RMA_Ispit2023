@@ -1,6 +1,8 @@
 package rs.raf.projekat1.rmanutritiont.screens.favorites
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -54,20 +56,39 @@ class FavoritesViewModel(
         .map(FavoritesViewModelState::toUiState)
         .stateIn(viewModelScope, SharingStarted.Eagerly, viewModelState.value.toUiState())
 
+    private val _searchParameter = MutableLiveData<String>("")
+    val searchParameter: LiveData<String> = _searchParameter
+
     init {
         onRefresh()
-//        fetchMealsFromLocalDb(viewModelState.value.mealsFeed)
+        onSearchInputChanged(_searchParameter.value.toString())
     }
 
     fun onRefresh() {
         fetchMealsFromLocalDb(viewModelState.value.mealsFeed)
     }
 
+    private fun onSearchInputChanged(searchString: String) {
+        viewModelState.update { it.copy(isLoading = true) }
+        viewModelScope.launch {
+            try {
+                dao.getMealsByName(searchString)
+                _searchParameter.value = searchString.trim()
+
+                viewModelState.update {
+                    it.copy(isLoading = false)
+                }
+            } catch (e: Exception) {
+                Log.e("Fetch meal by name error", e.message.toString())
+            }
+        }
+    }
+
     fun removeFromDb(meal: LocalFavoriteMeal) {
         viewModelScope.launch {
             viewModelState.update { it.copy(isLoading = true) }
             try {
-                val localMeals = dao.deleteMeal(meal)
+                dao.deleteMeal(meal)
             } catch (e: Exception) {
                 Log.e("Favorites DB deletion error", e.message.toString())
             }

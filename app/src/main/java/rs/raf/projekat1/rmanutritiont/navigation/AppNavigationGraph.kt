@@ -151,7 +151,7 @@ fun AppNavigation(
             if (apiMeal != null) {
                 DetailsRoute(
                     viewModel = viewModel,
-                    onFavoriteClick = { meal ->
+                    onFavoriteClick = { meal, timeText ->
                         viewModel.addMealToLocalDb(meal)
                         navController.popBackStack()
                         navController.navigate(route = SecondaryRoutes.LocalMealDetails.name)

@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -27,11 +30,15 @@ import rs.raf.projekat1.rmanutritiont.ui.components.SimpleButton
 fun FavoriteDialog(
     isFavorite: Boolean,
     onDismiss: () -> Unit,
-    onOkClick: () -> Unit,
+    onOkClick: (String) -> Unit,
 ) {
+    val timeOfDayText by remember { mutableStateOf("") }
     when (isFavorite) {
-        false -> AddToFavorites(onDismiss = onDismiss, onOkClick = onOkClick)
-        true -> RemoveFromFavoritesDialog(onOkClick = onOkClick, onDismiss = onDismiss)
+        false -> AddToFavorites(onDismiss = onDismiss, onOkClick = { onOkClick(timeOfDayText) })
+        true -> RemoveFromFavoritesDialog(
+            onOkClick = { onOkClick(timeOfDayText) },
+            onDismiss = onDismiss
+        )
     }
 
 }
@@ -40,7 +47,11 @@ fun FavoriteDialog(
 fun RemoveFromFavoritesDialog(onOkClick: () -> Unit, onDismiss: () -> Unit) {
     Dialog(onDismissRequest = onDismiss) {
         Card(modifier = Modifier.padding(20.dp), shape = RoundedCornerShape(10)) {
-            Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.Center) {
+            Column(
+                modifier = Modifier.padding(20.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(
                     text = stringResource(id = R.string.remove_from_favorites_text),
                     style = MaterialTheme.typography.titleSmall,
@@ -53,7 +64,7 @@ fun RemoveFromFavoritesDialog(onOkClick: () -> Unit, onDismiss: () -> Unit) {
 }
 
 @Composable
-fun AddToFavorites(onDismiss: () -> Unit, onOkClick: () -> Unit) {
+fun AddToFavorites(onDismiss: () -> Unit, onOkClick: (String) -> Unit) {
     Dialog(onDismissRequest = onDismiss) {
         Card(modifier = Modifier.padding(20.dp), shape = RoundedCornerShape(10)) {
             Column(
@@ -70,12 +81,13 @@ fun AddToFavorites(onDismiss: () -> Unit, onOkClick: () -> Unit) {
                     style = MaterialTheme.typography.titleSmall,
                     textAlign = TextAlign.Center,
                 )
-                CategoryPicker(onCategoryClick = {})
+                var timeText by remember { mutableStateOf("") }
+                CategoryPicker(onCategoryClick = { timeText = it })
 
                 OkCancelButtons(
                     onOkClick = {
                         //  + return previous data
-                        onOkClick()
+                        onOkClick(timeText)
                         onDismiss()
                     },
                     onCancelClick = onDismiss
@@ -91,22 +103,24 @@ private fun DatePicker() {
 }
 
 @Composable
-private fun CategoryPicker(onCategoryClick: () -> Unit) {
+private fun CategoryPicker(onCategoryClick: (String) -> Unit) {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 20.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         RegularWidthButton(
-            onClick = { onCategoryClick() },
+            onClick = { onCategoryClick(R.string.breakfast.toString()) },
             buttonText = stringResource(id = R.string.breakfast),
         )
         RegularWidthButton(
-            onClick = { onCategoryClick() },
+            onClick = { onCategoryClick(R.string.lunch.toString()) },
             buttonText = stringResource(id = R.string.lunch),
         )
         RegularWidthButton(
-            onClick = { onCategoryClick() },
+            onClick = { onCategoryClick(R.string.dinner.toString()) },
             buttonText = stringResource(id = R.string.dinner),
         )
     }

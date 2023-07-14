@@ -29,7 +29,9 @@ fun LocalMealScreenDetails(
     ) {
         MealScreenDetails(
             meal = localMeal.mealApi!!,
-            onFavoriteClicked = { onLocalFavoriteClicked(it.fromApiToLocal()) },
+            onFavoriteClicked = { apiMeal, mealTime ->
+                onLocalFavoriteClicked(apiMeal.fromApiToLocal())
+            },
             isFavorite = true
         )
 

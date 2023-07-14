@@ -44,7 +44,7 @@ import rs.raf.projekat1.rmanutritiont.ui.theme.ColorFavorite
 fun MealScreenDetails(
     meal: MealFromApi,
 //    viewModel: DetailsViewModel,      //  Meal was extracted from VM in the DetailsRoute
-    onFavoriteClicked: (MealFromApi) -> Unit = {},
+    onFavoriteClicked: (MealFromApi, String) -> Unit,
     isFavorite: Boolean = false
 ) {
     var showDialog: Boolean by remember { mutableStateOf(false) }
@@ -103,10 +103,10 @@ fun MealScreenDetails(
         FavoriteDialog(
             isFavorite = isFavoriteMeal,
             onDismiss = { showDialog = false },
-            onOkClick = {
+            onOkClick = {timeOfDayText ->
                 showDialog = !showDialog
                 isFavoriteMeal = !isFavoriteMeal
-                onFavoriteClicked(meal)
+                onFavoriteClicked(meal, timeOfDayText)
             },
         )
 
